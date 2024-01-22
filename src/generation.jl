@@ -60,42 +60,42 @@ msg = aihelp(index; question)
 
 """
 function aihelp(index::RAG.AbstractChunkIndex,
-    question::AbstractString;
-    rag_template::Symbol=:RAGAnswerFromContext,
-    top_k::Int=100, top_n::Int=5,
-    minimum_similarity::AbstractFloat=-1.0,
-    maximum_cross_similarity::AbstractFloat=1.0,
-    rerank_strategy::RAG.RerankingStrategy=(!isempty(PT.COHERE_API_KEY) ?
-                                            RAG.CohereRerank() : RAG.Passthrough()),
-    annotate_sources::Bool=true,
-    model_embedding::String=PT.MODEL_EMBEDDING, model_chat::String=PT.MODEL_CHAT,
-    chunks_window_margin::Tuple{Int,Int}=(1, 1),
-    return_context::Bool=false, verbose::Integer=1,
-    rerank_kwargs::NamedTuple=NamedTuple(),
-    api_kwargs::NamedTuple=NamedTuple(),
-    kwargs...)
+        question::AbstractString;
+        rag_template::Symbol = :RAGAnswerFromContext,
+        top_k::Int = 100, top_n::Int = 5,
+        minimum_similarity::AbstractFloat = -1.0,
+        maximum_cross_similarity::AbstractFloat = 1.0,
+        rerank_strategy::RAG.RerankingStrategy = (!isempty(PT.COHERE_API_KEY) ?
+                                                  RAG.CohereRerank() : RAG.Passthrough()),
+        annotate_sources::Bool = true,
+        model_embedding::String = PT.MODEL_EMBEDDING, model_chat::String = PT.MODEL_CHAT,
+        chunks_window_margin::Tuple{Int, Int} = (1, 1),
+        return_context::Bool = false, verbose::Integer = 1,
+        rerank_kwargs::NamedTuple = NamedTuple(),
+        api_kwargs::NamedTuple = NamedTuple(),
+        kwargs...)
     ## Note: Supports only single ChunkIndex for now
     global LAST_CONTEXT, CONV_HISTORY_LOCK
 
     ## Checks
-    @assert top_k > 0 "top_k must be positive"
-    @assert top_n > 0 "top_n must be positive"
-    @assert top_k >= top_n "top_k must be greater than or equal to top_n"
-    @assert minimum_similarity >= -1.0 && minimum_similarity <= 1.0 "minimum_similarity must be between -1 and 1"
-    @assert maximum_cross_similarity >= -1.0 && maximum_cross_similarity <= 1.0 "maximum_cross_similarity must be between -1 and 1"
+    @assert top_k>0 "top_k must be positive"
+    @assert top_n>0 "top_n must be positive"
+    @assert top_k>=top_n "top_k must be greater than or equal to top_n"
+    @assert minimum_similarity >= -1.0&&minimum_similarity <= 1.0 "minimum_similarity must be between -1 and 1"
+    @assert maximum_cross_similarity >= -1.0&&maximum_cross_similarity <= 1.0 "maximum_cross_similarity must be between -1 and 1"
     ## TODO: implement maximum_cross_similarity filter
 
-    @assert chunks_window_margin[1] >= 0 && chunks_window_margin[2] >= 0 "Both `chunks_window_margin` values must be non-negative"
+    @assert chunks_window_margin[1] >= 0&&chunks_window_margin[2] >= 0 "Both `chunks_window_margin` values must be non-negative"
     placeholders = only(aitemplates(rag_template)).variables # only one template should be found
-    @assert (:question in placeholders) && (:context in placeholders) "Provided RAG Template $(rag_template) is not suitable. It must have placeholders: `question` and `context`."
+    @assert (:question in placeholders)&&(:context in placeholders) "Provided RAG Template $(rag_template) is not suitable. It must have placeholders: `question` and `context`."
 
     cost_tracker = Threads.Atomic{Float64}(0.0)
 
     ## Embedding step
     msg = aiembed(question,
         RAG._normalize;
-        verbose=(verbose > 1),
-        model=model_embedding,
+        verbose = (verbose > 1),
+        model = model_embedding,
         api_kwargs)
     Threads.atomic_add!(cost_tracker, PT.call_cost(msg, model_embedding)) # track costs
     question_emb = msg.content .|> Float32 # no need for Float64
@@ -106,7 +106,7 @@ function aihelp(index::RAG.AbstractChunkIndex,
         index,
         question,
         filtered_candidates;
-        verbose=(verbose > 1), top_n, rerank_kwargs...)
+        verbose = (verbose > 1), top_n, rerank_kwargs...)
 
     ## Build the context
     sources = RAG.sources(index)[reranked_candidates.positions]
@@ -118,8 +118,8 @@ function aihelp(index::RAG.AbstractChunkIndex,
 
     ## LLM call
     msg = aigenerate(rag_template; question,
-        context=join(context, "\n\n"), model=model_chat,
-        verbose=(verbose > 1),
+        context = join(context, "\n\n"), model = model_chat,
+        verbose = (verbose > 1),
         api_kwargs,
         kwargs...)
     last_msg = msg isa PT.AIMessage ? msg : last(msg)
@@ -130,11 +130,11 @@ function aihelp(index::RAG.AbstractChunkIndex,
     ## Always create and save the context to global LAST_CONTEXT (for reference)
     rag_context = RAG.RAGContext(;
         question,
-        answer=last_msg.content,
+        answer = last_msg.content,
         context,
         sources,
         emb_candidates,
-        tag_candidates=nothing,
+        tag_candidates = nothing,
         filtered_candidates,
         reranked_candidates)
     lock(CONV_HISTORY_LOCK) do
@@ -149,7 +149,7 @@ function aihelp(index::RAG.AbstractChunkIndex,
 end
 
 function aihelp(question::AbstractString;
-    kwargs...)
+        kwargs...)
     global MAIN_INDEX
     @assert !isnothing(MAIN_INDEX) "MAIN_INDEX is not loaded. Use `load_index!` to load an index."
     aihelp(MAIN_INDEX, question; kwargs...)
