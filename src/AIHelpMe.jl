@@ -29,10 +29,9 @@ function __init__()
     CONV_HISTORY::Vector{Vector{<:Any}} = Vector{Vector{<:Any}}()
     CONV_HISTORY_LOCK::ReentrantLock = ReentrantLock()
     MAX_HISTORY_LENGTH::Int = 1
-    MAIN_INDEX::Union{Nothing, RAG.AbstractChunkIndex} = nothing
     LAST_CONTEXT::Union{Nothing, RAG.RAGContext} = nothing
     ## Load index
-    # TODO: load_index!()
+    MAIN_INDEX::Union{Nothing, RAG.AbstractChunkIndex} = load_index!()
 end
 
 end

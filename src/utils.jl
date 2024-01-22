@@ -82,13 +82,15 @@ function load_index!(file_path::Union{Nothing, AbstractString} = nothing;
     global MAIN_INDEX
     if !isnothing(file_path)
         @assert endswith(file_path, ".jls") "Provided file path must end with `.jls` (serialized Julia object)."
+        file_str = "from file $(file_path) "
     else
         artifact_path = artifact"juliaextra"
         file_path = joinpath(artifact_path, "docs-index.jls")
+        file_str = " "
     end
     index = deserialize(file_path)
     @assert index isa RAG.AbstractChunkIndex "Provided file path must point to a serialized RAG index (Deserialized type: $(typeof(index)))."
-    verbose && @info "Loaded index in $file_path into MAIN_INDEX"
+    verbose && @info "Loaded index $(file_str)into MAIN_INDEX"
     MAIN_INDEX = index
 
     return index
