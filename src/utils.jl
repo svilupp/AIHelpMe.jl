@@ -46,7 +46,7 @@ It can be useful to see the sources/references used by the AI model to generate 
 
 If you're using `aihelp()` make sure to set `return_context = true` to return the context.
 """
-last_context() = PT.LAST_CONTEXT
+last_context() = LAST_CONTEXT[]
 
 struct ContextPreview
     question::AbstractString
@@ -111,7 +111,7 @@ AIH.load_index!(index)
 function load_index!(index::RAG.AbstractChunkIndex;
         verbose::Bool = true, kwargs...)
     global MAIN_INDEX
-    MAIN_INDEX = index
+    MAIN_INDEX[] = index
     verbose && @info "Loaded index into MAIN_INDEX"
     return index
 end
@@ -127,16 +127,16 @@ function load_index!(file_path::Union{Nothing, AbstractString} = nothing;
     global MAIN_INDEX
     if !isnothing(file_path)
         @assert endswith(file_path, ".jls") "Provided file path must end with `.jls` (serialized Julia object)."
-        file_str = "from file $(file_path) "
+        file_str = " from a file $(file_path) "
     else
         artifact_path = artifact"juliaextra"
         file_path = joinpath(artifact_path, "docs-index.jls")
-        file_str = " "
+        file_str = " from an artifact "
     end
     index = deserialize(file_path)
     @assert index isa RAG.AbstractChunkIndex "Provided file path must point to a serialized RAG index (Deserialized type: $(typeof(index)))."
-    verbose && @info "Loaded index $(file_str)into MAIN_INDEX"
-    MAIN_INDEX = index
+    verbose && @info "Loaded index$(file_str)into MAIN_INDEX"
+    MAIN_INDEX[] = index
 
     return index
 end
@@ -167,7 +167,7 @@ AHM.update_index() |> AHM.load_index!
 index = AHM.update_index(index)
 ```
 """
-function update_index(index::RAG.AbstractChunkIndex = MAIN_INDEX,
+function update_index(index::RAG.AbstractChunkIndex = MAIN_INDEX[],
         modules::Vector{Module} = Base.Docs.modules;
         verbose::Integer = 1,
         separators = ["\n\n", ". ", "\n"], max_length::Int = 256,
