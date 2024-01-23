@@ -48,6 +48,51 @@ If you're using `aihelp()` make sure to set `return_context = true` to return th
 """
 last_context() = PT.LAST_CONTEXT
 
+struct ContextPreview
+    question::AbstractString
+    context::Vector{AbstractString}
+    answer::AbstractString
+end
+
+"""
+    preview_context(context = last_context())
+
+Preview the context of the last `aihelp` call.
+It will pretty-print the question, context and answer in the REPL.
+"""
+function preview_context(context = last_context())
+    ContextPreview(context.question, context.context, context.answer)
+end
+
+function Base.show(io::IO, context::ContextPreview)
+    print(io, "\n")
+    printstyled(io, "QUESTION: ", bold = true, color = :magenta)
+    print(io, "\n")
+    printstyled(io, context.question, color = :magenta)
+    print(io, "\n\n")
+    printstyled(io, "CONTEXT: ", bold = true, color = :blue)
+    print(io, "\n")
+    for ctx in context.context
+        parts = split(ctx, "\n")
+        if length(parts) < 3
+            println(io, ctx)
+            continue
+        end
+        printstyled(io, parts[begin], color = :blue)
+        print(io, "\n")
+        body = parts[(begin + 1):(end - 1)]
+        printstyled(io, join(body, "\n"))
+        print(io, "\n")
+        printstyled(io, parts[end], color = :blue)
+        print(io, "\n")
+    end
+    print(io, "\n\n")
+    printstyled(io, "ANSWER: ", bold = true, color = :light_green)
+    print(io, "\n")
+    printstyled(io, context.answer, color = :light_green)
+    print(io, "\n")
+end
+
 """
     load_index!(index::RAG.AbstractChunkIndex;
         verbose::Bool = 1, kwargs...)

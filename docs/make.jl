@@ -8,11 +8,14 @@ makedocs(;
     authors = "J S <49557684+svilupp@users.noreply.github.com> and contributors",
     sitename = "AIHelpMe.jl",
     format = Documenter.HTML(;
-        canonical = "https://svilupp.github.io/AIHelpMe.jl",
+        repolink = "https://github.com/svilupp/AIHelpMe.jl",
+        canonical = "https://svilupp.github.io/PromptingTools.jl",
         edit_link = "main",
         assets = String[],),
     pages = [
         "Home" => "index.md",
+        "F.A.Q" => "faq.md",
+        "Reference" => "reference.md",
     ],)
 
 deploydocs(;
