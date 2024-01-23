@@ -25,7 +25,7 @@ export @aihelp_str, @aihelp!_str
 include("macros.jl")
 
 ## Globals
-const CONV_HISTORY = Vector{Vector{Any}}()
+const CONV_HISTORY = Vector{Vector{PT.AbstractMessage}}()
 const CONV_HISTORY_LOCK = ReentrantLock()
 const MAX_HISTORY_LENGTH = 1
 const LAST_CONTEXT = Ref{Union{Nothing, RAG.RAGContext}}(nothing)
