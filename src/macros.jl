@@ -37,7 +37,7 @@ macro aihelp_str(user_question, flags...)
     model = isempty(flags) ? PT.MODEL_CHAT : only(flags)
     prompt = Meta.parse("\"$(escape_string(user_question))\"")
     quote
-        conv = aihelp($(esc(MAIN_INDEX)), $(esc(prompt));
+        conv = aihelp($(esc(MAIN_INDEX[])), $(esc(prompt));
             model = $(esc(model)),
             return_all = true)
         PT.push_conversation!($(esc(CONV_HISTORY)), conv, $(esc(MAX_HISTORY_LENGTH)))
@@ -84,7 +84,7 @@ aihelp!"Can you create it from named tuple?"gpt4t
 Ensure that the conversation history is not too long to maintain relevancy and coherence in the AI's responses. The history length is managed by `MAX_HISTORY_LENGTH`.
 """
 macro aihelp!_str(user_question, flags...)
-    global CONV_HISTORY, LAST_CONTEXT, MAIN_INDEX
+    global CONV_HISTORY, MAIN_INDEX
     model = isempty(flags) ? PT.MODEL_CHAT : only(flags)
     prompt = Meta.parse("\"$(escape_string(user_question))\"")
     quote

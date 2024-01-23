@@ -24,14 +24,15 @@ include("generation.jl")
 export @aihelp_str, @aihelp!_str
 include("macros.jl")
 
+## Globals
+const CONV_HISTORY = Vector{Vector{PT.AbstractMessage}}()
+const CONV_HISTORY_LOCK = ReentrantLock()
+const MAX_HISTORY_LENGTH = 1
+const LAST_CONTEXT = Ref{Union{Nothing, RAG.RAGContext}}(nothing)
+const MAIN_INDEX = Ref{Union{Nothing, RAG.AbstractChunkIndex}}(nothing)
 function __init__()
-    ## Globals
-    CONV_HISTORY::Vector{Vector{<:Any}} = Vector{Vector{<:Any}}()
-    CONV_HISTORY_LOCK::ReentrantLock = ReentrantLock()
-    MAX_HISTORY_LENGTH::Int = 1
-    LAST_CONTEXT::Union{Nothing, RAG.RAGContext} = nothing
     ## Load index
-    MAIN_INDEX::Union{Nothing, RAG.AbstractChunkIndex} = load_index!()
+    MAIN_INDEX[] = load_index!()
 end
 
 end

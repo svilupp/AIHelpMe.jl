@@ -138,7 +138,7 @@ function aihelp(index::RAG.AbstractChunkIndex,
         filtered_candidates,
         reranked_candidates)
     lock(CONV_HISTORY_LOCK) do
-        PT.LAST_CONTEXT = rag_context
+        LAST_CONTEXT[] = rag_context
     end
 
     if return_context # for evaluation
@@ -151,6 +151,6 @@ end
 function aihelp(question::AbstractString;
         kwargs...)
     global MAIN_INDEX
-    @assert !isnothing(MAIN_INDEX) "MAIN_INDEX is not loaded. Use `load_index!` to load an index."
-    aihelp(MAIN_INDEX, question; kwargs...)
+    @assert !isnothing(MAIN_INDEX[]) "MAIN_INDEX is not loaded. Use `load_index!` to load an index."
+    aihelp(MAIN_INDEX[], question; kwargs...)
 end
