@@ -154,6 +154,10 @@ We expect that any further knowledge base extensions should be at most a few cen
 **Q: How much does it cost to ask a question?**
 A: Each query incurs only a fraction of a cent, depending on the length and chosen model.
 
+**Q: Can I use the Cohere Trial API Key for commercial projects?**
+A: No, a trial key is only for testing purposes. But it takes only a few clicks to switch to Production API. The cost is only $1 per 1000 searches (!!!) and has many other benefits.
+Alternatively, set a different `rerank_strategy` in `aihelp` calls to avoid using Cohere API.
+
 **Q: How accurate are the answers?**
 A: Like any other Generative AI answers, ie, it depends and you should always double-check.
 
