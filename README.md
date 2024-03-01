@@ -20,7 +20,7 @@ To install AIHelpMe, use the Julia package manager and the address of the reposi
 
 ```julia
 using Pkg
-Pkg.add("https://github.com/svilupp/AIHelpMe.jl")
+Pkg.add(url="https://github.com/svilupp/AIHelpMe.jl")
 ```
 
 **Prerequisites:**
