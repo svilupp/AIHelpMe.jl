@@ -1,87 +1,91 @@
 """
-    get_base_url(url::String)
+    get_base_url(url::AbstractString)
 
 Extracts the base url.
 
 # Arguments
 - `url`: The url string of which, the base url needs to be extracted
 """
-function get_base_url(url::String)
+function get_base_url(url::AbstractString)
     parsed_url = URIs.URI(url)
-    base_url = string(parsed_url.scheme, "://", parsed_url.host, parsed_url.port != nothing ? ":" * string(parsed_url.port) : "", parsed_url.path)
+    base_url = string(parsed_url.scheme, "://", parsed_url.host,
+        parsed_url.port != nothing ? ":" * string(parsed_url.port) : "", parsed_url.path)
     return base_url
 end
 
-
 """
-    process_nodes(node, heading_hierarchy::Dict, parsed_text::Vector)
+    process_node!(node, heading_hierarchy::Dict, parsed_text::Vector)
 
-Process the nodes recursively. The function recursively calls itself for every HTML hierarchy, thereby going deeper to retrieve the text.
+Process the node recursively. The function recursively calls itself for every HTML hierarchy, thereby going deeper to retrieve the text.
 
 # Arguments
 - `node`: The root HTML node 
-- `heading_hierarchy`: Dictionary used to store metadata
-- `parsed_text`: Vector of Dicts to store parsed text and metadata
+- `args[1]`: heading_hierarchy - Dict used to store metadata
+- `args[2]`: parsed_text - Vector of Dicts to store parsed text and metadata
+- 
 
 # TODO:
 - Inline code blocks are the ones present inside <p> or <li>. put `` around the inline code blocks. Make changes inside `elseif tag_name == "p" || tag_name == "li"`
 """
-function process_nodes(node, heading_hierarchy::Dict, parsed_text::Vector)
-    # if a node is an html element
-    if typeof(node) <: Gumbo.HTMLElement
+function process_node!(node::Gumbo.HTMLElement, args...)
+    heading_hierarchy = length(args) >= 1 ? args[1] : Dict{String, Any}()
+    parsed_text = length(args) >= 2 ? args[2] : Vector{Dict{String, Any}}()
 
-        tag_name = String(Gumbo.tag(node))
-
-        # process headings. Working: If the current tag is a heading, then, we remove all the smaller headings we stored (for metadata) from  
-        # heading_hierarchy dictionary and add the current heading tag
-        # This is done because, in the heading hierarchy, if we come back to the current heading, 
-        # then there is no need for the smaller ehadings we encountered earlier
-        if startswith(tag_name, "h") && isdigit(last(tag_name))
-            # Clear headings of equal or lower level
-            for k in collect(keys(heading_hierarchy))
-                if Base.parse(Int, last(k)) >= Base.parse(Int, last(tag_name))
-                    delete!(heading_hierarchy, k)
-                end
+    tag_name = String(Gumbo.tag(node))
+    # process headings. Working: If the current tag is a heading, then, we remove all the smaller headings we stored (for metadata) from  
+    # heading_hierarchy dictionary and add the current heading tag
+    # This is done because, in the heading hierarchy, if we come back to the current heading, 
+    # then there is no need to store the smaller headings we encountered earlier
+    if startswith(tag_name, "h") && isdigit(last(tag_name))
+        # Clear headings of equal or lower level
+        for k in collect(keys(heading_hierarchy))
+            if Base.parse(Int, last(k)) >= Base.parse(Int, last(tag_name))
+                delete!(heading_hierarchy, k)
             end
-            heading_hierarchy[tag_name] = strip(Gumbo.text(node))
-            push!(parsed_text, Dict("heading" => strip(Gumbo.text(node)), "metadata" => copy(heading_hierarchy)))
-
-            # if the current tag is <code>, then get it's textual value and store in the dictionary with key as "code"
-        elseif tag_name == "code"
-            # Start a new code block
-            code_content = strip(Gumbo.text(node))
-            push!(parsed_text, Dict("code" => code_content, "metadata" => copy(heading_hierarchy)))
-            return ""
-
-            # if the current tag is <p> or <li>, then store the text of the whole tag 
-        elseif tag_name == "p" || tag_name == "li"
-            return strip(Gumbo.text(node))
-
-            # if it's any other tag, then recursively call process_nodes fucntion to go deeper in HTML hierarchy
-        else
-            # Recursively process child nodes for text content, appending text for code blocks differently
-            for child in AbstractTrees.children(node)
-
-                recieved_text = process_nodes(child, heading_hierarchy, parsed_text)
-
-                if !isempty(strip(recieved_text))
-                    push!(parsed_text, Dict("text" => strip(recieved_text), "metadata" => copy(heading_hierarchy)))
-                end
-            end
-
-
         end
+        heading_hierarchy[tag_name] = strip(Gumbo.text(node))
+        push!(parsed_text,
+            Dict("heading" => strip(Gumbo.text(node)),
+                "metadata" => copy(heading_hierarchy)))
 
-        # if a node is HTMLText, return it's text
-    elseif node isa Gumbo.HTMLText
+        # if the current tag is <code>, then get it's textual value and store in the dictionary with key as "code"
+    elseif tag_name == "code"
+        # Start a new code block
+        code_content = strip(Gumbo.text(node))
+        push!(parsed_text,
+            Dict("code" => code_content, "metadata" => copy(heading_hierarchy)))
+        return ""
+
+        # if the current tag is <p> or <li>, then store the text of the whole tag 
+    elseif tag_name == "p" || tag_name == "li"
         return strip(Gumbo.text(node))
-    end
 
+        # if it's any other tag, then recursively call process_node function to go deeper in HTML hierarchy
+    else
+        # Recursively process the child node for text content, appending text for code blocks differently
+        for child in AbstractTrees.children(node)
+            recieved_text = process_node!(child, heading_hierarchy, parsed_text)
+
+            if !isempty(strip(recieved_text))
+                push!(parsed_text,
+                    Dict("text" => strip(recieved_text),
+                        "metadata" => copy(heading_hierarchy)))
+            end
+        end
+    end
     return ""
 end
 
 """
-    parse_url(url::String)
+multiple dispatch for process_node() when node is of type Gumbo.HTMLText
+"""
+function process_node!(
+        node::Gumbo.HTMLText, args...)
+    return strip(Gumbo.text(node))
+end
+
+"""
+    parse_url(url::AbstractString)
 
 Initiator and main function to parse HTML from url
 
@@ -131,22 +135,21 @@ Any[
 - Input should be Vector of URL strings to parse multiple URLs
 - Use multithreading to simultaneously parse multiple URLs
 """
-
-
-function parse_url(url::String)
-
+function parse_url(url::AbstractString)
     base_url = get_base_url(url)
     r = HTTP.get(base_url)
     r_parsed = parsehtml(String(r.body))
     # Getting title of the document 
-    title = [el for el in AbstractTrees.PreOrderDFS(r_parsed.root)
-             if el isa HTMLElement && tag(el) == :title] .|> text |> Base.Fix2(join, " / ")
+    # title = [el
+    #          for el in AbstractTrees.PreOrderDFS(r_parsed.root)
+    #          if el isa HTMLElement && tag(el) == :title] .|> text |> Base.Fix2(join, " / ")
 
-    content_ = [el for el in AbstractTrees.PreOrderDFS(r_parsed.root)
+    content_ = [el
+                for el in AbstractTrees.PreOrderDFS(r_parsed.root)
                 if el isa HTMLElement && getattr(el, "class", nothing) == "content"] |> only
 
-    parsed_text = []
-    heading_hierarchy = Dict()
-    process_nodes(content_, heading_hierarchy, parsed_text)
+    parsed_text = Vector{Dict{String, Any}}()
+    heading_hierarchy = Dict{String, Any}()
+    process_node!(content_, heading_hierarchy, parsed_text)
     return parsed_text
 end
