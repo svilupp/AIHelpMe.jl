@@ -84,12 +84,18 @@ Process code snippets. If the current node is a code block, return the text insi
 - node: The root HTML node
 """
 function process_code(node::Gumbo.HTMLElement)
-    ## TODO: the function implicitly assumes julia, can be easily improved by checking the code CLASS attribute. 
     is_code_block = false
 
     # Start a new code block
-    if (Gumbo.tag(node.parent) == :pre)
-        code_content = "```julia " * strip(Gumbo.text(node)) * "```"
+    if Gumbo.tag(node.parent) == :pre
+        class_name = getattr(node, "class", "")
+        if occursin("language", class_name)
+            match_result = match(r"language-(\S+)", class_name)
+            language = match_result !== nothing ? match_result.captures[1] : "julia"
+            code_content = "```$language " * strip(Gumbo.text(node)) * "```"
+        else
+            code_content = "```julia " * strip(Gumbo.text(node)) * "```"
+        end
         is_code_block = true
     else
         code_content = "`" * strip(Gumbo.text(node)) * "`"
@@ -122,8 +128,8 @@ function process_generic_node!(node::Gumbo.HTMLElement,
     child_new::Bool=true,
     prev_text_buffer::IO=IOBuffer(write=true))
 
-    prev_text = String(take!(prev_text_buffer))
-    print(prev_text_buffer, prev_text)
+    seekstart(prev_text_buffer)
+    prev_text = read(prev_text_buffer, String)
 
     tag_name = Gumbo.tag(node)
     text_to_insert = ""
@@ -146,7 +152,7 @@ function process_generic_node!(node::Gumbo.HTMLElement,
         if is_text_inserted
             text_to_insert = ""
             prev_text = ""
-            s = String(take!(prev_text_buffer))
+            take!(prev_text_buffer)
         end
 
         # if is_code_block is true, means the received_text is a code block, hence needs to be put as a separate entry in parsed_blocks
@@ -177,7 +183,8 @@ function process_generic_node!(node::Gumbo.HTMLElement,
 
     end
 
-    # if child_new is false, this means new child (new entry in parsed_blocks) should not be created, hence, return the text.  
+    # if child_new is false, this means new child (new entry in parsed_blocks) should not be created, hence, 
+    # reset the buffer return the text.  
     if (child_new == false)
         take!(prev_text_buffer)
         print(prev_text_buffer, prev_text)
@@ -222,8 +229,8 @@ function process_docstring!(node::Gumbo.HTMLElement,
     child_new::Bool=true,
     prev_text_buffer::IO=IOBuffer(write=true))
 
-    prev_text = String(take!(prev_text_buffer))
-    print(prev_text_buffer, prev_text)
+    seekstart(prev_text_buffer)
+    prev_text = read(prev_text_buffer, String)
     is_code_block = false
     is_text_inserted = false
 
@@ -281,7 +288,6 @@ function process_node!(node::Gumbo.HTMLElement,
     if startswith(string(tag_name), "h") && isdigit(last(string(tag_name)))
         return process_headings!(node, heading_hierarchy, parsed_blocks)
 
-
     elseif tag_name == :code
         return process_code(node)
 
@@ -289,7 +295,6 @@ function process_node!(node::Gumbo.HTMLElement,
         return process_docstring!(node, heading_hierarchy, parsed_blocks, child_new, prev_text_buffer)
 
     end
-
 
     return process_generic_node!(node, heading_hierarchy, parsed_blocks, child_new, prev_text_buffer)
 
@@ -408,7 +413,7 @@ function parse_url_to_blocks(urls::Vector{<:AbstractString})
     heading_hierarchy = Dict{Symbol,Any}()
 
     for url in urls
-        @info "Finished parsing URL: $url"
+        @info "Parsing URL: $url"
         base_url = get_base_url(url)
         r = HTTP.get(base_url)
         r_parsed = parsehtml(String(r.body))
