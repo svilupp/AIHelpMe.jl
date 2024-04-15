@@ -280,14 +280,14 @@ function process_node!(node::Gumbo.HTMLElement,
     tag_name = Gumbo.tag(node)
     if startswith(string(tag_name), "h") && isdigit(last(string(tag_name)))
         return process_headings!(node, heading_hierarchy, parsed_blocks)
-    end
 
-    if tag_name == :code
+
+    elseif tag_name == :code
         return process_code(node)
-    end
 
-    if tag_name == :article && getattr(node, "class", nothing) == "docstring"
+    elseif tag_name == :article && getattr(node, "class", "") == "docstring"
         return process_docstring!(node, heading_hierarchy, parsed_blocks, child_new, prev_text_buffer)
+
     end
 
 
@@ -408,7 +408,7 @@ function parse_url_to_blocks(urls::Vector{<:AbstractString})
     heading_hierarchy = Dict{Symbol,Any}()
 
     for url in urls
-        @info ">> URL: $url"
+        @info "Finished parsing URL: $url"
         base_url = get_base_url(url)
         r = HTTP.get(base_url)
         r_parsed = parsehtml(String(r.body))
