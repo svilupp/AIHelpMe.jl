@@ -84,31 +84,33 @@ function docextract(modules::Vector{Module} = Base.Docs.modules)
 end
 
 """
-    RAG.build_index(mod::Module; verbose::Int = 1, kwargs...)
+    RT.build_index(mod::Module; verbose::Int = 1, kwargs...)
 
 Build `index` from the documentation of a given module `mod`.
 """
-function RAG.build_index(mod::Module; verbose::Int = 1, kwargs...)
+function RT.build_index(mod::Module; verbose::Int = 1, kwargs...)
+    ## TODO: use default configs
     docs, sources = docextract(mod)
-    RAG.build_index(docs; reader = :docs,
+    RT.build_index(docs; reader = :docs,
         sources,
         extract_metadata = false, verbose,
         index_id = nameof(mod), kwargs...)
 end
 
 """
-    RAG.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::Int = 1,
+    RT.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::Int = 1,
         separators = ["\n\n", ". ", "\n"], max_length::Int = 256,
         kwargs...)
 
 Build index from the documentation of the currently loaded modules.
 If `modules` is empty, it will use all currently loaded modules.
 """
-function RAG.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::Int = 1,
+function RT.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::Int = 1,
         separators = ["\n\n", ". ", "\n"], max_length::Int = 256,
         kwargs...)
+    ## TODO: use default configs
     all_docs, all_sources = docextract(modules)
-    RAG.build_index(all_docs;
+    RT.build_index(all_docs;
         separators,
         max_length,
         reader = :docs,
