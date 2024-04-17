@@ -11,6 +11,7 @@ using PromptingTools.Experimental.RAGTools
 using PromptingTools.Experimental.RAGTools: AbstractRAGConfig, getpropertynested,
                                             setpropertynested, merge_kwargs_nested
 using SHA: sha256, bytes2hex
+using Logging, PrecompileTools
 const PT = PromptingTools
 const RT = PromptingTools.Experimental.RAGTools
 
@@ -37,6 +38,11 @@ function __init__()
     update_pipeline!(:bronze)
     ## Load index
     MAIN_INDEX[] = load_index!(:julia)
+end
+
+# Enable precompilation to reduce start time, disabled logging
+with_logger(NullLogger()) do
+    @compile_workload include("precompilation.jl")
 end
 
 end

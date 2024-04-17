@@ -47,8 +47,8 @@ function load_index!(packs::Vector{Symbol}; verbose::Bool = true, kwargs...)
     @info config_key
     indices = []
     for pack in packs
-        artifact_path = @knowledge_pack pack config_key
-        index = load_index_hdf5(joinpath(artifact_path, "pack.hdf5"))
+        artifact_path = @artifact_str("$(pack)__$(config_key)")
+        index = load_index_hdf5(joinpath(artifact_path, "pack.hdf5"); verbose = false)
         push!(indices, index)
     end
     # TODO: dedupe the index

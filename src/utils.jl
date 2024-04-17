@@ -49,43 +49,12 @@ If you're using `aihelp()` make sure to set `return_all = true` to return the RA
 """
 last_result() = LAST_RESULT[]
 
-"Wrapper macro to interpolate artifact name for LazyArtifacts"
-macro knowledge_pack(a, b)
-    quote
-        @artifact_str(string($(esc((a))), "__", $(esc(b))))
-    end
-end
-
-"Finds the knowledge pack file in the given path (\"pack.jld2\")."
-function find_index_jld2(path::AbstractString)
-    ## Looks for a file "pack.jld2" somewhere in the path (or nested)
-    dir = filter(x -> any(==("pack.jld2"), x[3]), collect(walkdir(path))) |> only
-    return joinpath(dir[1], "pack.jld2")
-end
-
-"Hacky function to load a JLD2 file into a ChunkIndex object. Only bare-bone ChunkIndex is supported right now."
-function load_index_jld2(path::AbstractString)
-    @assert isfile(path) "Index path does not exist! (Provided: $path)"
-
-    @info "Loading index from $path"
-    temp = jldopen(path)
-    @assert temp["_type"]==:ChunkIndex "Unknown index type detected! Type: $(temp["_type"])"
-    @assert all(x -> haskey(temp, x), ["chunks", "sources", "embeddings"]) "Index is missing fields! (Required: chunks, sources, embeddings)"
-    embeddings = convert(Matrix{eltype(temp["embeddings"])}, temp["embeddings"])
-    index = RT.ChunkIndex(; id = gensym("index"), chunks = temp["chunks"],
-        sources = temp["sources"], embeddings)
-    return index
-end
-
 "Hacky function to load a HDF5 file into a ChunkIndex object. Only bare-bone ChunkIndex is supported right now."
-function load_index_hdf5(path::AbstractString)
+function load_index_hdf5(path::AbstractString; verbose::Bool = true)
     @assert isfile(path) "Index path does not exist! (Provided: $path)"
 
-    @info "Loading index from $path"
+    verbose && @info "Loading index from $path"
     fid = h5open(path, "r")
-    ## if haskey(fid, "type")
-    ##     @assert fid["type"]=="ChunkIndex" "Unknown index type detected! Type: $(fid["type"])"
-    ## end
     @assert all(x -> haskey(fid, x), ["chunks", "sources", "embeddings"]) "Index is missing fields! (Required: chunks, sources, embeddings)"
     index = RT.ChunkIndex(; id = gensym("index"), chunks = read(fid["chunks"]),
         sources = read(fid["sources"]), embeddings = read(fid["embeddings"]))

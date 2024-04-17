@@ -23,6 +23,10 @@ const LOADED_CONFIG_KEY = ""  # get the current config key
 A dictionary of RAG configurations, keyed by a unique symbol (eg, `bronze`).
 Each entry contains a dictionary with keys `:config` and `:kwargs`,
 where `:config` is the RAG configuration object (`AbstractRAGConfig`) and `:kwargs` the NamedTuple of corresponding kwargs.
+
+Available Options:
+- `:bronze`: A simple configuration for a bronze pipeline, using truncated binary embeddings (1024 dimensions) and no re-ranking or refinement.
+- `:gold`: A more complex configuration, using a standard embeddings, full re-ranking and refinement with a web-search.
 """
 const RAG_CONFIGURATIONS = Dict{Symbol, Dict{Symbol, Any}}()
 RAG_CONFIGURATIONS[:bronze] = Dict{Symbol, Any}(
@@ -44,6 +48,28 @@ RAG_CONFIGURATIONS[:bronze] = Dict{Symbol, Any}(
                 model = MODEL_CHAT),
             embedder_kwargs = (;
                 truncate_dimension = 1024,
+                model = MODEL_EMBEDDING),
+            refiner_kwargs = (;
+                model = MODEL_CHAT))))
+RAG_CONFIGURATIONS[:gold] = Dict{Symbol, Any}(
+    :config => RT.RAGConfig(;
+        retriever = RT.SimpleRetriever(;
+            embedder = RT.BatchEmbedder(), reranker = RT.CohereReranker()),
+        generator = (; refiner = RT.TavilySearchRefiner())),
+    :kwargs => (
+        retriever_kwargs = (;
+            top_k = 100,
+            top_n = 5,
+            rephraser_kwargs = (;
+                model = MODEL_CHAT),
+            embedder_kwargs = (;
+                model = MODEL_EMBEDDING),
+            tagger_kwargs = (;
+                model = MODEL_CHAT)),
+        generator_kwargs = (;
+            answerer_kwargs = (;
+                model = MODEL_CHAT),
+            embedder_kwargs = (;
                 model = MODEL_EMBEDDING),
             refiner_kwargs = (;
                 model = MODEL_CHAT))))
@@ -110,24 +136,3 @@ function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
         @info "Updated RAG pipeline to `:$option` (Configuration key: \"$config_key\")."
     return nothing
 end
-
-## function build_kwargs(
-##         defaults::NamedTuple, config::NamedTuple, model::AbstractString)::NamedTuple
-##     # Build kwargs from help config
-##     cfg_kwargs = build_rag_kwargs(config)
-##     # Update chat model if provided
-##     cfg_kwargs = set_child_key(cfg_kwargs, :model, model,
-##         [:rephraser_kwargs, :tagger_kwargs, :answerer_kwargs, :refiner_kwargs])
-
-##     # Order of merging: defaults-> model+config
-
-##     # Convert NamedTuples to dictionaries for mutability
-##     dict_def = Dict{Symbol, Any}(pairs(defaults))
-##     dict_cfg = Dict{Symbol, Any}(pairs(cfg_kwargs))
-
-##     # Merge dictionaries recursively
-##     merged_dict = merge_dicts_recursive(dict_def, dict_cfg)
-
-##     # Convert the merged dictionary back to a NamedTuple
-##     return (; zip(keys(merged_dict), values(merged_dict))...)
-## end

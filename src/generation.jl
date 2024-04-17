@@ -1,58 +1,66 @@
-"Extract the requested output type from the RAGResult"
-function finalize_output(result, return_all)
-    output = if return_all
-        result
-    elseif haskey(result.conversations, :final_answer) &&
-           !isempty(result.conversations[:final_answer])
-        result.conversations[:final_answer][end]
-    elseif haskey(result.conversations, :answer) &&
-           !isempty(result.conversations[:answer])
-        result.conversations[:answer][end]
-    else
-        throw(ArgumentError("No conversation found in the result"))
-    end
-end
-
 """
-    aihelp(cfg::RT.AbstractRAGConfig, index::RT.AbstractChunkIndex,
+    aihelp([cfg::RT.AbstractRAGConfig, index::RT.AbstractChunkIndex,]
         question::AbstractString;
         verbose::Integer = 1,
         model = MODEL_CHAT,
         return_all::Bool = false)
 
-Generates a response for a given question using a Retrieval-Augmented Generation (RAG) approach over Julia documentation. 
+Generates a response for a given question using a Retrieval-Augmented Generation (RAG) approach over Julia documentation (or any other knowledge pack). 
+
+The answer will depend on the knowledge packs loaded, see `?load_index!`.
+
+You can also use add docstrings from any package you have loaded (or all of them), see `?update_index`.
 
 # Arguments
 - `cfg::AbstractRAGConfig`: The RAG configuration.
 - `index::AbstractChunkIndex`: The chunk index (contains chunked and embedded documentation).
 - `question::AbstractString`: The question to be answered.
 - `model::String`: A chat/generation model used for generating the final response, default is `MODEL_CHAT`.
+- `return_all::Bool`: If `true`, returns a `RAGResult` (provides details of the pipeline + allows pretty-printing with `pprint(result)`).
+- `search::Union{Nothing, Bool}`: If `true`, uses TavilySearchRefiner to add web search results to the context. See `?PromptingTools.Experimental.RAGTools.TavilySearchRefiner` for details.
+- `rerank::Union{Nothing, Bool}`: If `true`, uses CohereReranker to rerank the chunks. See `?PromptingTools.Experimental.RAGTools.CohereReranker` for details.
 
 # Returns
-- If `return_context` is `false`, returns the generated message (`msg`).
-- If `return_context` is `true`, returns a tuple of the generated message (`msg`) and the RAG context (`rag_context`).
+- If `return_all` is `false`, returns the generated message (`msg`).
+- If `return_all` is `true`, returns a `RAGResult` (provides details of the pipeline + allows pretty-printing with `pprint(result)`)
 
 # Notes
-- The function first finds the closest chunks of documentation to the question (via `embeddings`).
-- It reranks the candidates and builds a "context" for the RAG model (ie, information to be provided to the LLM model together with the user question).
-- The `chunks_window_margin` allows including surrounding chunks for richer context, considering they are from the same source.
-- The function currently supports only single `ChunkIndex`. 
-- Function always saves the last context in global `LAST_CONTEXT` for inspection of sources/context regardless of `return_context` value.
+- Function always saves the last context in global `LAST_RESULT` for inspection of sources/context regardless of `return_all` value.
 
 # Examples
 
 Using `aihelp` to get a response for a question:
 ```julia
 index = build_index(...)  # create an index that contains Makie.jl documentation
+
 question = "How to make a barplot in Makie.jl?"
 msg = aihelp(index, question)
+```
 
-# or simply
-msg = aihelp(index; question)
+If you want a pretty-printed answer with highlighted sources, you can use the `return_all` argument and `pprint` utility:
+```julia
+result = aihelp(index, question; return_all = true)
+pprint(result)
+```
+
+If you loaded a knowledge pack, you do not have to provide the index.
+```julia
+# Load Makie knowledge pack
+load_index!(:makie)
+
+question = "How to make a barplot in Makie.jl?"
+msg = aihelp(question)
+```
+
+If you know it's a hard question, you can use the `search` and `rerank` arguments to add web search results to the context and rerank the chunks.
+```julia
+question = "How to make a barplot in Makie.jl?"
+result = aihelp(question; search = true, rerank = true, return_all = true)
+pprint(result) # nicer display with sources for each chunk/sentences (look for square brackets)
 ```
 
 """
-function aihelp(cfg::RT.AbstractRAGConfig, index::RT.AbstractChunkIndex,
+function aihelp(cfg_orig::RT.AbstractRAGConfig, index::RT.AbstractChunkIndex,
         question::AbstractString;
         verbose::Integer = 1,
         model = MODEL_CHAT,
@@ -67,17 +75,38 @@ function aihelp(cfg::RT.AbstractRAGConfig, index::RT.AbstractChunkIndex,
         [:rephraser_kwargs, :tagger_kwargs, :answerer_kwargs, :refiner_kwargs],
         :model, model)
 
+    ## Adjust config as requested
+    cfg = copy(cfg_orig)
+    if search
+        ##set TavilySearchRefiner - Requires TAVILY_API_KEY
+        @assert !isempty(PT.TAVILY_API_KEY) "TAVILY_API_KEY is not set! Cannot use the web search refinement functionality."
+        cfg.generator.refiner = RT.TavilySearchRefiner()
+    end
+    if rerank
+        ## Use Cohere reranking model
+        @assert !isempty(PT.COHERE_API_KEY) "COHERE_API_KEY is not set! Cannot use the reranker functionality."
+        cfg.retriever.reranker = RT.CohereReranker()
+    end
+
+    ## Run the RAG pipeline
     result = airag(cfg, index, question; verbose, return_all = true, kwargs...)
     lock(CONV_HISTORY_LOCK) do
         LAST_RESULT[] = result
     end
-    return finalize_output(result, return_all)
+    return return_all ? result : PT.last_message(result)
+end
+
+function aihelp(index::RT.AbstractChunkIndex, question::AbstractString;
+        kwargs...)
+    global RAG_CONFIG
+    ## default kwargs and models are injected inside of main aihelp function
+    aihelp(RAG_CONFIG[], index, question; kwargs...)
 end
 
 function aihelp(question::AbstractString;
         kwargs...)
     global MAIN_INDEX, RAG_CONFIG
-    @assert !isnothing(MAIN_INDEX[]) "MAIN_INDEX is not loaded. Use `load_index!` to load an index."
+    @assert !isnothing(MAIN_INDEX[]) "MAIN_INDEX is not loaded. Use `load_index!()` to load an index."
     ## default kwargs and models are injected inside of main aihelp function
     aihelp(RAG_CONFIG[], MAIN_INDEX[], question; kwargs...)
 end

@@ -8,5 +8,5 @@ using Aqua
 end
 
 @testset "AIHelpMe.jl" begin
-    # Write your tests here.
+    include("generation.jl")
 end
