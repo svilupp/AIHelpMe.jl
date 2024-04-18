@@ -105,7 +105,7 @@ All setup should take less than 5 minutes!
 5. **Debugging**:
    How did you come up with that answer? Check the "context" provided to the AI model (ie, the documentation snippets that were used to generate the answer):
     ```julia
-    AIHelpMe.pprint(AIHelpMe.LAST_RESULT[])
+    AIHelpMe.pprint(AIHelpMe.last_result())
     # Output: Pretty-printed Question + Context + Answer with color highlights
     ```
 
@@ -115,7 +115,7 @@ All setup should take less than 5 minutes!
     You can change the kwargs of `pprint` to hide the annotations or potentially even show the underlying context (snippets from the documentation):
 
     ```julia
-    AIHelpMe.pprint(AIHelpMe.LAST_RESULT[]; add_context = true, add_scores = false)
+    AIHelpMe.pprint(AIHelpMe.last_result(); add_context = true, add_scores = false)
     ```
 
 ## How to Obtain API Keys

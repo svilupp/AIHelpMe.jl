@@ -29,16 +29,6 @@ function find_new_chunks(old_chunks::AbstractVector{<:AbstractString},
     return new_items
 end
 
-# TODO: maybe remove
-function annotate_chunk_with_source(chunk::AbstractString, src::AbstractString)
-    # parts: module, filepath, line, function
-    parts = split(src, "::")
-    return """
--- Source: Documentation of $(parts[end]) --
-$chunk
--- End of Source --"""
-end
-
 """
     last_result()
 
@@ -56,7 +46,12 @@ function load_index_hdf5(path::AbstractString; verbose::Bool = true)
     verbose && @info "Loading index from $path"
     fid = h5open(path, "r")
     @assert all(x -> haskey(fid, x), ["chunks", "sources", "embeddings"]) "Index is missing fields! (Required: chunks, sources, embeddings)"
-    index = RT.ChunkIndex(; id = gensym("index"), chunks = read(fid["chunks"]),
+    id = if haskey(fid, "id")
+        read(fid["id"]) |> Symbol
+    else
+        gensym("index")
+    end
+    index = RT.ChunkIndex(; id, chunks = read(fid["chunks"]),
         sources = read(fid["sources"]), embeddings = read(fid["embeddings"]))
     close(fid)
     return index

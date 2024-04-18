@@ -7,7 +7,7 @@ using REPL: stripmd
 using HDF5
 
 using PromptingTools
-using PromptingTools: pprint
+using PromptingTools: pprint, TestEchoOpenAISchema
 using PromptingTools.Experimental.RAGTools
 using PromptingTools.Experimental.RAGTools: AbstractRAGConfig, getpropertynested,
                                             setpropertynested, merge_kwargs_nested
@@ -28,6 +28,8 @@ include("preparation.jl")
 ## export load_index!, update_index!
 include("loading.jl")
 
+include("user_preferences.jl")
+
 export aihelp
 include("generation.jl")
 
@@ -43,7 +45,9 @@ end
 
 # Enable precompilation to reduce start time, disabled logging
 with_logger(NullLogger()) do
-    @compile_workload include("precompilation.jl")
+    redirect_stdout(devnull) do
+        @compile_workload include("precompilation.jl")
+    end
 end
 
 end
