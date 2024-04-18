@@ -26,12 +26,18 @@ end
         verbose::Bool = true, kwargs...)
 
 Loads the serialized index in `file_path` into the global variable `MAIN_INDEX`.
+
+Supports `.jls` (serialized Julia object) and `.hdf5` (HDF5.jl) files.
 """
 function load_index!(file_path::AbstractString;
         verbose::Bool = true, kwargs...)
     global MAIN_INDEX
-    @assert endswith(file_path, ".jls") "Provided file path must end with `.jls` (serialized Julia object)."
-    index = deserialize(file_path)
+    @assert endswith(file_path, ".jls")||endswith(file_path, ".hdf5") "Provided file path must end with `.jls` (serialized Julia object) or `.hdf5` (see HDF5.jl)."
+    if endswith(file_path, ".jls")
+        index = deserialize(file_path)
+    elseif endswith(file_path, ".hdf5")
+        index = load_index_hdf5(file_path)
+    end
     @assert index isa RT.AbstractChunkIndex "Provided file path must point to a serialized RAG index (Deserialized type: $(typeof(index)))."
     verbose && @info "Loaded index a file $(file_path) into MAIN_INDEX"
     MAIN_INDEX[] = index
@@ -39,23 +45,41 @@ function load_index!(file_path::AbstractString;
     return index
 end
 
+"""
+    load_index!(packs::Vector{Symbol}; verbose::Bool = true, kwargs...)
+    load_index!(pack::Symbol; verbose::Bool = true, kwargs...)
+
+Loads one or more `packs` into the main index from our pre-built artifacts.
+
+Availability of packs might vary depending on your pipeline configuration (ie, whether we have the correct embeddings for it).
+See `AIHelpMe.ALLOWED_PACKS`
+
+# Example
+```julia
+load_index!(:julia)
+```
+
+Or multiple packs
+```julia
+load_index!([:julia, :makie,:tidier])
+```
+"""
 function load_index!(packs::Vector{Symbol}; verbose::Bool = true, kwargs...)
     global ALLOWED_PACKS, RAG_CONFIG, RAG_CONFIG
     @assert all(x -> x in ALLOWED_PACKS, packs) "Invalid pack(s): $(setdiff(packs, ALLOWED_PACKS)). Allowed packs: $(ALLOWED_PACKS)"
 
     config_key = get_config_key(RAG_CONFIG[], RAG_KWARGS[])
-    @info config_key
-    indices = []
+    indices = RT.ChunkIndex[]
     for pack in packs
         artifact_path = @artifact_str("$(pack)__$(config_key)")
         index = load_index_hdf5(joinpath(artifact_path, "pack.hdf5"); verbose = false)
         push!(indices, index)
     end
     # TODO: dedupe the index
-    index = vcat(indices...)
-    MAIN_INDEX[] = index
+    joined_index = reduce(vcat, indices)
+    MAIN_INDEX[] = joined_index
     verbose && @info "Loaded index from packs: $(join(packs,", ")) into MAIN_INDEX"
-    return index
+    return joined_index
 end
 
 # Default load index
@@ -66,7 +90,7 @@ load_index!() = load_index!(:julia)
     update_index(index::RT.AbstractChunkIndex = MAIN_INDEX,
         modules::Vector{Module} = Base.Docs.modules;
         verbose::Integer = 1,
-        separators = ["\\n\\n", ". ", "\\n"], max_length::Int = 256,
+        separators = ["\\n\\n", ". ", "\\n", " "], max_length::Int = 512,
         model::AbstractString = PT.MODEL_EMBEDDING,
         kwargs...)
         modules::Vector{Module} = Base.Docs.modules;
@@ -91,24 +115,46 @@ index = AHM.update_index(index)
 function update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],
         modules::Vector{Module} = Base.Docs.modules;
         verbose::Integer = 1,
-        separators = ["\n\n", ". ", "\n"], max_length::Int = 256,
-        model::AbstractString = MODEL_EMBEDDING,
         kwargs...)
+    ##
+    global RAG_CONFIG, RAG_KWARGS
     ##
     cost_tracker = Threads.Atomic{Float64}(0.0)
     ## Extract docs
     all_docs, all_sources = docextract(modules)
-    ## Split into chunks
-    output_chunks, output_sources = RT.get_chunks(all_docs;
-        reader = :docs, sources = all_sources, separators, max_length)
+
+    ## Build the new index -- E2E process disabled as it would duplicate a lot the docs we already have
+    ##
+    ##     new_index = RT.build_index(RAG_CONFIG[].indexer, all_docs, ;
+    ##     embedder_kwargs, chunker = TextChunker(), chunker_kwargs,
+    ##     verbose, kwargs...
+    ## )
+
+    ## Chunking
+    chunker_kwargs_ = (; sources = all_sources)
+    chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
+                     merge(kwargs.chunker_kwargs, chunker_kwargs_) : chunker_kwargs_
+    output_chunks, output_sources = RT.get_chunks(
+        RT.TextChunker(), all_docs; chunker_kwargs...,
+        verbose = (verbose > 1))
+
     ## identify new items
     mask = find_new_chunks(index.chunks, output_chunks)
+
     ## Embed new items
-    embeddings = RT.get_embeddings(output_chunks[mask];
+    embedder = RAG_CONFIG[].retriever.embedder
+    embedder_kwargs_ = RT.getpropertynested(
+        RAG_KWARGS[], [:retriever_kwargs], :embedder_kwargs, nothing)
+    embedder_kwargs = haskey(kwargs, :embedder_kwargs) ?
+                      merge(kwargs.embedder_kwargs, embedder_kwargs_) : embedder_kwargs_
+    embeddings = RT.get_embeddings(embedder, output_chunks[mask];
+        embedder_kwargs...,
         verbose = (verbose > 1),
-        cost_tracker,
-        model,
-        kwargs...)
+        cost_tracker)
+    ## match eltype
+    embeddings = convert(typeof(index.embeddings), embeddings)
+
+    ## TODO: add tagging in the future!
 
     ## Update index
     @assert size(embeddings, 2)==sum(mask) "Number of embeddings must match the number of new chunks (mask: $(sum(mask)), embeddings: $(size(embeddings,2)))"

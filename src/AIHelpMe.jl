@@ -7,6 +7,7 @@ using REPL: stripmd
 using HDF5
 
 using PromptingTools
+using PromptingTools: pprint
 using PromptingTools.Experimental.RAGTools
 using PromptingTools.Experimental.RAGTools: AbstractRAGConfig, getpropertynested,
                                             setpropertynested, merge_kwargs_nested
@@ -36,8 +37,8 @@ include("macros.jl")
 function __init__()
     ## Set the active configuration
     update_pipeline!(:bronze)
-    ## Load index
-    MAIN_INDEX[] = load_index!(:julia)
+    ## Load index - auto-loads into MAIN_INDEX
+    load_index!(:julia)
 end
 
 # Enable precompilation to reduce start time, disabled logging

@@ -1,4 +1,8 @@
 using AIHelpMe
+using PromptingTools
+using PromptingTools.Experimental.RAGTools
+const PT = PromptingTools
+const RT = PromptingTools.Experimental.RAGTools
 using Test
 using Aqua
 

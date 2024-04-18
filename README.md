@@ -4,7 +4,8 @@
 
 AIHelpMe harnesses the power of Julia's extensive documentation and advanced AI models to provide tailored coding guidance. By integrating with PromptingTools.jl, it offers a unique, AI-assisted approach to answering your coding queries directly in Julia's environment.
 
-Note: This is only a proof-of-concept. If there is enough interest, we will fine-tune the RAG pipeline for better performance.
+> [!CAUTION]
+> This is only a proof-of-concept. If there is enough interest, we will fine-tune the RAG pipeline for better performance.
 
 ## Features
 
@@ -27,7 +28,8 @@ Pkg.add(url="https://github.com/svilupp/AIHelpMe.jl")
 
 - Julia (version 1.10 or later).
 - Internet connection for API access.
-- OpenAI and Cohere API keys (recommended for optimal performance). See [How to Obtain API Keys](#how-to-obtain-api-keys).
+- OpenAI API keys with available credits. See [How to Obtain API Keys](#how-to-obtain-api-keys).
+- For optimal performance, get also Cohere API key (free for community use) and Tavily API key (free for community use).
 
 All setup should take less than 5 minutes!
 
@@ -79,12 +81,18 @@ All setup should take less than 5 minutes!
 ### OpenAI API Key:
 1. Visit [OpenAI's API portal](https://openai.com/api/).
 2. Sign up and generate an API Key.
-3. Set it as an environment variable or a local preference in PromptingTools.jl. See the [instructions](https://svilupp.github.io/PromptingTools.jl/dev/frequently_asked_questions/#Configuring-the-Environment-Variable-for-API-Key).
+3. Charge some credits ($5 minimum but that will last you for a lost time).
+4. Set it as an environment variable or a local preference in PromptingTools.jl. See the [instructions](https://siml.earth/PromptingTools.jl/dev/frequently_asked_questions#Configuring-the-Environment-Variable-for-API-Key).
 
 ### Cohere API Key:
 1. Sign up at [Cohere's registration page](https://dashboard.cohere.com/welcome/register).
 2. After registering, visit the [API keys section](https://dashboard.cohere.com/api-keys) to obtain a free, rate-limited Trial key.
-3. Set it as an environment variable or a local preference in PromptingTools.jl. See the [instructions](https://svilupp.github.io/PromptingTools.jl/dev/frequently_asked_questions/#Configuring-the-Environment-Variable-for-API-Key).
+3. Set it as an environment variable or a local preference in PromptingTools.jl. See the [instructions](https://siml.earth/PromptingTools.jl/dev/frequently_asked_questions#Configuring-the-Environment-Variable-for-API-Key).
+
+### Tavily API Key:
+1. Sign up at [Tavily](https://app.tavily.com/sign-in).
+2. After registering, generate an API key on the [Overview page](https://app.tavily.com/home). You can get a free, rate-limited Trial key.
+3. Set it as an environment variable or a local preference in PromptingTools.jl. See the [instructions](https://siml.earth/PromptingTools.jl/dev/frequently_asked_questions#Configuring-the-Environment-Variable-for-API-Key).
 
 ## Usage
 
