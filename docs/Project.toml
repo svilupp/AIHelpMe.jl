@@ -1,3 +1,4 @@
 [deps]
 AIHelpMe = "01402e1f-dc83-4213-a98b-42887d758baa"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"

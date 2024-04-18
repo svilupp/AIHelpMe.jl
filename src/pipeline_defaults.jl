@@ -10,7 +10,7 @@ const MAIN_INDEX = Ref{Union{Nothing, RT.AbstractChunkIndex}}(nothing)
 Currently available packs are:
 - `:julia` - Julia documentation, standard library docstrings and a few extras (for Julia v1.10)
 - `:tidier` - Tidier.jl organization documentation (as of 7th April 2024)
-- `:makie` - Makie.jl organization documentation and a few extras (as of 30th March 2024)
+- `:makie` - Makie.jl organization documentation (as of 30th March 2024)
 """
 const ALLOWED_PACKS = [:julia, :tidier, :makie]
 
@@ -34,7 +34,7 @@ where `:config` is the RAG configuration object (`AbstractRAGConfig`) and `:kwar
 
 Available Options:
 - `:bronze`: A simple configuration for a bronze pipeline, using truncated binary embeddings (dimensionality: 1024) and no re-ranking or refinement.
-- `:silver`: A simple configuration for a bronze pipeline, using truncated binary embeddings (dimensionality: 1024) but also enables re-ranking and refinement with a web-search.
+- `:silver`: A simple configuration for a bronze pipeline, using truncated binary embeddings (dimensionality: 1024) but also enables re-ranking step.
 - `:gold`: A more complex configuration, similar to `:simpler`, but using a standard embeddings (dimensionality: 3072, type: Float32). It also leverages re-ranking and refinement with a web-search.
 """
 const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_EMBEDDING
@@ -42,6 +42,7 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
     ## Bronze
     RAG_CONFIGURATIONS[:bronze] = Dict{Symbol, Any}(
         :config => RT.RAGConfig(;
+            indexer = RT.SimpleIndexer(; embedder = RT.BinaryBatchEmbedder()),
             retriever = RT.SimpleRetriever(; embedder = RT.BinaryBatchEmbedder())),
         :kwargs => (
             retriever_kwargs = (;
@@ -62,12 +63,12 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
                     model = MODEL_EMBEDDING),
                 refiner_kwargs = (;
                     model = MODEL_CHAT))))
-    ## Silver - reranking + web-search
+    ## Silver - reranking added
     RAG_CONFIGURATIONS[:silver] = Dict{Symbol, Any}(
         :config => RT.RAGConfig(;
+            indexer = RT.SimpleIndexer(; embedder = RT.BinaryBatchEmbedder()),
             retriever = RT.SimpleRetriever(;
-                embedder = RT.BinaryBatchEmbedder(), reranker = RT.CohereReranker()),
-            generator = RT.SimpleGenerator(; refiner = RT.TavilySearchRefiner())),
+                embedder = RT.BinaryBatchEmbedder(), reranker = RT.CohereReranker())),
         :kwargs => (
             retriever_kwargs = (;
                 top_k = 100,
@@ -90,6 +91,7 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
     ## Gold  - reranking + web-search
     RAG_CONFIGURATIONS[:gold] = Dict{Symbol, Any}(
         :config => RT.RAGConfig(;
+            indexer = RT.SimpleIndexer(; embedder = RT.BatchEmbedder()),
             retriever = RT.SimpleRetriever(;
                 embedder = RT.BatchEmbedder(), reranker = RT.CohereReranker()),
             generator = RT.SimpleGenerator(; refiner = RT.TavilySearchRefiner())),
@@ -146,9 +148,10 @@ update_pipeline!(:bronze; model_chat = "gpt4t")
 You don't need to re-load your index if you just change the chat model.
 
 You can switch the pipeline to Ollama models:
-Note: only 1 Ollama model is supported for embeddings now! You must select "nomic-embed-text" and if you do, set `truncate_dimension=0` (maximum dimension available)
+Note: only 1 Ollama embedding model is supported for embeddings now! You must select "nomic-embed-text" and if you do, set `truncate_dimension=0` (maximum dimension available)
+
 ```julia
-update_pipeline!(:bronze; model_chat = "mistral:7b-instruct-v0.2-q4_K_M",model_embedding="nomic-embed-text, truncate_dimension=0)
+update_pipeline!(:bronze; model_chat = "mistral:7b-instruct-v0.2-q4_K_M",model_embedding="nomic-embed-text", truncate_dimension=0)
 
 # You must download the corresponding knowledge packs via `load_index!` (because you changed the embedding model)
 load_index!(:julia) # or whichever other packs you want!
@@ -160,6 +163,13 @@ function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
     global RAG_CONFIGURATIONS, RAG_CONFIG, RAG_KWARGS, MODEL_CHAT, MODEL_EMBEDDING, LOADED_CONFIG_KEY
     @assert haskey(RAG_CONFIGURATIONS, option) "Invalid option: $option. Select one of: $(join(keys(RAG_CONFIGURATIONS),", "))"
     @assert truncate_dimension in [nothing, 0, 1024, 3072] "Invalid truncate_dimension: $(truncate_dimension). Supported: 0, 1024, 3072. See the available artifacts."
+    ## Model-specific checks, they do not fail but at least warn
+    if model_embedding == "nomic-embed-text" && truncate_dimension == 0
+        @warn "Invalid configuration for knowledge packs! For `nomic-embed-text`, truncate_dimension must be 0. See the available artifacts."
+    end
+    if model_embedding == "text-embedding-3-large" && truncate_dimension in [1024, 0]
+        @warn "Invalid configuration for knowledge packs! For `text-embedding-3-large`, truncate_dimension must be 0 or 1024. See the available artifacts."
+    end
 
     ## Update model references
     MODEL_CHAT = model_chat

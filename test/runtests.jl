@@ -3,6 +3,7 @@ using PromptingTools
 using PromptingTools.Experimental.RAGTools
 const PT = PromptingTools
 const RT = PromptingTools.Experimental.RAGTools
+using HDF5, Serialization
 using Test
 using Aqua
 
@@ -12,5 +13,8 @@ using Aqua
 end
 
 @testset "AIHelpMe.jl" begin
+    include("utils.jl")
+    include("preparation.jl")
+    include("pipeline_defaults.jl")
     include("generation.jl")
 end

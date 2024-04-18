@@ -1,19 +1,34 @@
-# AIHelpMe: "AI-Enhanced Coding Assistance for Julia"
+# Introduction
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://svilupp.github.io/AIHelpMe.jl/stable/) [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://svilupp.github.io/AIHelpMe.jl/dev/) [![Build Status](https://github.com/svilupp/AIHelpMe.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/svilupp/AIHelpMe.jl/actions/workflows/CI.yml?query=branch%3Amain) [![Coverage](https://codecov.io/gh/svilupp/AIHelpMe.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/svilupp/AIHelpMe.jl) [![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
+Welcome to AIHelpMe.jl, your go-to for getting answers to your Julia coding questions.
 
-AIHelpMe harnesses the power of Julia's extensive documentation and advanced AI models to provide tailored coding guidance. By integrating with PromptingTools.jl, it offers a unique, AI-assisted approach to answering your coding queries directly in Julia's environment.
+AIhelpMe is a simple wrapper around RAG functionality in PromptingTools.
 
-> [!CAUTION]
-> This is only a proof-of-concept. If there is enough interest, we will fine-tune the RAG pipeline for better performance.
+It provides two extras:
 
-## Features
+- (hopefully), a simpler interface to handle RAG configurations (there are thousands of possible configurations)
+- pre-computed embeddings for key “knowledge” in the Julia ecosystem (we refer to them as “knowledge packs”)
 
-- **AI-Powered Assistance**: Get context-aware answers to your coding questions.
-- **Easy-to-Use Interface**: Simple function and macro to input your questions.
-- **Flexible Querying**: Use different AI models for varied insights and performance versus cost trade-offs.
-- **Cost-Effective**: Download pre-embedded documentation to save on API calls.
-- **Uniquely Tailored**: Leverage the currently loaded documentation, regardless of whether it's private or public.
+> [!WARNING]
+> Note that this is only a preliminary release and the RAG pipeline has NOT been optimized.
+
+## What is RAG?
+RAG, short for Retrieval-Augmented Generation, is a way to reduce hallucinations of your model and improve its response by directly providing the relevant source knowledge into the prompt.
+
+See more details [here](https://aws.amazon.com/what-is/retrieval-augmented-generation).
+
+## What is a knowledge pack?
+A knowledge pack is a collection of pre-computed embeddings for a specific set of documents. The documents are typically related to a specific topic or area of interest or package ecosystem (eg, Makie.jl documentation site with all its packages). The embeddings are computed using a specific embedding model and are used to improve the quality of the generated responses by providing the relevant source knowledge directly to the prompt.
+
+We currently provide 3 knowledge packs:
+- `:julia` - Julia documentation, standard library docstrings and a few extras
+- `:tidier` - Tidier.jl organization documentation
+- `:makie` - Makie.jl organization documentation
+
+You can load all of them with `AIHelpMe.load_index!([:julia, :tidier, :makie])`.
+
+It is EXTREMELY IMPORTANT to use the SAME embedding model in `aihelp()` queries as the one used to build the knowledge pack.
+That is why you have to be careful changing the RAG pipeline configuration - always use the dedicated utility `update_pipeline!()`.
 
 ## Installation
 
@@ -162,26 +177,6 @@ aihelp"What does this error mean? $err" # Note the $err to interpolate the stack
 AIMessage("The error message "MethodError: no method matching f(::Int8)" means that there is no method defined for function `f` that accepts an argument of type `Int8`. The error message also provides the closest candidate methods that were found, which are `f(::Any, !Matched::Any)` and `f(!Matched::Int64)` in the specified file `embed_all.jl` at lines 45 and 61, respectively.")
 ```
 
-## Extending the Knowledge Base
-
-The package by default ships with pre-processed embeddings for all Julia standard libraries, DataFrames and PromptingTools.
-Thanks to the amazing Julia Artifacts system, these embeddings are downloaded/cached/loaded every time the package starts.
-
-Note: The below functions are not yet exported. Prefix them with `AIHelpMe.` to use them.
-
-### Building and Updating Indexes
-AIHelpMe allows users to enhance its capabilities by embedding documentation from any loaded Julia module. 
-Utilize `new_index = build_index(module)` to create an index for a specific module (or a vector of modules). 
-
-To update an existing index, including newly imported packages, use `new index = update_index(module)` or simply `update_index()` to include all unrecognized modules. We will add and embed only the new documentation to avoid unnecessary duplication and cost.
-
-### Managing Indexes
-Once an index is built or updated, you can choose to serialize it for later use or set it as the primary index. 
-
-To use your newly created index as the main source for queries, execute `load_index!(new_index)`. Alternatively, load a pre-existing index from a file using `load_index!(file_path)`. 
-
-The main index for queries is held in the global variable `AIHelpMe.MAIN_INDEX`.
-
 ## How it works
 
 AIHelpMe leverages [PromptingTools.jl](https://github.com/svilupp/PromptingTools.jl) to communicate with the AI models.
@@ -191,31 +186,11 @@ We apply a Retrieval Augment Generation (RAG) pattern, ie,
 - when a question is asked, we look up the most relevant documentation snippets
 - we feed the question and the documentation snippets to the AI model
 - the AI model generates the answer
+- (sometimes) we run a web search to find additional relevant information and ask the model to refine the answer
 
 This ensures that the answers are not only based on general AI knowledge but are also specifically tailored to Julia's ecosystem and best practices.
 
-## FAQs
-
-**Q: Is it expensive to embed all my documentation?**
-A: No, embedding a comprehensive set of documentation is surprisingly cost-effective. Embedding around 170 modules, including all standard libraries and more, costs approximately 8 cents and takes less than 30 seconds. 
-To save you money, we have already embedded the Julia standard libraries and made them available for download via Artifacts. 
-We expect that any further knowledge base extensions should be at most a few cents (see [Extending the Knowledge Base](#extending-the-knowledge-base)).
-
-**Q: How much does it cost to ask a question?**
-A: Each query incurs only a fraction of a cent, depending on the length and chosen model.
-
-**Q: Can I use the Cohere Trial API Key for commercial projects?**
-A: No, a trial key is only for testing purposes. But it takes only a few clicks to switch to Production API. The cost is only $1 per 1000 searches (!!!) and has many other benefits.
-Alternatively, set a different `rerank_strategy` in `aihelp` calls to avoid using Cohere API.
-
-**Q: How accurate are the answers?**
-A: Like any other Generative AI answers, ie, it depends and you should always double-check.
-
-**Q: Can I use it without the internet?**
-A: Not at the moment. It might be possible in the future, as PromptingTools.jl supports local LLMs.
-
-**Q: Why do we need Cohere API Key?**
-A: Cohere's API is used to re-rank the best matching snippets from the documentation. It's free to use in limited quantities (ie, ~thousand requests per month), which should be enough for most users. Re-ranking improves the quality and accuracy of the answers.
+Visit an introduction to RAG tools in [PromptingTools.jl](https://svilupp.github.io/PromptingTools.jl/dev/extra_tools/rag_tools_intro).
 
 ## Future Directions
 
