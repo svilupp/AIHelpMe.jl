@@ -53,3 +53,51 @@ lazy = true
     [["makie__textembedding3large-1024-Bool".download]]
     sha256 = "135f36effc0d29ed20e9bc877f727e4d9d8366bcae4bf4d13f998529d1091324"
     url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240330__textembedding3large-1024-Bool__v1.0.tar.gz"
+
+["julia__nomicembedtext-0-Float32"]
+git-tree-sha1 = "cb1fc89392710d729cb031701353fcf58c901fc4"
+lazy = true
+
+    [["julia__nomicembedtext-0-Float32".download]]
+    sha256 = "5bb4507db346903cc8defc395939a2b18ce035e003e1e9ab12104228d6551303"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/julia__v1.10.2__nomicembedtext-0-Float32__v1.0.tar.gz"
+
+["julia__nomicembedtext-0-Bool"]
+git-tree-sha1 = "8ef454a8c6990ce8baa0634196826600622c5364"
+lazy = true
+
+    [["julia__nomicembedtext-0-Bool".download]]
+    sha256 = "e0a65288bc868fc0f1a91622317b3f25d0a2bf77f68c049c42e2b90d2ac3e01d"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/julia__v1.10.2__nomicembedtext-0-Bool__v1.0.tar.gz"
+
+["tidier__nomicembedtext-0-Float32"]
+git-tree-sha1 = "0bb2e5865246462990d440dc8f75237e31ebfb64"
+lazy = true
+
+    [["tidier__nomicembedtext-0-Float32".download]]
+    sha256 = "6ff921c514faeb2b8ab0250ba28bc5ba5f7007a4f2c77cb9e280ee4ddb7fafee"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240407__nomicembedtext-0-Float32__v1.0.tar.gz"
+
+["tidier__nomicembedtext-0-Bool"]
+git-tree-sha1 = "fc6b3eeca2e11d459ba5aaebfcc10f65fdc07102"
+lazy = true
+
+    [["tidier__nomicembedtext-0-Bool".download]]
+    sha256 = "b3f604f382a7191c657c77017e9d3e455e6eacc1fa6a59e6202e8a83498d4269"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240407__nomicembedtext-1024-Bool__v1.0.tar.gz"
+
+["makie__nomicembedtext-0-Float32"]
+git-tree-sha1 = "4b0ff243278fcbda1491db94e4082c1050a44d80"
+lazy = true
+
+    [["makie__nomicembedtext-0-Float32".download]]
+    sha256 = "6325497b90a61b4200250d5075d0f6d8ec2453a53f7d18fbcfc6187d3eea2018"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240330__nomicembedtext-0-Float32__v1.0.tar.gz"
+
+["makie__nomicembedtext-0-Bool"]
+git-tree-sha1 = "723274bf0cb72d39efbc7b07a1de9e02eccf5ba6"
+lazy = true
+
+    [["makie__nomicembedtext-0-Bool".download]]
+    sha256 = "c62a0d3d27fc417498d2449b59c58d18dba34164094a08206b51e88d05fa7fa7"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240330__nomicembedtext-1024-Bool__v1.0.tar.gz"

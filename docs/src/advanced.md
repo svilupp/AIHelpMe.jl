@@ -10,7 +10,15 @@ You must set `model_embedding="nomic-embed-text"` and `truncate_dimension=0` (ma
 Example:
 
 ```julia
+using PromptingTools: register_model!, OllamaSchema
+using AIHelpMe: update_pipeline!, load_index!
+
+# register a chat model in Ollama schema
+register_model!(; name="mistral:7b-instruct-v0.2-q4_K_M",schema=OllamaSchema())
+
+# you can use whichever chat model you like!
 update_pipeline!(:bronze; model_chat = "mistral:7b-instruct-v0.2-q4_K_M",model_embedding="nomic-embed-text", truncate_dimension=0)
+
 
 # You must download the corresponding knowledge packs via `load_index!` (because you changed the embedding model)
 load_index!(:julia) # or whichever other packs you want!
@@ -23,7 +31,9 @@ aihelp"How to create a named tuple?"
 ```
 
 ```plaintext
-
+[ Info: Done with RAG. Total cost: \$0.0
+PromptingTools.AIMessage("In Julia, you can create a named tuple by enclosing key-value pairs in parentheses with the keys as symbols preceded by a colon, separated by commas. For example:
+...continues
 ```
 
 
@@ -45,4 +55,4 @@ Once an index is built or updated, you can choose to serialize it for later use 
 
 To use your newly created index as the main source for queries, execute `load_index!(new_index)`. Alternatively, load a pre-existing index from a file using `load_index!(file_path)`. 
 
-The main index for queries is held in the global variable `AIHelpMe.MAIN_INDEX`.
+The main index for queries is held in the global variable `AIHelpMe.MAIN_INDEX[]`.

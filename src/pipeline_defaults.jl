@@ -164,10 +164,10 @@ function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
     @assert haskey(RAG_CONFIGURATIONS, option) "Invalid option: $option. Select one of: $(join(keys(RAG_CONFIGURATIONS),", "))"
     @assert truncate_dimension in [nothing, 0, 1024, 3072] "Invalid truncate_dimension: $(truncate_dimension). Supported: 0, 1024, 3072. See the available artifacts."
     ## Model-specific checks, they do not fail but at least warn
-    if model_embedding == "nomic-embed-text" && truncate_dimension == 0
+    if model_embedding == "nomic-embed-text" && truncate_dimension != 0
         @warn "Invalid configuration for knowledge packs! For `nomic-embed-text`, truncate_dimension must be 0. See the available artifacts."
     end
-    if model_embedding == "text-embedding-3-large" && truncate_dimension in [1024, 0]
+    if model_embedding == "text-embedding-3-large" && truncate_dimension ∉ [1024, 0]
         @warn "Invalid configuration for knowledge packs! For `text-embedding-3-large`, truncate_dimension must be 0 or 1024. See the available artifacts."
     end
 
