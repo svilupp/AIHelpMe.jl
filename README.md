@@ -42,9 +42,42 @@ All setup should take less than 5 minutes!
     ```
 
     ```plaintext
-   [ Info: Done generating response. Total cost: $0.001
+   [ Info: Done generating response. Total cost: $0.015
    AIMessage("To implement quicksort in Julia, you can use the `sort` function with the `alg=QuickSort` argument.")
    ```
+
+   Note: As a default, we load only the Julia documentation and docstrings for standard libraries. The default model used is GPT-4 Turbo.
+
+   You can pretty-print the answer using `pprint` if you return the full RAGResult (`return_all=true`):
+   ```julia
+   using AIHelpMe: pprint
+
+   result = aihelp("How do I implement quicksort in Julia?", return_all=true)
+   pprint(result)
+   ```
+
+   ```plaintext
+   --------------------
+   QUESTION(s)
+   --------------------
+   - How do I implement quicksort in Julia?
+
+   --------------------
+   ANSWER
+   --------------------
+   To implement quicksort in Julia, you can use the [5,1.0]`sort`[1,1.0] function with the [1,1.0]`alg=QuickSort`[1,1.0] argument.[2,1.0]
+
+   --------------------
+   SOURCES
+   --------------------
+   1. https://docs.julialang.org/en/v1.10.2/base/sort/index.html::Sorting and Related Functions/Sorting Functions
+   2. https://docs.julialang.org/en/v1.10.2/base/sort/index.html::Sorting and Related Functions/Sorting Functions
+   3. https://docs.julialang.org/en/v1.10.2/base/sort/index.html::Sorting and Related Functions/Sorting Algorithms
+   4. SortingAlgorithms::/README.md::0::SortingAlgorithms
+   5. AIHelpMe::/README.md::0::AIHelpMe
+   ```
+
+   Note: You can see the model cheated because it can see this very documentation...
 
 2. **`aihelp` Macro**:
    ```julia
@@ -58,11 +91,12 @@ All setup should take less than 5 minutes!
    Note: The `!` is required for follow-up questions.
    `aihelp!` does not add new context/more information - to do that, you need to ask a new question.
 
-4. **Pick stronger models**:
-    Eg, "gpt4t" is an alias for GPT-4 Turbo:
+4. **Pick faster models**:
+    Eg, for simple questions, GPT 3.5 might be enough, so use the alias "gpt3t":
     ```julia
-    aihelp"Elaborate on the `sort` function and quicksort algorithm"gpt4t
+    aihelp"Elaborate on the `sort` function and quicksort algorithm"gpt3t
     ```
+
     ```plaintext
     [ Info: Done generating response. Total cost: $0.002 -->
     AIMessage("The `sort` function in programming languages, including Julia.... continues for a while!
@@ -71,9 +105,17 @@ All setup should take less than 5 minutes!
 5. **Debugging**:
    How did you come up with that answer? Check the "context" provided to the AI model (ie, the documentation snippets that were used to generate the answer):
     ```julia
-    const AHM = AIHelpMe
-    AHM.preview_context()
+    AIHelpMe.pprint(AIHelpMe.LAST_RESULT[])
     # Output: Pretty-printed Question + Context + Answer with color highlights
+    ```
+
+    The color highlights show you which words were NOT supported by the provided context (magenta = completely new, blue = partially new). 
+    It's a quite and intuitive way to see which function names or variables are made up versus which ones were in the context. 
+
+    You can change the kwargs of `pprint` to hide the annotations or potentially even show the underlying context (snippets from the documentation):
+
+    ```julia
+    AIHelpMe.pprint(AIHelpMe.LAST_RESULT[]; add_context = true, add_scores = false)
     ```
 
 ## How to Obtain API Keys
