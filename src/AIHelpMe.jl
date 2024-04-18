@@ -45,7 +45,9 @@ end
 
 # Enable precompilation to reduce start time, disabled logging
 with_logger(NullLogger()) do
-    @compile_workload include("precompilation.jl")
+    redirect_stdout(devnull) do
+        @compile_workload include("precompilation.jl")
+    end
 end
 
 end

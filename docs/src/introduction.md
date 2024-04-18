@@ -57,7 +57,7 @@ All setup should take less than 5 minutes!
     ```
 
     ```plaintext
-   [ Info: Done generating response. Total cost: $0.015
+   [ Info: Done generating response. Total cost: \$0.015
    AIMessage("To implement quicksort in Julia, you can use the `sort` function with the `alg=QuickSort` argument.")
    ```
 
@@ -113,7 +113,7 @@ All setup should take less than 5 minutes!
     ```
 
     ```plaintext
-    [ Info: Done generating response. Total cost: $0.002 -->
+    [ Info: Done generating response. Total cost: \$0.002 -->
     AIMessage("The `sort` function in programming languages, including Julia.... continues for a while!
     ```
 
@@ -138,7 +138,7 @@ All setup should take less than 5 minutes!
 ### OpenAI API Key:
 1. Visit [OpenAI's API portal](https://openai.com/api/).
 2. Sign up and generate an API Key.
-3. Charge some credits ($5 minimum but that will last you for a lost time).
+3. Charge some credits (\$5 minimum but that will last you for a lost time).
 4. Set it as an environment variable or a local preference in PromptingTools.jl. See the [instructions](https://siml.earth/PromptingTools.jl/dev/frequently_asked_questions#Configuring-the-Environment-Variable-for-API-Key).
 
 ### Cohere API Key:
@@ -168,11 +168,11 @@ f(Int8(2))
 # we get: ERROR: MethodError: no method matching f(::Int8)
 
 # Help is here:
-aihelp"What does this error mean? $err" # Note the $err to interpolate the stacktrace
+aihelp"What does this error mean? \$err" # Note the $err to interpolate the stacktrace
 ```
 
 ```plaintext
-[ Info: Done generating response. Total cost: $0.003
+[ Info: Done generating response. Total cost: \$0.003
 
 AIMessage("The error message "MethodError: no method matching f(::Int8)" means that there is no method defined for function `f` that accepts an argument of type `Int8`. The error message also provides the closest candidate methods that were found, which are `f(::Any, !Matched::Any)` and `f(!Matched::Int64)` in the specified file `embed_all.jl` at lines 45 and 61, respectively.")
 ```

@@ -7,8 +7,8 @@ hero:
   tagline: AI-Enhanced Coding Assistance for Julia
   description: AIHelpMe harnesses the power of Julia's extensive documentation and advanced AI models to provide tailored coding guidance. By integrating with PromptingTools.jl, it offers a unique, AI-assisted approach to answering your coding queries directly in Julia's environment.
   image:
-    src: https://img.icons8.com/dusk/64/swiss-army-knife--v1.png
-    alt: Swiss Army Knife
+    src: https://img.icons8.com/dusk/64/message-bot.png
+    alt: Friendly robot
   actions:
     - theme: brand
       text: Introduction
@@ -24,28 +24,22 @@ hero:
       link: https://github.com/svilupp/AIHelpMe.jl
 
 features:
-  - icon: <img width="64" height="64" src="https://img.icons8.com/clouds/100/000000/artificial-intelligence.png" alt="AI Assistance"/>
+  - icon: <img width="64" height="64" src="https://img.icons8.com/dusk/64/online-support--v2.png" alt="AI Assistance"/>
     title: AI-Powered Assistance
-    details: 'Get accurate, context-aware answers to your coding queries using advanced AI models. Enhance your productivity with AI-driven insights tailored to your needs.'
+    details: Get accurate, context-aware answers to your coding queries using advanced AI models. Enhance your productivity with AI-driven insights tailored to your needs.
 
-  - icon: <img width="64" height="64" src="https://img.icons8.com/external-flatart-icons-flat-flatarticons/64/000000/external-interface-user-interface-flatart-icons-flat-flatarticons.png" alt="Ease of Use"/>
+  - icon: <img width="64" height="64" src="https://img.icons8.com/dusk/64/easy.png" alt="easy to use"/>
     title: Easy-to-Use Interface
-    details: 'Quickly input your questions through a simple interface using functions and macros, designed for effortless integration into your Julia environment.'
+    details: Quickly input your questions through a simple interface using functions and macros, designed for effortless integration into your Julia environment.
 
-  - icon: <img width="64" height="64" src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/000000/external-money-business-and-trade-flatart-icons-outline-flatarticons.png" alt="Cost-Effective"/>
+  - icon: <img width="64" height="64" src="https://img.icons8.com/dusk/64/cheap.png" alt="cost-effective"/>
     title: Cost-Effective Solution
-    details: 'Save on API calls with pre-embedded documentation, optimizing costs without sacrificing access to essential tools and information.'
+    details: Save on API calls with pre-embedded documentation, optimizing costs without sacrificing access to essential tools and information.
 
 ---
 ```
 
-
-
-<p style="margin-bottom:2cm"></p>
-
-<div class="vp-doc" style="width:80%; margin:auto">
-
-<h1> Why AIHelpMe.jl? </h1>
+## Why AIHelpMe.jl?
 
 AI models, while powerful, often produce inaccurate or outdated information, known as "hallucinations," particularly with smaller models that lack specific domain knowledge. 
 
@@ -53,8 +47,7 @@ AIHelpMe addresses these challenges by incorporating "knowledge packs" filled wi
 
 With AIHelpMe, you benefit from enhanced AI reliability tailored specifically to Julia’s unique environment, leading to better, more informed coding decisions.
 
-
-<h2> Getting Started </h2>
+## Getting Started
 
 To install AIHelpMe, use the Julia package manager and the address of the repository (it's not yet registered):
 
@@ -84,10 +77,4 @@ pprint(result)
 # you can achieve the same with aihelp"" macros, by simply calling the "last_result"
 pprint(last_result())
 ```
-
-
 For more information, see the [Quick Start Guide](@ref) section.
-
-<br>
-
-</div>
