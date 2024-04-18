@@ -1,5 +1,5 @@
 using AIHelpMe
-using Documenter
+using Documenter, DocumenterVitepress
 
 DocMeta.setdocmeta!(AIHelpMe, :DocTestSetup, :(using AIHelpMe); recursive = true)
 
