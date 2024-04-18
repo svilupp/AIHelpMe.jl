@@ -125,7 +125,8 @@ end
 
 """
     update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
-        model_embedding = MODEL_EMBEDDING)
+        model_embedding = MODEL_EMBEDDING, verbose::Bool = true, truncate_dimension::Union{
+            Nothing, Integer} = nothing)
 
 Updates the default RAG pipeline to one of the pre-configuration options and sets the requested chat and embedding models.
 
@@ -145,18 +146,20 @@ update_pipeline!(:bronze; model_chat = "gpt4t")
 You don't need to re-load your index if you just change the chat model.
 
 You can switch the pipeline to Ollama models:
-Note: only 1 Ollama model is supported for embeddings now! You must select "nomic-embed-text"!
+Note: only 1 Ollama model is supported for embeddings now! You must select "nomic-embed-text" and if you do, set `truncate_dimension=0` (maximum dimension available)
 ```julia
-update_pipeline!(:bronze; model_chat = "mistral:7b-instruct-v0.2-q4_K_M",model_embedding="nomic-embed-text)
+update_pipeline!(:bronze; model_chat = "mistral:7b-instruct-v0.2-q4_K_M",model_embedding="nomic-embed-text, truncate_dimension=0)
 
 # You must download the corresponding knowledge packs via `load_index!` (because you changed the embedding model)
 load_index!(:julia) # or whichever other packs you want!
 ```
 """
 function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
-        model_embedding = MODEL_EMBEDDING, verbose::Bool = true)
+        model_embedding = MODEL_EMBEDDING, verbose::Bool = true, truncate_dimension::Union{
+            Nothing, Integer} = nothing)
     global RAG_CONFIGURATIONS, RAG_CONFIG, RAG_KWARGS, MODEL_CHAT, MODEL_EMBEDDING, LOADED_CONFIG_KEY
     @assert haskey(RAG_CONFIGURATIONS, option) "Invalid option: $option. Select one of: $(join(keys(RAG_CONFIGURATIONS),", "))"
+    @assert truncate_dimension in [nothing, 0, 1024, 3072] "Invalid truncate_dimension: $(truncate_dimension). Supported: 0, 1024, 3072. See the available artifacts."
 
     ## Update model references
     MODEL_CHAT = model_chat
@@ -173,6 +176,11 @@ function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
         kwargs, [:embedder_kwargs],
         :model, model_embedding
     )
+    ## change truncate_embeddings
+    if !isnothing(truncate_dimension)
+        kwargs = setpropertynested(
+            kwargs, [:embedder_kwargs], :truncate_dimension, truncate_dimension)
+    end
 
     ## Set the options
     config_key = get_config_key(config, kwargs)
