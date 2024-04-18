@@ -4,19 +4,29 @@ using Preferences, Serialization, LinearAlgebra, SparseArrays
 using LazyArtifacts
 using Base.Docs: DocStr, MultiDoc, doc, meta
 using REPL: stripmd
+using HDF5
 
 using PromptingTools
+using PromptingTools: pprint
 using PromptingTools.Experimental.RAGTools
+using PromptingTools.Experimental.RAGTools: AbstractRAGConfig, getpropertynested,
+                                            setpropertynested, merge_kwargs_nested
 using SHA: sha256, bytes2hex
+using Logging, PrecompileTools
 const PT = PromptingTools
-const RAG = PromptingTools.Experimental.RAGTools
+const RT = PromptingTools.Experimental.RAGTools
 
-## export load_index!, last_context, update_index!
 ## export remove_pkgdir, annotate_source, find_new_chunks
 include("utils.jl")
 
+## Globals and types are defined in here
+include("pipeline_defaults.jl")
+
 ## export docdata_to_source, docextract, build_index
 include("preparation.jl")
+
+## export load_index!, update_index!
+include("loading.jl")
 
 export aihelp
 include("generation.jl")
@@ -24,15 +34,16 @@ include("generation.jl")
 export @aihelp_str, @aihelp!_str
 include("macros.jl")
 
-## Globals
-const CONV_HISTORY = Vector{Vector{PT.AbstractMessage}}()
-const CONV_HISTORY_LOCK = ReentrantLock()
-const MAX_HISTORY_LENGTH = 1
-const LAST_CONTEXT = Ref{Union{Nothing, RAG.RAGContext}}(nothing)
-const MAIN_INDEX = Ref{Union{Nothing, RAG.AbstractChunkIndex}}(nothing)
 function __init__()
-    ## Load index
-    MAIN_INDEX[] = load_index!()
+    ## Set the active configuration
+    update_pipeline!(:bronze)
+    ## Load index - auto-loads into MAIN_INDEX
+    load_index!(:julia)
+end
+
+# Enable precompilation to reduce start time, disabled logging
+with_logger(NullLogger()) do
+    @compile_workload include("precompilation.jl")
 end
 
 end

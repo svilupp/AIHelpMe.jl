@@ -29,6 +29,7 @@ function find_new_chunks(old_chunks::AbstractVector{<:AbstractString},
     return new_items
 end
 
+# TODO: maybe remove
 function annotate_chunk_with_source(chunk::AbstractString, src::AbstractString)
     # parts: module, filepath, line, function
     parts = split(src, "::")
@@ -39,164 +40,24 @@ $chunk
 end
 
 """
-    last_context()
+    last_result()
 
-Returns the RAGContext from the last `aihelp` call. 
+Returns the RAGResult from the last `aihelp` call. 
 It can be useful to see the sources/references used by the AI model to generate the response.
 
-If you're using `aihelp()` make sure to set `return_context = true` to return the context.
+If you're using `aihelp()` make sure to set `return_all = true` to return the RAGResult.
 """
-last_context() = LAST_CONTEXT[]
+last_result() = LAST_RESULT[]
 
-struct ContextPreview
-    question::AbstractString
-    context::Vector{AbstractString}
-    answer::AbstractString
-end
+"Hacky function to load a HDF5 file into a ChunkIndex object. Only bare-bone ChunkIndex is supported right now."
+function load_index_hdf5(path::AbstractString; verbose::Bool = true)
+    @assert isfile(path) "Index path does not exist! (Provided: $path)"
 
-"""
-    preview_context(context = last_context())
-
-Preview the context of the last `aihelp` call.
-It will pretty-print the question, context and answer in the REPL.
-"""
-function preview_context(context = last_context())
-    ContextPreview(context.question, context.context, context.answer)
-end
-
-function Base.show(io::IO, context::ContextPreview)
-    print(io, "\n")
-    printstyled(io, "QUESTION: ", bold = true, color = :magenta)
-    print(io, "\n")
-    printstyled(io, context.question, color = :magenta)
-    print(io, "\n\n")
-    printstyled(io, "CONTEXT: ", bold = true, color = :blue)
-    print(io, "\n")
-    for ctx in context.context
-        parts = split(ctx, "\n")
-        if length(parts) < 3
-            println(io, ctx)
-            continue
-        end
-        printstyled(io, parts[begin], color = :blue)
-        print(io, "\n")
-        body = parts[(begin + 1):(end - 1)]
-        printstyled(io, join(body, "\n"))
-        print(io, "\n")
-        printstyled(io, parts[end], color = :blue)
-        print(io, "\n")
-    end
-    print(io, "\n\n")
-    printstyled(io, "ANSWER: ", bold = true, color = :light_green)
-    print(io, "\n")
-    printstyled(io, context.answer, color = :light_green)
-    print(io, "\n")
-end
-
-"""
-    load_index!(index::RAG.AbstractChunkIndex;
-        verbose::Bool = 1, kwargs...)
-
-Loads the provided `index` into the global variable `MAIN_INDEX`.
-
-If you don't have an `index` yet, use `build_index` to build one from your currently loaded packages (see `?build_index`)
-
-# Example
-```julia
-# build an index from some modules, keep empty to embed all loaded modules (eg, `build_index()`) 
-index = AIH.build_index([DataFramesMeta, DataFrames, CSV])
-AIH.load_index!(index)
-```
-"""
-function load_index!(index::RAG.AbstractChunkIndex;
-        verbose::Bool = true, kwargs...)
-    global MAIN_INDEX
-    MAIN_INDEX[] = index
-    verbose && @info "Loaded index into MAIN_INDEX"
+    verbose && @info "Loading index from $path"
+    fid = h5open(path, "r")
+    @assert all(x -> haskey(fid, x), ["chunks", "sources", "embeddings"]) "Index is missing fields! (Required: chunks, sources, embeddings)"
+    index = RT.ChunkIndex(; id = gensym("index"), chunks = read(fid["chunks"]),
+        sources = read(fid["sources"]), embeddings = read(fid["embeddings"]))
+    close(fid)
     return index
-end
-"""
-    load_index!(file_path::Union{Nothing, AbstractString} = nothing;
-        verbose::Bool = true, kwargs...)
-
-Loads the serialized index in `file_path` into the global variable `MAIN_INDEX`.
-If not provided, it will download the latest index from the AIHelpMe.jl repository (more cost-efficient).
-"""
-function load_index!(file_path::Union{Nothing, AbstractString} = nothing;
-        verbose::Bool = true, kwargs...)
-    global MAIN_INDEX
-    if !isnothing(file_path)
-        @assert endswith(file_path, ".jls") "Provided file path must end with `.jls` (serialized Julia object)."
-        file_str = " from a file $(file_path) "
-    else
-        artifact_path = artifact"juliaextra"
-        file_path = joinpath(artifact_path, "docs-index.jls")
-        file_str = " from an artifact "
-    end
-    index = deserialize(file_path)
-    @assert index isa RAG.AbstractChunkIndex "Provided file path must point to a serialized RAG index (Deserialized type: $(typeof(index)))."
-    verbose && @info "Loaded index$(file_str)into MAIN_INDEX"
-    MAIN_INDEX[] = index
-
-    return index
-end
-
-"""
-    update_index(index::RAG.AbstractChunkIndex = MAIN_INDEX,
-        modules::Vector{Module} = Base.Docs.modules;
-        verbose::Integer = 1,
-        separators = ["\\n\\n", ". ", "\\n"], max_length::Int = 256,
-        model::AbstractString = PT.MODEL_EMBEDDING,
-        kwargs...)
-        modules::Vector{Module} = Base.Docs.modules;
-        verbose::Bool = true, kwargs...)
-
-Updates the provided `index` with the documentation of the provided `modules`.
-
-Deduplicates against the `index.sources` and embeds only the new document chunks (as measured by a hash).
-
-Returns the updated `index` (new instance).
-
-# Example
-If you loaded some new packages and want to add them to your MAIN_INDEX (or any `index` you use), run:
-```julia
-# To update the MAIN_INDEX
-AHM.update_index() |> AHM.load_index!
-
-# To update an explicit index
-index = AHM.update_index(index)
-```
-"""
-function update_index(index::RAG.AbstractChunkIndex = MAIN_INDEX[],
-        modules::Vector{Module} = Base.Docs.modules;
-        verbose::Integer = 1,
-        separators = ["\n\n", ". ", "\n"], max_length::Int = 256,
-        model::AbstractString = PT.MODEL_EMBEDDING,
-        kwargs...)
-    ##
-    cost_tracker = Threads.Atomic{Float64}(0.0)
-    ## Extract docs
-    all_docs, all_sources = docextract(modules)
-    ## Split into chunks
-    output_chunks, output_sources = RAG.get_chunks(all_docs;
-        reader = :docs, sources = all_sources, separators, max_length)
-    ## identify new items
-    mask = find_new_chunks(index.chunks, output_chunks)
-    ## Embed new items
-    embeddings = RAG.get_embeddings(output_chunks[mask];
-        verbose = (verbose > 1),
-        cost_tracker,
-        model,
-        kwargs...)
-
-    ## Update index
-    @assert size(embeddings, 2)==sum(mask) "Number of embeddings must match the number of new chunks (mask: $(sum(mask)), embeddings: $(size(embeddings,2)))"
-    new_index = ChunkIndex(; index.id,
-        chunks = vcat(index.chunks, output_chunks[mask]),
-        sources = vcat(index.sources, output_sources[mask]),
-        embeddings = hcat(index.embeddings, embeddings),
-        index.tags, index.tags_vocab)
-
-    (verbose > 0) && @info "Index built! (cost: \$$(round(cost_tracker[], digits=3)))"
-    return new_index
 end

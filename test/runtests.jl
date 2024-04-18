@@ -1,4 +1,8 @@
 using AIHelpMe
+using PromptingTools
+using PromptingTools.Experimental.RAGTools
+const PT = PromptingTools
+const RT = PromptingTools.Experimental.RAGTools
 using Test
 using Aqua
 
@@ -8,5 +12,5 @@ using Aqua
 end
 
 @testset "AIHelpMe.jl" begin
-    # Write your tests here.
+    include("generation.jl")
 end

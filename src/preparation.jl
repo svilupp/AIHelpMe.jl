@@ -84,36 +84,54 @@ function docextract(modules::Vector{Module} = Base.Docs.modules)
 end
 
 """
-    RAG.build_index(mod::Module; verbose::Int = 1, kwargs...)
+    RT.build_index(mod::Module; verbose::Int = 1, kwargs...)
 
 Build `index` from the documentation of a given module `mod`.
 """
-function RAG.build_index(mod::Module; verbose::Int = 1, kwargs...)
-    docs, sources = docextract(mod)
-    RAG.build_index(docs; reader = :docs,
-        sources,
-        extract_metadata = false, verbose,
-        index_id = nameof(mod), kwargs...)
+function RT.build_index(mod::Module; verbose::Int = 1, kwargs...)
+    global RAG_CONFIG, RAG_KWARGS
+
+    ## Extract docstrings
+    all_docs, all_sources = docextract(mod)
+
+    ## Extract current configuration
+    chunker_kwargs_ = (; sources = all_sources)
+    chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
+                     merge(kwargs.chunker_kwargs, chunker_kwargs_) : chunker_kwargs_
+
+    embedder_kwargs_ = RT.getpropertynested(
+        RAG_KWARGS[], [:retriever_kwargs], :embedder_kwargs, nothing)
+    embedder_kwargs = haskey(kwargs, :embedder_kwargs) ?
+                      merge(kwargs.embedder_kwargs, embedder_kwargs_) : embedder_kwargs_
+
+    new_index = RT.build_index(RAG_CONFIG[].indexer, all_docs;
+        embedder_kwargs, chunker = TextChunker(), chunker_kwargs,
+        verbose, index_id = nameof(mod), kwargs...)
 end
 
 """
-    RAG.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::Int = 1,
-        separators = ["\n\n", ". ", "\n"], max_length::Int = 256,
+    RT.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::Int = 1,
         kwargs...)
 
 Build index from the documentation of the currently loaded modules.
 If `modules` is empty, it will use all currently loaded modules.
 """
-function RAG.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::Int = 1,
-        separators = ["\n\n", ". ", "\n"], max_length::Int = 256,
+function RT.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::Int = 1,
         kwargs...)
+    global RAG_CONFIG, RAG_KWARGS
+
     all_docs, all_sources = docextract(modules)
-    RAG.build_index(all_docs;
-        separators,
-        max_length,
-        reader = :docs,
-        extract_metadata = false,
-        verbose,
-        index_id = :all_index,
-        sources = all_sources)
+    ## Extract current configuration
+    chunker_kwargs_ = (; sources = all_sources)
+    chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
+                     merge(kwargs.chunker_kwargs, chunker_kwargs_) : chunker_kwargs_
+
+    embedder_kwargs_ = RT.getpropertynested(
+        RAG_KWARGS[], [:retriever_kwargs], :embedder_kwargs, nothing)
+    embedder_kwargs = haskey(kwargs, :embedder_kwargs) ?
+                      merge(kwargs.embedder_kwargs, embedder_kwargs_) : embedder_kwargs_
+
+    new_index = RT.build_index(RAG_CONFIG[].indexer, all_docs;
+        embedder_kwargs, chunker = TextChunker(), chunker_kwargs,
+        verbose, index_id = nameof(mod), kwargs...)
 end

@@ -26,21 +26,25 @@ result = aihelp"What is `\$a+\$a`?"
 # AIMessage("The sum of `1+1` is `2`.")
 ```
 
-If you want to use a different model, eg, GPT-4, you can provide its alias as a flag:
+If you want to use a different model, eg, GPT-3.5 Turbo, you can provide its alias as a flag:
 ```julia
-result = aihelp"What is `1.23 * 100 + 1`?"gpt4t
+result = aihelp"What is `1.23 * 100 + 1`?"gpt3t
 # AIMessage("The answer is 124.")
 ```
 """
 macro aihelp_str(user_question, flags...)
-    global CONV_HISTORY, MAX_HISTORY_LENGTH, MAIN_INDEX
-    model = isempty(flags) ? PT.MODEL_CHAT : only(flags)
+    global CONV_HISTORY, MAX_HISTORY_LENGTH, RAG_CONFIG, MAIN_INDEX, MODEL_CHAT
+    model = isempty(flags) ? MODEL_CHAT : only(flags)
     prompt = Meta.parse("\"$(escape_string(user_question))\"")
     quote
-        conv = aihelp($(esc(MAIN_INDEX[])), $(esc(prompt));
+        result = aihelp($(esc(RAG_CONFIG[])), $(esc(MAIN_INDEX[])), $(esc(prompt));
             model = $(esc(model)),
             return_all = true)
-        PT.push_conversation!($(esc(CONV_HISTORY)), conv, $(esc(MAX_HISTORY_LENGTH)))
+        conv = haskey(result.conversations, :final_answer) ?
+               result.conversations[:final_answer] :
+               result.conversations[:answer]
+        PT.push_conversation!(
+            $(esc(CONV_HISTORY)), conv, $(esc(MAX_HISTORY_LENGTH)))
         last(conv)
     end
 end
@@ -84,8 +88,8 @@ aihelp!"Can you create it from named tuple?"gpt4t
 Ensure that the conversation history is not too long to maintain relevancy and coherence in the AI's responses. The history length is managed by `MAX_HISTORY_LENGTH`.
 """
 macro aihelp!_str(user_question, flags...)
-    global CONV_HISTORY, MAIN_INDEX
-    model = isempty(flags) ? PT.MODEL_CHAT : only(flags)
+    global CONV_HISTORY, MAIN_INDEX, MODEL_CHAT
+    model = isempty(flags) ? MODEL_CHAT : only(flags)
     prompt = Meta.parse("\"$(escape_string(user_question))\"")
     quote
         @assert !isempty($(esc(CONV_HISTORY))) "No conversation history found. Please use `aihelp\"\"` instead."
