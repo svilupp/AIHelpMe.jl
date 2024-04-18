@@ -87,14 +87,10 @@ load_index!(pack::Symbol) = load_index!([pack])
 load_index!() = load_index!(:julia)
 
 """
-    update_index(index::RT.AbstractChunkIndex = MAIN_INDEX,
+    update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],
         modules::Vector{Module} = Base.Docs.modules;
         verbose::Integer = 1,
-        separators = ["\\n\\n", ". ", "\\n", " "], max_length::Int = 512,
-        model::AbstractString = PT.MODEL_EMBEDDING,
         kwargs...)
-        modules::Vector{Module} = Base.Docs.modules;
-        verbose::Bool = true, kwargs...)
 
 Updates the provided `index` with the documentation of the provided `modules`.
 
@@ -102,14 +98,16 @@ Deduplicates against the `index.sources` and embeds only the new document chunks
 
 Returns the updated `index` (new instance).
 
+For available configurations and customizations, see the corresponding modules and functions of `PromptingTools.Experimental.RAGTools` (eg, `build_index`).
+
 # Example
 If you loaded some new packages and want to add them to your MAIN_INDEX (or any `index` you use), run:
 ```julia
-# To update the MAIN_INDEX
-AHM.update_index() |> AHM.load_index!
+# To update the MAIN_INDEX as well
+AIHelpMe.update_index() |> AHM.load_index!
 
 # To update an explicit index
-index = AHM.update_index(index)
+index = AIHelpMe.update_index(index)
 ```
 """
 function update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],
