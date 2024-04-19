@@ -120,17 +120,18 @@ All setup should take less than 5 minutes!
 5. **Debugging**:
    How did you come up with that answer? Check the "context" provided to the AI model (ie, the documentation snippets that were used to generate the answer):
     ```julia
-    AIHelpMe.pprint(AIHelpMe.last_result())
+    using AIHelpMe: pprint, last_result
+    pprint(last_result())
     # Output: Pretty-printed Question + Context + Answer with color highlights
     ```
 
     The color highlights show you which words were NOT supported by the provided context (magenta = completely new, blue = partially new). 
-    It's a quite and intuitive way to see which function names or variables are made up versus which ones were in the context. 
+    It's an intuitive way to see which function names or variables are made up versus which ones were in the context. 
 
     You can change the kwargs of `pprint` to hide the annotations or potentially even show the underlying context (snippets from the documentation):
 
     ```julia
-    AIHelpMe.pprint(AIHelpMe.last_result(); add_context = true, add_scores = false)
+    pprint(last_result(); add_context = true, add_scores = false)
     ```
 
 > [!TIP]
