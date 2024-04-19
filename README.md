@@ -5,7 +5,7 @@
 AIHelpMe harnesses the power of Julia's extensive documentation and advanced AI models to provide tailored coding guidance. By integrating with PromptingTools.jl, it offers a unique, AI-assisted approach to answering your coding queries directly in Julia's environment.
 
 > [!CAUTION]
-> This is only a proof-of-concept. If there is enough interest, we will fine-tune the RAG pipeline for better performance.
+> This is only a prototype! We have not tuned it yet, so your mileage may vary! Always check your results from LLMs!
 
 ## Features
 
@@ -118,6 +118,11 @@ All setup should take less than 5 minutes!
     AIHelpMe.pprint(AIHelpMe.last_result(); add_context = true, add_scores = false)
     ```
 
+> [!TIP]
+> Your results will significantly improve if you enable re-ranking of the context to be provided to the model (eg, `aihelp(..., rerank=true)`) or change pipeline to `update_pipeline!(:silver)`. It requires setting up Cohere API key but it's free for community use.
+
+Noticed some weird answers? Please let us know! See the section "Help Us Improve and Debug" in the Advanced section of the docs!
+
 ## How to Obtain API Keys
 
 ### OpenAI API Key:
@@ -206,7 +211,6 @@ A: Each query incurs only a fraction of a cent, depending on the length and chos
 
 **Q: Can I use the Cohere Trial API Key for commercial projects?**
 A: No, a trial key is only for testing purposes. But it takes only a few clicks to switch to Production API. The cost is only $1 per 1000 searches (!!!) and has many other benefits.
-Alternatively, set a different `rerank_strategy` in `aihelp` calls to avoid using Cohere API.
 
 **Q: How accurate are the answers?**
 A: Like any other Generative AI answers, ie, it depends and you should always double-check.

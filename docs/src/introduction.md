@@ -9,8 +9,8 @@ It provides two extras:
 - (hopefully), a simpler interface to handle RAG configurations (there are thousands of possible configurations)
 - pre-computed embeddings for key “knowledge” in the Julia ecosystem (we refer to them as “knowledge packs”)
 
-> [!WARNING]
-> Note that this is only a preliminary release and the RAG pipeline has NOT been optimized.
+> [!CAUTION]
+> This is only a prototype! We have not tuned it yet, so your mileage may vary! Always check your results from LLMs!
 
 ## What is RAG?
 RAG, short for Retrieval-Augmented Generation, is a way to reduce hallucinations of your model and improve its response by directly providing the relevant source knowledge into the prompt.
@@ -132,6 +132,13 @@ All setup should take less than 5 minutes!
     ```julia
     AIHelpMe.pprint(AIHelpMe.last_result(); add_context = true, add_scores = false)
     ```
+
+> [!TIP]
+> Your results will significantly improve if you enable re-ranking of the context to be provided to the model (eg, `aihelp(..., rerank=true)`) or change pipeline to `update_pipeline!(:silver)`. It requires setting up Cohere API key but it's free for community use.
+
+Noticed some weird answers? Please let us know! See [Help Us Improve and Debug](@ref).
+
+If you want to use locally-hosted models, see the [Using Ollama Models](@ref) section.
 
 ## How to Obtain API Keys
 

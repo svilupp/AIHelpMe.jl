@@ -1,9 +1,7 @@
 # Advanced
 
-To be updated...
-
-## Using Ollama models
-AIHelpMe can use Ollama models, but the knowledge packs are available for only one embedding model: "nomic-embed-text"!
+## Using Ollama Models
+AIHelpMe can use Ollama models (locally-hosted models), but the knowledge packs are available for only one embedding model: "nomic-embed-text"!
 
 You must set `model_embedding="nomic-embed-text"` and `truncate_dimension=0` (maximum dimension available) for everything to work correctly!
 
@@ -13,8 +11,9 @@ Example:
 using PromptingTools: register_model!, OllamaSchema
 using AIHelpMe: update_pipeline!, load_index!
 
-# register a chat model in Ollama schema
+# register model names with the Ollama schema
 register_model!(; name="mistral:7b-instruct-v0.2-q4_K_M",schema=OllamaSchema())
+register_model!(; name="nomic-embed-text",schema=OllamaSchema())
 
 # you can use whichever chat model you like!
 update_pipeline!(:bronze; model_chat = "mistral:7b-instruct-v0.2-q4_K_M",model_embedding="nomic-embed-text", truncate_dimension=0)
@@ -56,3 +55,37 @@ Once an index is built or updated, you can choose to serialize it for later use 
 To use your newly created index as the main source for queries, execute `load_index!(new_index)`. Alternatively, load a pre-existing index from a file using `load_index!(file_path)`. 
 
 The main index for queries is held in the global variable `AIHelpMe.MAIN_INDEX[]`.
+
+
+## Help Us Improve and Debug
+
+It would be incredibly helpful if you could share examples when the pipeline fails.
+We're particularly interested in cases where the answer you get is wrong because of the "bad" context provided.
+
+Let's say you ran a question and got a wrong answer (or some other aspect is worth reporting).
+```julia
+aihelp"how to create tuples in julia?"
+# Bad answer somehow...
+```
+
+You can access the underlying pipeline internals (what context was used etc.)
+
+```julia
+# last result (debugging object RAGResult)
+result=AIHelpMe.last_result()
+
+# If you want to see the actual context snippets, use `add_context=true`
+AIHelpMe.pprint(result)
+
+# Or access the fields in RAGResult directly, eg,
+result.context
+```
+
+Let's save this result for debugging later into JSON.
+```julia
+using AIHelpMe.PromptingTools: JSON3
+config_key = AIHelpMe.get_config_key() # "nomicembedtext-0-Bool"
+JSON3.write("rag-makie-xyzyzyz-$(config_key)-20240419.json", result)
+```
+
+Now, you want to let us know. Please share the above JSON with a few notes of what you expected/what is wrong via a Github Issue or on Slack (`#generative-ai` channel)!
