@@ -1,0 +1,62 @@
+[
+    {
+        "source": "",
+        "context": "",
+        "question": "What is the difference between CairoMakie and GLMakie?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "How to create 3D scatter plot?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "What is Algebra of Graphics?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "What is the purpose of Pair syntax in AlgebraofGraphics?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "What are some mapping helpers in AlgebraofGraphics?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "How to change label of x-axis ticks?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "What is the function to create a vertical line?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "How to define a layout of multiple plots together?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "How to add an overall title to a layout with multiple plots?",
+        "answer": ""
+    },
+    {
+        "source": "",
+        "context": "",
+        "question": "How do hide the axis spines in a plot?",
+        "answer": ""
+    }
+]

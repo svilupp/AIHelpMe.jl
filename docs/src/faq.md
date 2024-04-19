@@ -10,7 +10,6 @@ Each query incurs only a fraction of a cent, depending on the length and chosen 
 
 ## Can I use the Cohere Trial API Key for commercial projects?
 No, a trial key is only for testing purposes. But it takes only a few clicks to switch to Production API. The cost is only $1 per 1000 searches (!!!) and has many other benefits.
-Alternatively, set a different `rerank_strategy` in `aihelp` calls to avoid using Cohere API.
 
 ## How accurate are the answers?
 Like any other Generative AI answers, ie, it depends and you should always double-check.
@@ -23,4 +22,8 @@ Cohere's API is used to re-rank the best matching snippets from the documentatio
 
 ## Why do we need Tavily API Key?
 Tavily is used for the web search results to augment your answers. It's free to use in limited quantities.
+
+## Can we use Ollama (locally-hosted) models?
+Yes! See the [Using Ollama Models](@ref) section.
+
 

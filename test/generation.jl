@@ -35,7 +35,7 @@ using PromptingTools: TestEchoOpenAISchema
     ## Change for our test
     MAIN_INDEX[] = index
     update_pipeline!(:bronze; model_chat = "mockgen",
-        model_embedding = "mockemb", truncate_dimension = 0)
+        model_embedding = "mockemb", embedding_dimension = 0)
 
     question = "ABC?"
     cfg = RAG_CONFIG[]
@@ -71,6 +71,6 @@ using PromptingTools: TestEchoOpenAISchema
 
     ## Return previous settings
     update_pipeline!(:bronze; model_chat = current_chat_model,
-        model_embedding = current_emb_model, truncate_dimension = current_dimensionality)
+        model_embedding = current_emb_model, embedding_dimension = current_dimensionality)
     MAIN_INDEX[] = current_index
 end

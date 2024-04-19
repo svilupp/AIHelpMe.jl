@@ -45,7 +45,7 @@ AI models, while powerful, often produce inaccurate or outdated information, kno
 
 AIHelpMe addresses these challenges by incorporating "knowledge packs" filled with preprocessed, up-to-date Julia information. This ensures that you receive not only faster but also more reliable and contextually accurate coding assistance. 
 
-With AIHelpMe, you benefit from enhanced AI reliability tailored specifically to Julia’s unique environment, leading to better, more informed coding decisions.
+Most importantly, AIHelpMe is designed to be uniquely yours! You can customize the RAG pipeline however you want, bring any additional knowledge (eg, your currently loaded packages) and use it to get more accurate answers on something that's not even public!
 
 ## Getting Started
 

@@ -4,10 +4,11 @@ Welcome to AIHelpMe.jl, your go-to for getting answers to your Julia coding ques
 
 AIhelpMe is a simple wrapper around RAG functionality in PromptingTools.
 
-It provides two extras:
+It provides three extras:
 
 - (hopefully), a simpler interface to handle RAG configurations (there are thousands of possible configurations)
 - pre-computed embeddings for key “knowledge” in the Julia ecosystem (we refer to them as “knowledge packs”)
+- ability to quickly incorporate any additional knowledge (eg, your currently loaded packages) into the "assistant"
 
 > [!CAUTION]
 > This is only a prototype! We have not tuned it yet, so your mileage may vary! Always check your results from LLMs!
@@ -137,9 +138,14 @@ All setup should take less than 5 minutes!
 > [!TIP]
 > Your results will significantly improve if you enable re-ranking of the context to be provided to the model (eg, `aihelp(..., rerank=true)`) or change pipeline to `update_pipeline!(:silver)`. It requires setting up Cohere API key but it's free for community use.
 
+> [!TIP]
+> Do you want to safely execute the generated code? Use `AICode` from `PromptingTools.Experimental.AgentToolsAI.`. It can executed the code in a scratch module and catch errors if they happen (eg, apply directly to `AIMessage` response like `AICode(msg)`).
+
 Noticed some weird answers? Please let us know! See [Help Us Improve and Debug](@ref).
 
 If you want to use locally-hosted models, see the [Using Ollama Models](@ref) section.
+
+If you want to customize your setup, see `AIHelpMe.PREFERENCES`.
 
 ## How to Obtain API Keys
 

@@ -19,6 +19,9 @@ const RT = PromptingTools.Experimental.RAGTools
 ## export remove_pkgdir, annotate_source, find_new_chunks
 include("utils.jl")
 
+## export set_preferences!, get_preferences, PREFERENCES
+include("user_preferences.jl")
+
 ## Globals and types are defined in here
 include("pipeline_defaults.jl")
 
@@ -27,8 +30,6 @@ include("preparation.jl")
 
 ## export load_index!, update_index!
 include("loading.jl")
-
-include("user_preferences.jl")
 
 export aihelp
 include("generation.jl")
@@ -40,7 +41,7 @@ function __init__()
     ## Set the active configuration
     update_pipeline!(:bronze)
     ## Load index - auto-loads into MAIN_INDEX
-    load_index!(:julia)
+    load_index!(LOADED_PACKS[])
 end
 
 # Enable precompilation to reduce start time, disabled logging
