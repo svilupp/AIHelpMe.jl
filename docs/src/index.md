@@ -7,7 +7,7 @@ hero:
   tagline: AI-Enhanced Coding Assistance for Julia
   description: AIHelpMe harnesses the power of Julia's extensive documentation and advanced AI models to provide tailored coding guidance. By integrating with PromptingTools.jl, it offers a unique, AI-assisted approach to answering your coding queries directly in Julia's environment.
   image:
-    src: https://img.icons8.com/dusk/64/message-bot.png
+    src: https://img.icons8.com/dusk/196/message-bot.png
     alt: Friendly robot
   actions:
     - theme: brand
@@ -26,7 +26,7 @@ hero:
 features:
   - icon: <img width="64" height="64" src="https://img.icons8.com/dusk/64/online-support--v2.png" alt="AI Assistance"/>
     title: AI-Powered Assistance
-    details: Get accurate, context-aware answers to your coding queries using advanced AI models. Enhance your productivity with AI-driven insights tailored to your needs.
+    details: Get (more) accurate, context-aware answers to your coding queries using advanced AI models. Enhance your productivity with AI-driven insights tailored to your needs.
 
   - icon: <img width="64" height="64" src="https://img.icons8.com/dusk/64/easy.png" alt="easy to use"/>
     title: Easy-to-Use Interface
@@ -77,4 +77,4 @@ pprint(result)
 # you can achieve the same with aihelp"" macros, by simply calling the "last_result"
 pprint(last_result())
 ```
-For more information, see the [Quick Start Guide](@ref) section.
+For more information, see the [Quick Start Guide](@ref) section. For setting up AIHelpMe with locally-hosted models, see the [Using Ollama Models](@ref) section.

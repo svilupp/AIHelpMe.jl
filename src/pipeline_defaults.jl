@@ -117,13 +117,15 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
 end
 
 "Returns the configuration key for the given `cfg` and `kwargs` to use the relevant artifacts."
-function get_config_key(cfg::AbstractRAGConfig, kwargs::NamedTuple)
+function get_config_key(
+        cfg::AbstractRAGConfig = RAG_CONFIG[], kwargs::NamedTuple = RAG_KWARGS[])
     emb_model = getpropertynested(kwargs, [:embedder_kwargs], :model)
     emb_dim = getpropertynested(kwargs, [:embedder_kwargs], :truncate_dimension, 0)
     emb_eltype = RT.EmbedderEltype(cfg.retriever.embedder)
     string(replace(emb_model, "-" => ""), "-",
         emb_dim, "-", emb_eltype)
 end
+# with defaults
 
 """
     update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
