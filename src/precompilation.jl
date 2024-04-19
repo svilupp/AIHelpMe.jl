@@ -11,7 +11,7 @@ RAG_KWARGS[] = (
         rephraser_kwargs = (;
             model = MODEL_CHAT),
         embedder_kwargs = (;
-            truncate_dimension = 1024,
+            truncate_dimension = EMBEDDING_DIMENSION,
             model = MODEL_EMBEDDING),
         tagger_kwargs = (;
             model = MODEL_CHAT)),
@@ -19,15 +19,14 @@ RAG_KWARGS[] = (
         answerer_kwargs = (;
             model = MODEL_CHAT),
         embedder_kwargs = (;
-            truncate_dimension = 1024,
+            truncate_dimension = EMBEDDING_DIMENSION,
             model = MODEL_EMBEDDING),
         refiner_kwargs = (;
             model = MODEL_CHAT)))
 
 current_chat_model = MODEL_CHAT
 current_emb_model = MODEL_EMBEDDING
-current_dimensionality = getpropertynested(
-    RAG_KWARGS[], [:embedder_kwargs], :truncate_dimension, nothing)
+current_dimensionality = EMBEDDING_DIMENSION
 
 # corresponds to OpenAI API v1
 response1 = Dict(:data => [Dict(:embedding => ones(128))],
@@ -54,7 +53,7 @@ MAIN_INDEX[] = index
 
 ## Change for our test
 update_pipeline!(:bronze; model_chat = "mockgen",
-    model_embedding = "mockemb", truncate_dimension = 0)
+    model_embedding = "mockemb", embedding_dimension = 0)
 
 question = "ABC?"
 cfg = RAG_CONFIG[]
@@ -80,11 +79,12 @@ msg = aihelp!"test"
 
 ## Return previous settings -- not needed, it's only for precompilation
 update_pipeline!(:bronze; model_chat = current_chat_model,
-    model_embedding = current_emb_model, truncate_dimension = current_dimensionality)
+    model_embedding = current_emb_model, embedding_dimension = current_dimensionality)
 
 ###  Index loading
-index = load_index!(:julia)
-index = load_index!([:julia])
+index = load_index!(:tidier)
+index = load_index!([:tidier])
 load_index!(index)
+# Return to previous settings
 
 ### END OF PRECOMPILE

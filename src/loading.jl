@@ -46,7 +46,7 @@ function load_index!(file_path::AbstractString;
 end
 
 """
-    load_index!(packs::Vector{Symbol}; verbose::Bool = true, kwargs...)
+    load_index!(packs::Vector{Symbol}=LOADED_PACKS[]; verbose::Bool = true, kwargs...)
     load_index!(pack::Symbol; verbose::Bool = true, kwargs...)
 
 Loads one or more `packs` into the main index from our pre-built artifacts.
@@ -64,7 +64,8 @@ Or multiple packs
 load_index!([:julia, :makie,:tidier])
 ```
 """
-function load_index!(packs::Vector{Symbol}; verbose::Bool = true, kwargs...)
+function load_index!(
+        packs::Vector{Symbol} = LOADED_PACKS[]; verbose::Bool = true, kwargs...)
     global ALLOWED_PACKS, RAG_CONFIG, RAG_CONFIG
     @assert all(x -> x in ALLOWED_PACKS, packs) "Invalid pack(s): $(setdiff(packs, ALLOWED_PACKS)). Allowed packs: $(ALLOWED_PACKS)"
 
@@ -82,9 +83,8 @@ function load_index!(packs::Vector{Symbol}; verbose::Bool = true, kwargs...)
     return joined_index
 end
 
-# Default load index
+# Convenience method
 load_index!(pack::Symbol) = load_index!([pack])
-load_index!() = load_index!(:julia)
 
 """
     update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],

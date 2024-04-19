@@ -84,7 +84,7 @@ lazy = true
 
     [["tidier__nomicembedtext-0-Bool".download]]
     sha256 = "b3f604f382a7191c657c77017e9d3e455e6eacc1fa6a59e6202e8a83498d4269"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240407__nomicembedtext-1024-Bool__v1.0.tar.gz"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240407__nomicembedtext-0-Bool__v1.0.tar.gz"
 
 ["makie__nomicembedtext-0-Float32"]
 git-tree-sha1 = "4b0ff243278fcbda1491db94e4082c1050a44d80"
@@ -100,4 +100,4 @@ lazy = true
 
     [["makie__nomicembedtext-0-Bool".download]]
     sha256 = "c62a0d3d27fc417498d2449b59c58d18dba34164094a08206b51e88d05fa7fa7"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240330__nomicembedtext-1024-Bool__v1.0.tar.gz"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240330__nomicembedtext-0-Bool__v1.0.tar.gz"

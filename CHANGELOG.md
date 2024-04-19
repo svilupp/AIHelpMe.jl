@@ -7,11 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- (Preliminary) Knowledge packs available for Julia docs (`:julia`), Tidier ecosystem (`:tidier`), Makie ecosystem (`:makie`). Load with `load_index!(:julia)` or several with `load_index!([:julia, :tidier])`.
+
+### Fixed
+
+## [0.1.0]
+
+### Added
+- (Preliminary) Knowledge packs available for Julia docs (`:julia`), Tidier ecosystem (`:tidier`), and Makie ecosystem (`:makie`). Load with `load_index!(:julia)` or several with `load_index!([:julia, :tidier])`.
+- Preferences.jl-based persistence for chat model, embedding model, embedding dimension, and which knowledge packs to load on start. See `AIHelpMe.PREFERENCES` for more details.
+- Precompilation statements to improve TTFX.
+- First Q&A evaluation dataset in folder `evaluations/`.
 
 ### Changed
-- Bumped up PromptingTools to v0.20 (brings new RAG capabilities, pretty-printing, etc.)
-- Changed default model to be GPT-4 Turbo to improve answer quality
+- Bumped up PromptingTools to v0.21 (brings new RAG capabilities, pretty-printing, etc.)
+- Changed default model to be GPT-4 Turbo to improve the answer quality (you can quickly change to "gpt3t" if you want something simple)
 - Documentation moved to Vitepress
 
 ### Fixed

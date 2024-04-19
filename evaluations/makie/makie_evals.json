@@ -1,0 +1,542 @@
+[
+  {
+    "source": "https://docs.makie.org/dev/explanations/cameras/index.html::Cameras/2D Camera",
+    "context": "The 2D camera (  `cam2d!(scene)` ) uses an orthographic projection with a fixed rotation and aspect ratio. You can set the following attributes via keyword arguments in `cam2d!` or by accessing the camera struct `cam = cameracontrols(scene)` :",
+    "question": "What attributes can be set in the 2D camera using keyword arguments or by accessing the camera struct in Julia?",
+    "answer": "You can set attributes such as orthographic projection, fixed rotation, and aspect ratio in the 2D camera by using keyword arguments in `cam2d!` or by accessing the camera struct `cam = cameracontrols(scene)` in Julia."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/toggle/index.html::Toggle/Attributes/height",
+    "context": "Defaults to `18` The height of the toggle.",
+    "question": "What is the default height of the toggle set to?",
+    "answer": "The default height of the toggle is set to 18."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Attributes/ytickcolor",
+    "context": "Defaults to `RGBf(0, 0, 0)` The color of the ytick marks.",
+    "question": "What is the default color of the ytick marks when the value is not specified?",
+    "answer": "The default color of the ytick marks is RGBf(0, 0, 0)."
+  },
+  {
+    "source": "https://docs.makie.org/dev/tutorials/basic-tutorial/index.html::Basic Tutorial/Attributes",
+    "context": "As a tuple where the first part is a color and the second an alpha value to make it transparent, like `(:red, 0.5)` You can read more about colors at  juliagraphics.github.io/Colors.jl .",
+    "question": "What format is used to represent a color with transparency in the provided tuple?",
+    "answer": "The format used to represent a color with transparency in the tuple is where the first part is a color and the second part is an alpha value, like `(:red, 0.5)`."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Fields/Examples",
+    "context": "This can be used to more conveniently create recipes for `plot(mytype)` without the recipe macro: ```julia struct MyType ... end\n\nfunction Makie.plot!(plot::Plot(MyType))\n    ...\nend\n\nplot(MyType(...))``` Stem",
+    "question": "How can `plot(mytype)` recipes be created without using the recipe macro in Julia?",
+    "answer": "In Julia, `plot(mytype)` recipes can be created more conveniently without using the recipe macro by defining a struct `MyType` and implementing the `plot!` function for `Plot(MyType)`. This allows for creating plots using `plot(MyType(...))`."
+  },
+  {
+    "source": "https://aog.makie.org/dev/API/functions/index.html::Functions/Ticks helpers",
+    "context": "`AlgebraOfGraphics.datetimeticks` — Function ```julia datetimeticks(datetimes::AbstractVector{<:TimeType}, labels::AbstractVector{<:AbstractString})```",
+    "question": "What does the function 'datetimeticks' in Julia do and what are its input parameters?",
+    "answer": "The function 'datetimeticks' in Julia is used to generate tick locations for datetime axes. It takes two input parameters: 'datetimes' as an AbstractVector of TimeType and 'labels' as an AbstractVector of AbstractString."
+  },
+  {
+    "source": "https://docs.makie.org/dev/tutorials/scenes/index.html::Scene tutorial/Projections and Camera",
+    "context": "We've already talked a bit about cameras, but not really how it works. Lets start from zero. By default, the scene x/y extends go from -1 to 1. So, to draw a rectangle outlining the scene window, the following rectangle does the job:",
+    "question": "What are the default x/y extends for a scene in a camera system and how can a rectangle be drawn to outline the scene window?",
+    "answer": "The default x/y extends for a scene in a camera system go from -1 to 1. To draw a rectangle outlining the scene window, a specific rectangle can be used."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/plots/poly/index.html::poly",
+    "context": "poly ```julia poly(vertices, indices; kwargs...)\npoly(points; kwargs...)\npoly(shape; kwargs...)\npoly(mesh; kwargs...)```",
+    "question": "What are the different ways to create a polygon using the poly function in Julia?",
+    "answer": "The poly function in Julia can create a polygon using different arguments such as vertices and indices, points, shape, and mesh."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Attributes/yticklabelalign",
+    "context": "Defaults to `Makie.automatic` The horizontal and vertical alignment of the yticklabels.",
+    "question": "What is the default alignment for the yticklabels in Makie.automatic?",
+    "answer": "The default alignment for the yticklabels in Makie.automatic is both horizontal and vertical alignment."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/slidergrid/index.html::SliderGrid/Attributes/alignmode",
+    "context": "Defaults to `Inside()` The align mode of the block in its parent GridLayout.",
+    "question": "What does the block default to in terms of align mode within its parent GridLayout?",
+    "answer": "The block defaults to Inside() align mode within its parent GridLayout."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Examples",
+    "context": "If you don't need the value of `obs` , and just want to run `f` whenever the arguments update, use  `on` or  `onany` instead.",
+    "question": "What alternatives can be used instead of `obs` when updating arguments to run `f`?",
+    "answer": "Instead of `obs`, you can use `on` or `onany` to run `f` when the arguments update without needing the value of `obs`. "
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/gridlayout/index.html::GridLayout/Tweaking space between rows and columns",
+    "context": "All spaces can be changed at once by omitting the index of the gap to resize. ```julia rowgap!(fig.layout, 50)\n\nfig``` © Makie.jl. Last modified: March 27, 2024. Website built with Franklin.jl and the Julia programming language",
+    "question": "What tools were used to build the website that includes the Julia programming language?",
+    "answer": "The website was built with Franklin.jl and the Julia programming language."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/plots/hexbin/index.html::hexbin/Examples/Setting the number of bins",
+    "context": "Setting `bins` to an integer sets the number of bins to this value for both x and y. The minimum number of bins in one dimension is 2.",
+    "question": "What happens when the setting 'bins' is set to an integer value in both x and y dimensions?",
+    "answer": "Setting 'bins' to an integer value sets the number of bins to that value for both x and y dimensions, where the minimum number of bins in one dimension is 2."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/colorbar/index.html::Colorbar",
+    "context": "Colorbar(fig[4, 1], limits = (-1, 1), colormap = :heat,\n    label = \"Temperature\", vertical = false, flipaxis = false,\n    highclip = :cyan, lowclip = :red)",
+    "question": "What parameters can be specified for the Colorbar?",
+    "answer": "The parameters specified for the Colorbar in the context information include limits (-1, 1), colormap as :heat, label as \"Temperature\", vertical as false, flipaxis as false, highclip as :cyan, and lowclip as :red."
+  },
+  {
+    "source": "https://docs.makie.org/dev/tutorials/basic-tutorial/index.html::Basic Tutorial/Preface",
+    "context": "To see the output of plotting commands when using CairoMakie, we recommend you either use an IDE which supports png or svg output, such as VSCode, Atom/Juno, Jupyter, Pluto, etc., or try using a viewer package such as  ElectronDisplay.jl , or",
+    "question": "What are some recommended tools or packages to view the output of plotting commands when using CairoMakie?",
+    "answer": "Some recommended tools or packages to view the output of plotting commands when using CairoMakie include IDEs supporting png or svg output like VSCode, Atom/Juno, Jupyter, Pluto, and viewer packages such as ElectronDisplay.jl."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/textbox/index.html::Textbox/Validation",
+    "context": "If the validator is a type T (for example `Float64` ), validation will be `tryparse(T, string)` . The textbox will not allow submitting the currently entered value if the validator doesn't pass.",
+    "question": "What happens if the validator for a textbox is not validated for type T?",
+    "answer": "If the validator for a textbox is not validated for type T, the textbox will not allow submitting the currently entered value."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Keywords/Attributes",
+    "context": "All style attributes are the same as for `LineSegments` . hlines! No documentation found. `Makie.hlines!` is a `Function` .",
+    "question": "What type of function is Makie.hlines! related to and what style attributes are similar to LineSegments?",
+    "answer": "Makie.hlines! is a Function related to hlines! and its style attributes are the same as for LineSegments."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis3/index.html::Axis3/Attributes/zticksize",
+    "context": "Defaults to `6` The size of the ztick marks.",
+    "question": "What is the default size of the ztick marks?",
+    "answer": "The default size of the ztick marks is 6."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Keywords",
+    "context": "[6] data_limits(text::MakieCore.Text{<:Tuple{var\"#s317\"} where var\"#s317\"<:Union{Makie.GlyphCollection, AbstractVector{Makie.GlyphCollection}}})\n     @ ~/work/Makie.jl/Makie.jl/src/layouting/data_limits.jl:43\n  [7] data_limits(text::MakieCore.Text)",
+    "question": "What is the purpose of the data_limits function in Makie.jl?",
+    "answer": "The data_limits function in Makie.jl is used to determine the data limits for text elements, specifically for MakieCore.Text objects. It is essential for defining the boundaries and constraints of text components within the visualization framework."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Typical usage/Extended help/Examples",
+    "context": "Set the gap between rows in `gl` .  The two-argument version sets all row gaps in `gl` .  The three-argument version sets the gap between rows `i` and `i+1` . Passing a real number to `s` has the same behaviour as passing `Fixed(s)` .",
+    "question": "What does the two-argument version do in setting the row gaps in `gl`?",
+    "answer": "The two-argument version sets all row gaps in `gl`. "
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/polaraxis/index.html::PolarAxis/Attributes/thetaminorgridstyle",
+    "context": "Defaults to `inherit(scene, (:Axis, :yminorgridstyle), nothing)` The linestyle of the `theta` minor grid.",
+    "question": "What is the default linestyle for the theta minor grid?",
+    "answer": "The default linestyle for the theta minor grid is inherited from (:Axis, :yminorgridstyle)"
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Supported Keyword Arguments/Attributes/Specific to  Text",
+    "context": "`color=theme(scene, :textcolor)` sets the color of the text. One can set one color per glyph by passing a `Vector{<:Colorant}` , or one colorant for the whole text.",
+    "question": "How can the color of text be set using `color=theme(scene, :textcolor)`?",
+    "answer": "The color of text can be set using `color=theme(scene, :textcolor)` by passing a Vector{<:Colorant} to set one color per glyph or a single colorant to set the same color for the entire text."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/colors/index.html::Colors/scientific",
+    "context": "|                      | `:roma50` |                      | `:romaO` |                      | `:romaO10` |                      | `:romaO100` |                      | `:romaO25` |                      |",
+    "question": "What are the different values associated with the Roma series tags?",
+    "answer": ":roma50, :romaO, :romaO10, :romaO100, :romaO25"
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Supported Keyword Arguments/Attributes",
+    "context": "Interactively select a point on a 2D `scene` by clicking the left mouse button, dragging and then un-clicking. Return an  observable whose value corresponds to the selected point on the scene.",
+    "question": "How can a point be selected on a 2D scene interactively using a mouse?",
+    "answer": "A point on a 2D `scene` can be selected interactively by clicking the left mouse button, dragging to the desired location, and then releasing the mouse button. This action returns an observable whose value corresponds to the selected point on the scene."
+  },
+  {
+    "source": "https://docs.makie.org/dev/news/index.html::Changelog/0.19.4  - 2023-03-31",
+    "context": "Added export of `hidezdecorations!` from MakieLayout  #2821 . Fixed an issue with GLMakie lines becoming discontinuous  #2828 .",
+    "question": "What changes were made in MakieLayout #2821 and #2828 respectively?",
+    "answer": "In MakieLayout #2821, the export of 'hidezdecorations!' was added. In MakieLayout #2828, an issue with GLMakie lines becoming discontinuous was fixed."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Hiding Axis spines and decorations",
+    "context": "```julia using CairoMakie\n\n\nf = Figure()\n\nax1 = Axis(f[1, 1], title = \"Axis 1\")\nax2 = Axis(f[1, 2], title = \"Axis 2\")\nax3 = Axis(f[1, 3], title = \"Axis 3\")\n\nhidedecorations!(ax1)\nhidexdecorations!(ax2, grid = false)\nhideydecorations!(ax3, ticks = false)",
+    "question": "What are the different decorations hidden on each axis in the given plot setup?",
+    "answer": "On Axis 1, all decorations are hidden. On Axis 2, only the grid decoration is hidden. On Axis 3, only the ticks decoration is hidden."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/backends/glmakie/index.html::Arguments one can pass via  screen_config :/Troubleshooting OpenGL",
+    "context": "On Linux, you can find out your OpenGL version with: `glxinfo | grep \"OpenGL version\"` If you're using an AMD or Intel gpu on linux, you may run into  GLFW#198 .",
+    "question": "How can you determine your OpenGL version on Linux?",
+    "answer": "You can find out your OpenGL version on Linux by running the command: glxinfo | grep \"OpenGL version\""
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Example/Attributes",
+    "context": "@ Makie ~/work/Makie.jl/Makie.jl/src/basic_recipes/text.jl:126\n [59] plot!(plot::Plot{Makie.rainclouds})\n     @ Makie ~/work/Makie.jl/Makie.jl/src/basic_recipes/raincloud.jl:194\n [60] plot!(plot::MakieCore.Text)",
+    "question": "What type of plot is being used in the Makie package on line 59 and line 60?",
+    "answer": "The Makie package is using a raincloud plot on line 59 and a text plot on line 60."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/plots/errorbars/index.html::errorbars/Attributes/Examples",
+    "context": "# plot position scatters so low and high errors can be discriminated\nscatter!(xs, ys, markersize = 3, color = :black)\n\nf```",
+    "question": "What is the purpose of plotting position scatters with low and high errors discriminated?",
+    "answer": "The purpose of plotting position scatters with low and high errors discriminated is to distinguish between low and high errors in the data visualization."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Keywords/Attributes",
+    "context": "Available attributes and their defaults for `Plot{Makie.contour}` are:",
+    "question": "What are the available attributes and their defaults for `Plot{Makie.contour}`?",
+    "answer": "The available attributes and their defaults for `Plot{Makie.contour}` include the plot type `contour`, x and y as the input vectors, z as the surface to be contoured, filled set to false by default, levels as an empty array, color for the line set to black by default, stroked set to true by default, linewidth set to 1.0 by default, colormap as an empty array, linecolor for the filled patches set to black by default, and repeat set to signal by default."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/legend/index.html::Legend/Creating A Legend From An Axis",
+    "context": "You can also create a Legend by passing it an axis object, like `Axis` , `LScene` or `Scene` .",
+    "question": "How can you create a Legend in a chart using specified objects?",
+    "answer": "You can create a Legend in a chart by passing it an axis object, such as Axis, LScene, or Scene."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/polaraxis/index.html::PolarAxis/Other Notes/Plotting outside a PolarAxis",
+    "context": "Currently there are two poly plots outside the area of the `PolarAxis` which clip the content to the relevant area.",
+    "question": "What is the issue with the poly plots outside the area of the PolarAxis?",
+    "answer": "Currently, the poly plots outside the area of the PolarAxis clip the content to the relevant area."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Supported Keyword Arguments/Attributes",
+    "context": "Registers a callback for the mouse scroll. returns an `Observable{Vec{2, Float64}}` , which is an x and y offset.  GLFW Docs select_line ```julia select_line(scene; kwargs...) -> line```",
+    "question": "What does the function `select_line` in GLFW Docs do and what type of value does it return?",
+    "answer": "The function `select_line` in GLFW Docs registers a callback for the mouse scroll and returns an `Observable{Vec{2, Float64}}`, which represents an x and y offset."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/scene/lighting/index.html::Lighting/Material Attributes",
+    "context": "one where the incoming angle `dot(light_direction, -normal)` matches the outgoing angle `dot(camera_direction, -normal)` . It responsible for bright spots on objects.",
+    "question": "What is responsible for bright spots on objects based on the given information?",
+    "answer": "The incoming angle `dot(light_direction, -normal)` matching the outgoing angle `dot(camera_direction, -normal)` is responsible for bright spots on objects."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/animation/index.html::Animations/A simple example",
+    "context": "```julia function change_function(hue)\n    lineplot.color = HSV(hue, 1, 0.75)\nend\n\nrecord(change_function, fig, \"color_animation.mp4\", hue_iterator; framerate = framerate)```",
+    "question": "What does the 'change_function' Julia function do with the input 'hue'?",
+    "answer": "The 'change_function' Julia function sets the color of a line plot to the specified hue value with maximum saturation and 75% lightness."
+  },
+  {
+    "source": "https://aog.makie.org/dev/philosophy/index.html::Philosophy/Opinionated defaults",
+    "context": "While users should be able to customize every aspect of their plots, it is important to note that this customization can be very time-consuming, and many subtleties can escape the attention of the casual user:",
+    "question": "Why is it important to note that plot customization can be time-consuming?",
+    "answer": "It is important to note that plot customization can be time-consuming because many subtleties can escape the attention of the casual user during the customization process."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/backends/glmakie/index.html::Arguments one can pass via  screen_config :/WSL setup or X-forwarding",
+    "context": "2.) WSL has some problems with passing through localhost, so one may need to use: `export DISPLAY=192.168.178.31:0` , with the local ip of the pcs network adapter, which runs VcXsrv 3.) One may need",
+    "question": "What solution can be used to address the problem of passing through localhost in WSL?",
+    "answer": "To address the problem of passing through localhost in WSL, one may need to use the command 'export DISPLAY=192.168.178.31:0' with the local IP of the PC's network adapter, which runs VcXsrv."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/polaraxis/index.html::PolarAxis/Attributes/rticklabelstrokewidth",
+    "context": "Defaults to `0.0` The width of the outline of `r` ticks. Setting this to 0 will remove the outline.",
+    "question": "What happens when the width of the outline of 'r' ticks is set to 0?",
+    "answer": "Setting the width of the outline of 'r' ticks to 0 will remove the outline."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/layouting/index.html::How layouts work/Size attributes",
+    "context": "here for either width or height, respectively).",
+    "question": "What is the formula to calculate the area of a rectangle based on its width and height?",
+    "answer": "The formula to calculate the area of a rectangle is width multiplied by height (Area = Width x Height)."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Axis interaction/Custom\n                        interactions",
+    "context": "The interaction system is an additional abstraction upon Makie's low-level event system to make it\n                    easier to quickly create your own interaction patterns. To register a new interaction, call",
+    "question": "What is the purpose of the interaction system in Makie and how does it simplify creating custom interaction patterns?",
+    "answer": "The interaction system in Makie is an additional abstraction on top of the low-level event system, designed to facilitate the quick creation of custom interaction patterns."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/colorbar/index.html::Colorbar/Attributes/topspinevisible",
+    "context": "Defaults to `true` Controls if the top spine is visible.",
+    "question": "What does the default setting control related to the top spine visibility?",
+    "answer": "The default setting controls the visibility of the top spine."
+  },
+  {
+    "source": "https://graph.makie.org/dev/generated/plots/index.html::Plotting Graphs with  GraphMakie.jl/Indicate Edge Direction",
+    "context": "There is a special case for `arrow_shift=:end` which moves the arrows close to the next node:",
+    "question": "How does `arrow_shift=:end` in GraphMakie affect the arrows?",
+    "answer": "The special case for `arrow_shift=:end` moves the arrows close to the next node in the context."
+  },
+  {
+    "source": "https://aog.makie.org/dev/philosophy/index.html::Philosophy/No mind reading",
+    "context": "AlgebraOfGraphics follows a different approach, based on algebraic manipulations of plot descriptors.",
+    "question": "What approach does AlgebraOfGraphics follow and how is it different from traditional methods?",
+    "answer": "AlgebraOfGraphics follows an approach based on algebraic manipulations of plot descriptors, which sets it apart from traditional methods."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/layouting/index.html::How layouts work/Computed bounding box",
+    "context": "This is the bounding box of the element after it has received a suggested bounding box and applied its own layout logic. This is the bounding box in which the elements main area will be in the scene.",
+    "question": "What does the bounding box of an element represent after receiving a suggested bounding box and applying its own layout logic?",
+    "answer": "The bounding box of an element after receiving a suggested bounding box and applying its own layout logic represents the area in which the element's main area will be in the scene."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/plot_method_signatures/index.html::Plot Method Signatures/GridPositions/With Non-Mutating Plotting Functions",
+    "context": "Using the non-mutating plotting functions with GridPositions creates new axes at the given locations. If a GridLayout along the nesting levels doesn't exist, yet, it is created automatically for convenience.",
+    "question": "What happens when using non-mutating plotting functions with GridPositions in the context of nesting levels?",
+    "answer": "When using non-mutating plotting functions with GridPositions in the context of nesting levels, new axes are created at the specified locations. If a GridLayout along the nesting levels doesn't exist, it is automatically created for convenience."
+  },
+  {
+    "source": "https://docs.makie.org/dev/news/index.html::Changelog/Unreleased",
+    "context": "Fixed an issue with the texture atlas not updating in WGLMakie after display, causing new symbols to not show up  #3737",
+    "question": "What was the issue fixed in WGLMakie related to the texture atlas not updating after display?",
+    "answer": "An issue was fixed in WGLMakie where the texture atlas was not updating after display, causing new symbols to not show up."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/textbox/index.html::Textbox/Attributes/tellwidth",
+    "context": "Defaults to `true` Controls if the parent layout can adjust to this element's width.",
+    "question": "What does the textbox tellwidth mean if set to true?",
+    "answer": "The 'Defaults to true' setting controls if the parent layout can adjust to this element's width."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/events/index.html::Events/Mouse Interaction",
+    "context": "There is also `events.mousebuttonstate` which holds all currently held buttons. This is not an Observable, so you can't react to changes here, but you can check it if you are looking for a specific combination of buttons.",
+    "question": "What is the purpose of `events.mousebuttonstate` and how does it differ from an Observable?",
+    "answer": "`events.mousebuttonstate` holds all currently held buttons and is used to check for specific button combinations. Unlike an Observable, it does not allow reacting to changes in button states."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Attributes/xtickformat",
+    "context": "If there is a special method\n                    defined, tick values and labels can be determined together using `Makie.get_ticks` instead. Check the docstring for `xticks` for more information.",
+    "question": "How can tick values and labels be determined together when a special method is defined?",
+    "answer": "Tick values and labels can be determined together using `Makie.get_ticks` when a special method is defined."
+  },
+  {
+    "source": "https://docs.makie.org/dev/how-to/draw-boxes-around-subfigures/index.html::How to draw boxes around subfigures",
+    "context": "If you want to show that several elements in a `Figure` belong together, you can do this by placing them all in a container. The trick is to use a nested `GridLayout` for each group of objects and place a `Box` at the same position as this `GridLayout` .",
+    "question": "How can you indicate that multiple elements in a Figure belong together in terms of container use?",
+    "answer": "To indicate that multiple elements in a Figure belong together, you can use a nested GridLayout for each group of objects and place a Box at the same position as this GridLayout."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Attributes/limits",
+    "context": "Defaults to `(nothing, nothing)` Can be used to manually specify which axis limits are desired.",
+    "question": "What is the purpose of specifying defaults to `(nothing, nothing)` for Axis limits?",
+    "answer": "The purpose of specifying defaults to `(nothing, nothing)` in the context information is to allow manual specification of desired axis limits."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Summary",
+    "context": "Plot ```julia Plot{PlotFunc}(args::Tuple, kw::Dict{Symbol, Any})``` Creates a Plot corresponding to the recipe function `PlotFunc` . Each recipe defines an alias for `Plot{PlotFunc}` . Example:",
+    "question": "What does the `julia Plot{PlotFunc}(args::Tuple, kw::Dict{Symbol, Any})` function do?",
+    "answer": "The `julia Plot{PlotFunc}(args::Tuple, kw::Dict{Symbol, Any})` function creates a Plot corresponding to the recipe function `PlotFunc`. Each recipe defines an alias for `Plot{PlotFunc}`."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Fields",
+    "context": "This can be used to more conveniently create recipes for `plot(mytype)` without the recipe macro: ```julia struct MyType ... end\n\nfunction Makie.plot!(plot::Plot(MyType))\n    ...\nend\n\nplot(MyType(...))``` BezierPath No documentation found.",
+    "question": "How can recipes for `plot(mytype)` be created conveniently without using the recipe macro in Julia?",
+    "answer": "Recipes for `plot(mytype)` can be conveniently created in Julia without using the recipe macro by defining a struct `MyType` and implementing the `plot!` function for `Plot(MyType)` as shown in the provided code snippet."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/plots/waterfall/index.html::waterfall/Attributes/Examples",
+    "context": "```julia using CairoMakie\n\ny = [6, 4, 2, -8, 3, 5, 1, -2, -3, 7]\n\nwaterfall(y)``` The direction of the bars might be easier to parse with some visual support.",
+    "question": "What Julia library is being used and what function is being called to create a waterfall plot with the given data?",
+    "answer": "The Julia library being used is CairoMakie, and the function called to create a waterfall plot with the given data is 'waterfall(y)'."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Supported Keyword Arguments/Attributes/Generic attributes",
+    "context": "```julia # 1 method for generic function \"surface!\" from MakieCore:\n [1] surface!(args...; kw...)\n     @ ~/work/Makie.jl/Makie.jl/MakieCore/src/recipes.jl:176``` swap!",
+    "question": "What is the purpose of the 'surface!' method in MakieCore?",
+    "answer": "The 'surface!' method in MakieCore is a generic function used for creating surfaces in Julia, specifically in the Makie plotting package."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Example",
+    "context": "Executes the function f whenever the `MouseEventHandle` 's observable is set to a MouseEvent with `event.type === leftdown` . onmouseleftdrag",
+    "question": "When does the function f get executed with the MouseEventHandle's observable?",
+    "answer": "The function f gets executed whenever the MouseEventHandle's observable is set to a MouseEvent with event type leftdown."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/plots/arrows/index.html::arrows/Attributes/Attributes",
+    "context": "`arrowsize = automatic` : Scales the size of the arrow head. This defaults to `0.3` in the 2D case and `Vec3f(0.2, 0.2, 0.3)` in the 3D case.",
+    "question": "What is the default value for arrowsize in the 2D case and 3D case?",
+    "answer": "In the 2D case, the default value for arrowsize is 0.3, and in the 3D case, it is Vec3f(0.2, 0.2, 0.3)."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Axis interaction/Limit reset",
+    "context": "You can alternatively press `ctrl + shift + leftclick` , which is the same as calling `autolimits!(ax)` . This function ignores previously set limits and computes them all anew\n                    given the axis content.",
+    "question": "What does the function `autolimits!(ax)` do?",
+    "answer": "The function `autolimits!(ax)` ignores previously set limits and computes them all anew based on the axis content."
+  },
+  {
+    "source": "https://makieorg.github.io/MakieThemes.jl/dev/themes/ggthemr/index.html::GGThemr/ggthemr(:flat)",
+    "context": "```julia MakieThemes.demofigure(ggthemr(:flat))``` ```julia MakieThemes.demoscatter(ggthemr(:flat))```",
+    "question": "What does the 'ggthemr(:flat)' function do?",
+    "answer": "The 'ggthemr(:flat)' function in Julia is used to create a flat theme for figures and scatter plots in MakieThemes."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Example",
+    "context": "To change the default colormap to `:greys` , you can pass that attribute as a keyword argument to `update_theme!` as demonstrated below. ```julia update_theme!(colormap=:greys)```",
+    "question": "How can you change the default colormap to :greys using update_theme! in Julia?",
+    "answer": "To change the default colormap to :greys in Julia, you can pass the attribute as a keyword argument to update_theme! like this: `update_theme!(colormap=:greys)`."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Example/Attributes",
+    "context": "@ Makie ~/work/Makie.jl/Makie.jl/src/basic_recipes/volumeslices.jl:20\n [37] plot!(p::Plot{Makie.voronoiplot, <:Tuple{var\"#s317\"} where var\"#s317\"<:(Vector{<:Point{N}})}) where N",
+    "question": "What is the function signature for the plot method in the volumeslices.jl file at line 20?",
+    "answer": "The function signature for the plot method in the volumeslices.jl file at line 20 is plot!(p::Plot{Makie.voronoiplot, <:Tuple{var\"#s317\"} where var\"#s317\"<:(Vector{<:Point{N}})}) where N."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Supertype Hierarchy",
+    "context": "A point-like light source placed at the given `position` with the given light `color` . Optionally an attenuation parameter can be used to reduce the brightness of the light source with distance. The reduction is given by",
+    "question": "What parameters are used to define a point-like light source?",
+    "answer": "A point-like light source is defined by its position, light color, and optionally an attenuation parameter for reducing brightness with distance."
+  },
+  {
+    "source": "https://docs.makie.org/dev/tutorials/scenes/index.html::Scene tutorial/Scenes and subwindows",
+    "context": "Instead of a white background, we can also stop clearing the background to make the scene see-through, and give it an outline instead. The easiest way to create an outline is, to make a sub scene with a projection that goes from 0..1 for the whole window.",
+    "question": "What is the alternative to using a white background to make the scene see-through and create an outline in a sub scene?",
+    "answer": "To make the scene see-through and create an outline in a sub scene, the alternative to using a white background is to stop clearing the background and give it an outline instead."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Attributes/aspect",
+    "context": "Defaults to `nothing` Controls the forced aspect ratio of the axis. The default `nothing` will not constrain the aspect ratio. The axis area will span the\n                    available width and height in the layout.",
+    "question": "What does the default value 'nothing' control in the context of Axis aspect ratio?",
+    "answer": "The default value 'nothing' in the context of axis aspect ratio controls the forced aspect ratio of the axis. It does not constrain the aspect ratio, allowing the axis area to span the available width and height in the layout."
+  },
+  {
+    "source": "https://geo.makie.org/dev/index.html::GeoMakie.jl/Gotchas",
+    "context": ".  The `..` notation denotes an interval which Makie will automatically sample from to obtain the x and y points for the surface.",
+    "question": "What does the `..` notation signify in Makie for obtaining x and y points for the surface?",
+    "answer": "The `..` notation in Makie denotes an interval which will be automatically sampled from to obtain the x and y points for the surface."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Keywords/Attributes/Generic attributes",
+    "context": "@ Makie ~/work/Makie.jl/Makie.jl/MakieCore/src/recipes.jl:177\n [43] default_theme(scene, ::Type{<:Plot{Makie.hexbin}})\n     @ Makie ~/work/Makie.jl/Makie.jl/MakieCore/src/recipes.jl:177\n [44] default_theme(scene, ::Type{<:Plot{Makie.series}})",
+    "question": "What is the purpose of the default_theme function in the Makie?",
+    "answer": "The default_theme function in the Makie.jl code snippet is used to set the default theme for a specific type of plot, either Plot{Makie.hexbin} or Plot{Makie.series}."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/figure/index.html::Figures/Figure size and units/Defaults of  px_per_unit  and  pt_per_unit",
+    "context": "So web browsers don't directly map image pixels to device pixels. Instead, they use a concept called device-independent pixels.",
+    "question": "What concept do web browsers use to map image pixels to device pixels?",
+    "answer": "Web browsers use a concept called device-independent pixels to map image pixels to device pixels."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/slidergrid/index.html::SliderGrid/Attributes/valign",
+    "context": "Defaults to `:center` The vertical alignment of the block in its suggested bounding box.",
+    "question": "What does the default setting 'Defaults to `:center`' indicate for `valign` attribute?",
+    "answer": "The default setting 'Defaults to `:center`' indicates that the block is vertically aligned to the center within its suggested bounding box."
+  },
+  {
+    "source": "https://aog.makie.org/dev/layers/draw/index.html::Drawing Layers",
+    "context": "A  `AlgebraOfGraphics.Layer` or  `AlgebraOfGraphics.Layers` object can be plotted using the functions  `draw` or  `draw!` .",
+    "question": "What functions can be used to plot a `AlgebraOfGraphics.Layer` or `AlgebraOfGraphics.Layers` object?",
+    "answer": "The functions `draw` or `draw!` can be used to plot a `AlgebraOfGraphics.Layer` or `AlgebraOfGraphics.Layers` object."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Example",
+    "context": "Executes the function f whenever the `MouseEventHandle` 's observable is set to a MouseEvent with `event.type === middledragstop` . onmousemiddleup",
+    "question": "When does the function f get executed in relation to the MouseEventHandle observable and event type?",
+    "answer": "The function f is executed whenever the MouseEventHandle's observable is set to a MouseEvent with event type middledragstop."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/legend/index.html::Legend/Attributes/labelhalign",
+    "context": "Defaults to `:left` The horizontal alignment of the entry labels.",
+    "question": "What is the default horizontal alignment for the entry labels?",
+    "answer": "The default horizontal alignment for the entry labels is left."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Supported Keyword Arguments/Attributes/Generic attributes",
+    "context": "```julia tightlimits!(la::Axis, sides::Union{Left, Right, Bottom, Top}...)``` Sets the autolimit margins to zero on all given sides. Example: ```julia tightlimits!(laxis, Bottom())``` timeseries",
+    "question": "What does the function `tightlimits!` in Julia do with respect to autolimit margins?",
+    "answer": "The function `tightlimits!` in Julia sets the autolimit margins to zero on the specified sides."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/animation/index.html::Animations/Animating a plot \"live\"",
+    "context": "# we use `record` to show the resulting video in the docs.\n# If one doesn't need to record a video, a normal loop works as well.\n# Just don't forget to call `display(fig)` before the loop",
+    "question": "How can one display the resulting video in the documentation using `record`?",
+    "answer": "One can use `record` to show the resulting video in the documentation."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/colors/index.html::Colors/Colormaps",
+    "context": "```julia using CairoMakie",
+    "question": "What does the Julia code 'using CairoMakie' indicate?",
+    "answer": "The Julia code 'using CairoMakie' indicates that the CairoMakie package is being imported for use in the current Julia script."
+  },
+  {
+    "source": "https://aog.makie.org/dev/generated/penguins/index.html::Tutorial 🐧/Correlating two variables",
+    "context": "```julia layers = linear() + mapping(marker = :sex)\nplt = penguin_bill * layers * mapping(color = :species)\ndraw(plt; axis = axis)``` This plot is getting a little bit crowded. We could instead show female and male penguins in separate subplots.",
+    "question": "How can the crowded plot be improved with Algebra of Grapthics?",
+    "answer": "According to the context, the crowded plot of penguin data can be improved by showing female and male penguins in separate subplots instead of displaying them together."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Attributes/panbutton",
+    "context": "Defaults to `Makie.Mouse.right` The button for panning.",
+    "question": "What is the default mouse button for Axis panning set to?",
+    "answer": "The default mouse button for panning is set to Makie.Mouse.right."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/axis/index.html::Axis/Axis interaction/Limit reset",
+    "context": "If you\n                    have previously called `limits!` , `xlims!` or `ylims!` , these\n                    settings therefore stay intact when doing a limit reset.",
+    "question": "What happens to the settings of `limits!`, `xlims!`, or `ylims!` when a limit reset is performed?",
+    "answer": "The settings of `limits!`, `xlims!`, or `ylims!` stay intact when a limit reset is performed."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Keywords/Attributes/Color attributes",
+    "context": "`alpha = 1.0` sets the alpha value of the colormap or color attribute. Multiple alphas like in `plot(alpha=0.2, color=(:red, 0.5)` , will get multiplied.",
+    "question": "What effect does setting the alpha value in a colormap or color attribute have, and how are multiple alphas handled?",
+    "answer": "Setting the alpha value in a colormap or color attribute controls the transparency of the colors. In the provided context, when multiple alphas are used, they get multiplied together."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/plots/hexbin/index.html::hexbin/Examples/Showing zero count hexagons",
+    "context": "By setting `threshold = 0` , all hexagons that fit into the limits of the input data are shown. In this example, we add a transparent color to the start of the colormap and stroke each hexagon so the empty hexagons are visible but not too distracting.",
+    "question": "What happens when the threshold is set to 0 in the context of displaying hexagons?",
+    "answer": "When the threshold is set to 0, all hexagons that fit into the limits of the input data are shown with a transparent color added to the start of the colormap and stroke applied to each hexagon to make empty hexagons visible but not distracting."
+  },
+  {
+    "source": "https://aog.makie.org/dev/FAQs/index.html::Frequently Asked Questions/What is the algebraic structure of AlgebraOfGraphics?",
+    "context": "AlgebraOfGraphics is based on two operators, `+` and `*` . These two operators induce a  semiring structure, with a small caveat. Addition is commutative only up to the drawing order.",
+    "question": "What operators form the basis of AlgebraOfGraphics and what semiring structure do they induce?",
+    "answer": "AlgebraOfGraphics is based on the operators `+` and `*`, which induce a semiring structure where addition is commutative only up to the drawing order."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Examples",
+    "context": "usage @extractvalue scene (a, b, c, d) will become: ```julia begin\n    a = to_value(scene[:a])\n    b = to_value(scene[:b])\n    c = to_value(scene[:c])\n    (a, b, c)\nend``` @get_attribute ```julia @get_attribute scene (a, b, c, d)```",
+    "question": "How does the 'usage @extractvalue scene (a, b, c, d)' command work in Julia?",
+    "answer": "The 'usage @extractvalue scene (a, b, c, d)' command in Julia extracts values from a scene using the specified keys 'a', 'b', 'c', and 'd' and assigns them to variables 'a', 'b', and 'c'. It uses the 'to_value' function to convert the extracted values from the scene dictionary to their actual values."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Example",
+    "context": "Set the axis x-limits to `x1` and `x2` and the y-limits to `y1` and `y2` . If limits are ordered high-low, this reverses the axis orientation. ```julia limits!(ax::Axis, rect::Rect2)```",
+    "question": "What function in Julia is used to set the axis x-limits to x1 and x2 and the y-limits to y1 and y2?",
+    "answer": "The function in Julia used to set the axis x-limits to x1 and x2 and the y-limits to y1 and y2 is `limits!(ax::Axis, rect::Rect2)`."
+  },
+  {
+    "source": "https://docs.makie.org/dev/explanations/theming/index.html::Theming/Cycles/Manual cycling using  Cycled",
+    "context": "The index `i` passed to `Cycled` is used directly to look up a value in the cycler that belongs to the attribute, and errors if no such cycler is defined.",
+    "question": "How is the index 'i' used in the 'Cycled' function and what happens if no cycler is defined for the attribute?",
+    "answer": "The index 'i' passed to 'Cycled' is used to look up a value in the cycler that belongs to the attribute. If no cycler is defined for the attribute, an error occurs."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/blocks/menu/index.html::Menu/Attributes/cell_color_active",
+    "context": "Defaults to `COLOR_ACCENT[]` Cell color when active",
+    "question": "What color does the cell default to when it is active?",
+    "answer": "The cell defaults to COLOR_ACCENT color when it is active."
+  },
+  {
+    "source": "https://docs.makie.org/dev/reference/plots/rainclouds/index.html::Keywords/Axis General Keywords",
+    "context": "# Plots wiht more categories\n# dist_between_categories (0.6, 1.0)\n# with and without clouds",
+    "question": "What feature do the plots with more categories have, and how is the distance between categories defined?",
+    "answer": "The plots with more categories have a distance between categories of 0.6 to 1.0. These plots can be displayed both with and without clouds."
+  },
+  {
+    "source": "https://graph.makie.org/dev/generated/interactions/index.html::Add interactions to your graph plot/Hover interactions",
+    "context": "At first, let's add some hover interaction for our nodes using the  `NodeHoverHandler` constructor. We need to define a action function with the signature `fun(state, idx, event, axis)` . We use the action to make the nodes bigger on hover events.",
+    "question": "What function signature is required for the action function used to make nodes bigger on hover events?",
+    "answer": "The action function used to make nodes bigger on hover events requires the signature `fun(state, idx, event, axis)`."
+  },
+  {
+    "source": "https://docs.makie.org/dev/news/index.html::Changelog/0.19.9  - 2023-09-11",
+    "context": "Allow arbitrary reversible scale functions through `ReversibleScale` . Deprecated `linestyle=vector_of_gaps` in favor of `linestyle=Linestyle(vector_of_gaps)`  3135 ,  3193 .",
+    "question": "What was deprecated in favor of Linestyle(vector_of_gaps)?",
+    "answer": "`linestyle=vector_of_gaps` was deprecated in favor of `linestyle=Linestyle(vector_of_gaps)`."
+  },
+  {
+    "source": "https://docs.makie.org/dev/news/index.html::Changelog/0.20.0  - 2023-11-21",
+    "context": "Fixed an issue where NaN was interpreted as zero when rendering `surface` through CairoMakie  #2598 . Improved 3D camera handling, hotkeys and functionality  #2746 .",
+    "question": "What issue was fixed in the rendering of `surface` through CairoMakie?",
+    "answer": "An issue where NaN was interpreted as zero in the rendering of `surface` through CairoMakie was fixed."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Examples",
+    "context": "`yticklabelpad` , `yticklabelsize` , `yticklabelsvisible` , `yticks` , `yticksize` , `yticksvisible` , `ytickwidth` , `yzpanelcolor` , `yzpanelvisible` , `zautolimitmargin` , `zgridcolor` , `zgridvisible` , `zgridwidth` , `zlabel` , `zlabelalign` ,",
+    "question": "What are some of the parameters related to the z-axis in a visualization tool?",
+    "answer": "Some parameters related to the z-axis in a visualization tool include: zautolimitmargin, zgridcolor, zgridvisible, zgridwidth, zlabel, and zlabelalign."
+  },
+  {
+    "source": "https://docs.makie.org/dev/api/index.html::Supertype Hierarchy/Examples",
+    "context": "`alignmode` , `cell_color_active` , `cell_color_hover` , `cell_color_inactive_even` , `cell_color_inactive_odd` , `direction` , `dropdown_arrow_color` , `dropdown_arrow_size` , `fontsize` , `halign` , `height` , `i_selected` , `is_open` , `options` ,",
+    "question": "What are some of the properties or attributes associated with the dropdown component in a user interface system?",
+    "answer": "Some properties or attributes associated with the dropdown component in a user interface system include `alignmode`, `cell_color_active`, `cell_color_hover`, `cell_color_inactive_even`, `cell_color_inactive_odd`, `direction`, `dropdown_arrow_color`, `dropdown_arrow_size`, `fontsize`, `halign`, `height`, `i_selected`, `is_open`, and `options`."
+  }
+]

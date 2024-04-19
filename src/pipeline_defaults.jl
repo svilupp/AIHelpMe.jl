@@ -14,11 +14,23 @@ Currently available packs are:
 """
 const ALLOWED_PACKS = [:julia, :tidier, :makie]
 
+"""
+    LOADED_PACKS
+
+The knowledge packs that are currently loaded in the index.
+"""
+const LOADED_PACKS = Ref{Vector{Symbol}}(@load_preference("LOADED_PACKS",
+    default=["julia"]) .|> Symbol)
+
 ### Globals for configuration
 # These serve as reference models to be injected in the absence of inputs, 
 # but the actual used for the query is primarily provided aihelpme directly or via the active RAG_KWARGS
-const MODEL_CHAT = "gpt4t"
-const MODEL_EMBEDDING = "text-embedding-3-large"
+const MODEL_CHAT = @load_preference("MODEL_CHAT",
+    default="gpt4t")
+const MODEL_EMBEDDING = @load_preference("MODEL_EMBEDDING",
+    default="text-embedding-3-large")
+const EMBEDDING_DIMENSION = @load_preference("EMBEDDING_DIMENSION",
+    default=1024)
 
 # Loaded up with `update_pipeline!` later once RAG CONFIGURATIONS is populated
 const RAG_KWARGS = Ref{NamedTuple}()
@@ -51,7 +63,7 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
                 rephraser_kwargs = (;
                     model = MODEL_CHAT),
                 embedder_kwargs = (;
-                    truncate_dimension = 1024,
+                    truncate_dimension = EMBEDDING_DIMENSION,
                     model = MODEL_EMBEDDING),
                 tagger_kwargs = (;
                     model = MODEL_CHAT)),
@@ -59,7 +71,7 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
                 answerer_kwargs = (;
                     model = MODEL_CHAT),
                 embedder_kwargs = (;
-                    truncate_dimension = 1024,
+                    truncate_dimension = EMBEDDING_DIMENSION,
                     model = MODEL_EMBEDDING),
                 refiner_kwargs = (;
                     model = MODEL_CHAT))))
@@ -76,7 +88,7 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
                 rephraser_kwargs = (;
                     model = MODEL_CHAT),
                 embedder_kwargs = (;
-                    truncate_dimension = 1024,
+                    truncate_dimension = EMBEDDING_DIMENSION,
                     model = MODEL_EMBEDDING),
                 tagger_kwargs = (;
                     model = MODEL_CHAT)),
@@ -84,7 +96,7 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
                 answerer_kwargs = (;
                     model = MODEL_CHAT),
                 embedder_kwargs = (;
-                    truncate_dimension = 1024,
+                    truncate_dimension = EMBEDDING_DIMENSION,
                     model = MODEL_EMBEDDING),
                 refiner_kwargs = (;
                     model = MODEL_CHAT))))
@@ -129,8 +141,7 @@ end
 
 """
     update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
-        model_embedding = MODEL_EMBEDDING, verbose::Bool = true, truncate_dimension::Union{
-            Nothing, Integer} = nothing)
+        model_embedding = MODEL_EMBEDDING, verbose::Bool = true, embedding_dimension::Integer = EMBEDDING_DIMENSION)
 
 Updates the default RAG pipeline to one of the pre-configuration options and sets the requested chat and embedding models.
 
@@ -140,6 +151,7 @@ See available pipeline options via `keys(RAG_CONFIGURATIONS)`.
 
 Logic:
 - Updates the global `MODEL_CHAT` and `MODEL_EMBEDDING` to the requested models.
+- Update the global `EMBEDDING_DIMENSION` for the requested embedding dimensionality after truncation (`embedding_dimension`).
 - Updates the global `RAG_CONFIG` and `RAG_KWARGS` to the requested `option`.
 - Updates the global `LOADED_CONFIG_KEY` to the configuration key for the given `option` and `kwargs` (used by the artifact system to download the correct knowledge packs).
 
@@ -150,34 +162,34 @@ update_pipeline!(:bronze; model_chat = "gpt4t")
 You don't need to re-load your index if you just change the chat model.
 
 You can switch the pipeline to Ollama models:
-Note: only 1 Ollama embedding model is supported for embeddings now! You must select "nomic-embed-text" and if you do, set `truncate_dimension=0` (maximum dimension available)
+Note: only 1 Ollama embedding model is supported for embeddings now! You must select "nomic-embed-text" and if you do, set `embedding_dimension=0` (maximum dimension available)
 
 ```julia
-update_pipeline!(:bronze; model_chat = "mistral:7b-instruct-v0.2-q4_K_M",model_embedding="nomic-embed-text", truncate_dimension=0)
+update_pipeline!(:bronze; model_chat = "llama3", model_embedding="nomic-embed-text", embedding_dimension=0)
 
 # You must download the corresponding knowledge packs via `load_index!` (because you changed the embedding model)
-load_index!(:julia) # or whichever other packs you want!
+load_index!()
 ```
 """
 function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
-        model_embedding = MODEL_EMBEDDING, verbose::Bool = true, truncate_dimension::Union{
-            Nothing, Integer} = nothing)
-    global RAG_CONFIGURATIONS, RAG_CONFIG, RAG_KWARGS, MODEL_CHAT, MODEL_EMBEDDING, LOADED_CONFIG_KEY
+        model_embedding = MODEL_EMBEDDING, verbose::Bool = true,
+        embedding_dimension::Integer = EMBEDDING_DIMENSION)
+    global RAG_CONFIGURATIONS, RAG_CONFIG, RAG_KWARGS, MODEL_CHAT, MODEL_EMBEDDING, EMBEDDING_DIMENSION, LOADED_CONFIG_KEY
+
     @assert haskey(RAG_CONFIGURATIONS, option) "Invalid option: $option. Select one of: $(join(keys(RAG_CONFIGURATIONS),", "))"
-    @assert truncate_dimension in [nothing, 0, 1024, 3072] "Invalid truncate_dimension: $(truncate_dimension). Supported: 0, 1024, 3072. See the available artifacts."
+    @assert embedding_dimension in [0, 1024, 3072] "Invalid embedding_dimension: $(embedding_dimension). Supported: 0, 1024, 3072. See the available artifacts."
     ## Model-specific checks, they do not fail but at least warn
-    if model_embedding == "nomic-embed-text" && !isnothing(truncate_dimension) &&
-       truncate_dimension != 0
-        @warn "Invalid configuration for knowledge packs! For `nomic-embed-text`, truncate_dimension must be 0. See the available artifacts."
+    if model_embedding == "nomic-embed-text" && !iszero(embedding_dimension)
+        @warn "Invalid configuration for knowledge packs! For `nomic-embed-text`, `embedding_dimension` must be 0. See the available artifacts."
     end
-    if model_embedding == "text-embedding-3-large" && !isnothing(truncate_dimension) &&
-       truncate_dimension ∉ [1024, 0]
-        @warn "Invalid configuration for knowledge packs! For `text-embedding-3-large`, truncate_dimension must be 0 or 1024. See the available artifacts."
+    if model_embedding == "text-embedding-3-large" && embedding_dimension ∉ [1024, 0]
+        @warn "Invalid configuration for knowledge packs! For `text-embedding-3-large`, `embedding_dimension` must be 0 or 1024. See the available artifacts."
     end
 
     ## Update model references
     MODEL_CHAT = model_chat
     MODEL_EMBEDDING = model_embedding
+    EMBEDDING_DIMENSION = embedding_dimension
 
     config = RAG_CONFIGURATIONS[option][:config]
     kwargs = RAG_CONFIGURATIONS[option][:kwargs]
@@ -191,9 +203,9 @@ function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
         :model, model_embedding
     )
     ## change truncate_embeddings
-    if !isnothing(truncate_dimension)
+    if !isnothing(embedding_dimension)
         kwargs = setpropertynested(
-            kwargs, [:embedder_kwargs], :truncate_dimension, truncate_dimension)
+            kwargs, [:embedder_kwargs], :truncate_dimension, embedding_dimension)
     end
 
     ## Set the options

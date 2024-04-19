@@ -121,6 +121,9 @@ All setup should take less than 5 minutes!
 > [!TIP]
 > Your results will significantly improve if you enable re-ranking of the context to be provided to the model (eg, `aihelp(..., rerank=true)`) or change pipeline to `update_pipeline!(:silver)`. It requires setting up Cohere API key but it's free for community use.
 
+> [!TIP]
+> Do you want to safely execute the generated code? Use `AICode` from `PromptingTools.Experimental.AgentToolsAI.`. It can executed the code in a scratch module and catch errors if they happen (eg, apply directly to `AIMessage` response like `AICode(msg)`).
+
 Noticed some weird answers? Please let us know! See the section "Help Us Improve and Debug" in the Advanced section of the docs!
 
 ## How to Obtain API Keys
@@ -158,7 +161,7 @@ f(Int8(2))
 # we get: ERROR: MethodError: no method matching f(::Int8)
 
 # Help is here:
-aihelp"What does this error mean? $err" # Note the $err to interpolate the stacktrace
+aihelp"What does this error mean? \$err" # Note the $err to interpolate the stacktrace
 ```
 
 ```plaintext
@@ -221,10 +224,17 @@ A: Not at the moment. It might be possible in the future, as PromptingTools.jl s
 **Q: Why do we need Cohere API Key?**
 A: Cohere's API is used to re-rank the best matching snippets from the documentation. It's free to use in limited quantities (ie, ~thousand requests per month), which should be enough for most users. Re-ranking improves the quality and accuracy of the answers.
 
+**Q: Why do we need Tavily API Key?**
+A: Tavily's API is used to search the best matching snippets from the documentation. It's free to use in limited quantities (ie, ~thousand requests per month), which should be enough for most users. Searching improves the quality and accuracy of the answers.
+
+**Q: Can we use Ollama (locally-hosted) models?**
+A: Yes, see the Advanced section in the docs.
+
 ## Future Directions
 
 AIHelpMe is continuously evolving. Future updates may include:
-- Tools to trace the provenance of answers (ie, where did the answer come from?).
+- GUI interface (I'm looking at you, Stipple.jl!)
+- Better tools to trace the provenance of answers (ie, where did the answer come from?).
 - Creation of a gold standard Q&A dataset for evaluation.
 - Refinement of the RAG ingestion pipeline for optimized chunk processing and deduplication.
 - Introduction of context filtering to focus on specific modules.
@@ -232,4 +242,4 @@ AIHelpMe is continuously evolving. Future updates may include:
 - Enhancement of the marginal information provided by the RAG context.
 - Expansion of content sources beyond docstrings, potentially including documentation sites and community resources like Discourse or Slack posts.
 
-Please note that this is merely a pre-release to gauge the interest in this project.
+Please note that this is merely a pre-release - we still have a long way to go...
