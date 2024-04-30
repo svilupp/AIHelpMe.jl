@@ -17,11 +17,11 @@ AIHelpMe harnesses the power of Julia's extensive documentation and advanced AI 
 
 ## Installation
 
-To install AIHelpMe, use the Julia package manager and the address of the repository (it's not yet registered):
+To install AIHelpMe, use the Julia package manager and the package name:
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/svilupp/AIHelpMe.jl")
+Pkg.add("AIHelpMe")
 ```
 
 **Prerequisites:**
