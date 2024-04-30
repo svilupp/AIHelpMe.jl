@@ -49,11 +49,11 @@ Most importantly, AIHelpMe is designed to be uniquely yours! You can customize t
 
 ## Getting Started
 
-To install AIHelpMe, use the Julia package manager and the address of the repository (it's not yet registered):
+To install AIHelpMe, use the Julia package manager and the package name:
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/svilupp/AIHelpMe.jl")
+Pkg.add("AIHelpMe")
 ```
 
 You'll need to have the OpenAI API key with charged credit (see the [How to Obtain API Keys](@ref)).
