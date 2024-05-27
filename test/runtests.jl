@@ -3,6 +3,7 @@ using PromptingTools
 using PromptingTools.Experimental.RAGTools
 const PT = PromptingTools
 const RT = PromptingTools.Experimental.RAGTools
+using PromptingTools: HTTP, JSON3
 using HDF5, Serialization
 using Test
 using Aqua

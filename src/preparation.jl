@@ -97,16 +97,20 @@ function RT.build_index(mod::Module; verbose::Int = 1, kwargs...)
     ## Extract current configuration
     chunker_kwargs_ = (; sources = all_sources)
     chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
-                     merge(kwargs.chunker_kwargs, chunker_kwargs_) : chunker_kwargs_
+                     merge(kwargs[:chunker_kwargs], chunker_kwargs_) : chunker_kwargs_
 
     embedder_kwargs_ = RT.getpropertynested(
         RAG_KWARGS[], [:retriever_kwargs], :embedder_kwargs, nothing)
+    # Note: force Matrix{Bool} structure for now, switch to Int8-based binary embeddings with the latest PT
     embedder_kwargs = haskey(kwargs, :embedder_kwargs) ?
-                      merge(kwargs.embedder_kwargs, embedder_kwargs_) : embedder_kwargs_
+                      merge(
+        (; return_type = Matrix{Bool}), embedder_kwargs_, kwargs[:embedder_kwargs]) :
+                      merge((; return_type = Matrix{Bool}), embedder_kwargs_)
 
     new_index = RT.build_index(RAG_CONFIG[].indexer, all_docs;
-        embedder_kwargs, chunker = TextChunker(), chunker_kwargs,
-        verbose, index_id = nameof(mod), kwargs...)
+        kwargs...,
+        embedder_kwargs, chunker = RT.TextChunker(), chunker_kwargs,
+        verbose, index_id = nameof(mod))
 end
 
 """
@@ -124,14 +128,18 @@ function RT.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::In
     ## Extract current configuration
     chunker_kwargs_ = (; sources = all_sources)
     chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
-                     merge(kwargs.chunker_kwargs, chunker_kwargs_) : chunker_kwargs_
+                     merge(kwargs[:chunker_kwargs], chunker_kwargs_) : chunker_kwargs_
 
+    # Note: force Matrix{Bool} structure for now, switch to Int8-based binary embeddings with the latest PT
     embedder_kwargs_ = RT.getpropertynested(
         RAG_KWARGS[], [:retriever_kwargs], :embedder_kwargs, nothing)
     embedder_kwargs = haskey(kwargs, :embedder_kwargs) ?
-                      merge(kwargs.embedder_kwargs, embedder_kwargs_) : embedder_kwargs_
+                      merge(
+        (; return_type = Matrix{Bool}), embedder_kwargs_, kwargs[:embedder_kwargs]) :
+                      merge((; return_type = Matrix{Bool}), embedder_kwargs_)
 
     new_index = RT.build_index(RAG_CONFIG[].indexer, all_docs;
-        embedder_kwargs, chunker = TextChunker(), chunker_kwargs,
-        verbose, index_id = nameof(mod), kwargs...)
+        kwargs...,
+        embedder_kwargs, chunker = RT.TextChunker(), chunker_kwargs,
+        verbose, index_id = :all_modules)
 end
