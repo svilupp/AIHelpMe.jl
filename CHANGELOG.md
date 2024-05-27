@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.1.1]
+
+### Fixed
+- Fixed a bug in `build_index` where imports were missing and keywords were not passed properly in all scenarios.
+
 ## [0.1.0]
 
 ### Added
