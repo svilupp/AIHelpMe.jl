@@ -17,7 +17,7 @@ makedocs(;
         repo = "https://github.com/svilupp/AIHelpMe.jl",
         devbranch = "main",
         devurl = "dev",
-        deploy_url = "svilupp.github.io/AIHelpMe.jl"
+        deploy_url = "https://siml.earth/AIHelpMe.jl"
     ),
     draft = false,
     source = "src",
