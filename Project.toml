@@ -1,7 +1,7 @@
 name = "AIHelpMe"
 uuid = "01402e1f-dc83-4213-a98b-42887d758baa"
 authors = ["J S <49557684+svilupp@users.noreply.github.com> and contributors"]
-version = "0.1.1"
+version = "0.2.0"
 
 [deps]
 HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
@@ -25,7 +25,7 @@ LazyArtifacts = "<0.0.1, 1"
 LinearAlgebra = "<0.0.1, 1"
 PrecompileTools = "1"
 Preferences = "1"
-PromptingTools = "0.22"
+PromptingTools = "0.37"
 REPL = "1"
 SHA = "0.7"
 Serialization = "<0.0.1, 1"
