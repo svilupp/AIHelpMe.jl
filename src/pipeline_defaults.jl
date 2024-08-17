@@ -9,10 +9,13 @@ const MAIN_INDEX = Ref{Union{Nothing, RT.AbstractChunkIndex}}(nothing)
 
 Currently available packs are:
 - `:julia` - Julia documentation, standard library docstrings and a few extras (for Julia v1.10)
-- `:tidier` - Tidier.jl organization documentation (as of 7th April 2024)
-- `:makie` - Makie.jl organization documentation (as of 30th March 2024)
+- `:juliadata` - JuliaData.jl organization documentation, eg, DataFrames.jl and similar packages
+- `:plots` - Plots.jl organization documentation, eg, Plots.jl, StatsPlots.jl, etc
+- `:makie` - Makie.jl organization documentation
+- `:tidier` - Tidier.jl organization documentation
+- `:sciml` - SciML organization documentation
 """
-const ALLOWED_PACKS = [:julia, :tidier, :makie]
+const ALLOWED_PACKS = [:julia, :juliadata, :tidier, :sciml, :plots, :makie]
 
 """
     LOADED_PACKS
