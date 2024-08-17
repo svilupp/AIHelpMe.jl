@@ -94,8 +94,9 @@ function RT.build_index(mod::Module; verbose::Int = 1, kwargs...)
     ## Extract docstrings
     all_docs, all_sources = docextract(mod)
 
-    ## Extract current configuration
-    chunker_kwargs_ = (; sources = all_sources)
+    ## Extract current configuration 
+    # New default chunk size 384 (unless user provides different)
+    chunker_kwargs_ = (; sources = all_sources, max_length = 384)
     chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
                      merge(kwargs[:chunker_kwargs], chunker_kwargs_) : chunker_kwargs_
 
@@ -126,7 +127,8 @@ function RT.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::In
 
     all_docs, all_sources = docextract(modules)
     ## Extract current configuration
-    chunker_kwargs_ = (; sources = all_sources)
+    # New default chunk size 384 (unless user provides different)
+    chunker_kwargs_ = (; sources = all_sources, max_length = 384)
     chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
                      merge(kwargs[:chunker_kwargs], chunker_kwargs_) : chunker_kwargs_
 

@@ -1,11 +1,3 @@
-[juliaextra]
-git-tree-sha1 = "66e744fbf39bab71c2f63b6877a506fee8fbc9a5"
-lazy = true
-
-    [[juliaextra.download]]
-    sha256 = "61133afa7e06fda133f07164c57190a5b922f8f2a1aa17c3f8a628b5cf752512"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/juliaextra__v1.10.0__ada1.0.tar.gz"
-
 ["julia__textembedding3large-0-Float32"]
 git-tree-sha1 = "a105a2482296fa0a80ce0c76677cc9ef673be70e"
 lazy = true

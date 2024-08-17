@@ -129,7 +129,8 @@ function update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],
     ## )
 
     ## Chunking
-    chunker_kwargs_ = (; sources = all_sources)
+    # New default - chunk size of 384 unless user provides different value
+    chunker_kwargs_ = (; sources = all_sources, max_length = 384)
     chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
                      merge(kwargs.chunker_kwargs, chunker_kwargs_) : chunker_kwargs_
     output_chunks, output_sources = RT.get_chunks(
