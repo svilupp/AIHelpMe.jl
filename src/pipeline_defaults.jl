@@ -14,6 +14,8 @@ Currently available packs are:
 - `:makie` - Makie.jl organization documentation
 - `:tidier` - Tidier.jl organization documentation
 - `:sciml` - SciML organization documentation
+
+These packs have been sourced and packaged with DocsScraper.jl.
 """
 const ALLOWED_PACKS = [:julia, :juliadata, :tidier, :sciml, :plots, :makie]
 
@@ -178,6 +180,11 @@ function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
         model_embedding = MODEL_EMBEDDING, verbose::Bool = true,
         embedding_dimension::Integer = EMBEDDING_DIMENSION)
     global RAG_CONFIGURATIONS, RAG_CONFIG, RAG_KWARGS, MODEL_CHAT, MODEL_EMBEDDING, EMBEDDING_DIMENSION, LOADED_CONFIG_KEY
+
+    ## WARN about limited support for nomic-embed-text -- we need to create repeatable process
+    if model_embedding == "nomic-embed-text"
+        @warn "Knowledge packs for `nomic-embed-text` are currently not built automatically, so they might be missing / outdated. Please switch to OpenAI `text-embedding-3-large` for the best experience."
+    end
 
     @assert haskey(RAG_CONFIGURATIONS, option) "Invalid option: $option. Select one of: $(join(keys(RAG_CONFIGURATIONS),", "))"
     @assert embedding_dimension in [0, 1024, 3072] "Invalid embedding_dimension: $(embedding_dimension). Supported: 0, 1024, 3072. See the available artifacts."
