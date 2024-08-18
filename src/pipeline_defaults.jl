@@ -156,7 +156,7 @@ function update_pipeline!(
         @warn "Invalid configuration for knowledge packs! For `nomic-embed-text`, `embedding_dimension` must be 0. See the available artifacts."
     end
     if model_embedding == "text-embedding-3-large" &&
-       (embedding_dimension ∉ [1024, 0] || !isnothing(embedding_dimension))
+       !(embedding_dimension in [1024, 0] || isnothing(embedding_dimension))
         @warn "Invalid configuration for knowledge packs! For `text-embedding-3-large`, `embedding_dimension` must be 0 or 1024. See the available artifacts."
     end
 
@@ -184,7 +184,6 @@ function update_pipeline!(
     ## Update GLOBAL variables
     MODEL_CHAT = model_chat
     MODEL_EMBEDDING = model_embedding
-    @info embedding_dimension
     EMBEDDING_DIMENSION = embedding_dimension
 
     ## Set the options
