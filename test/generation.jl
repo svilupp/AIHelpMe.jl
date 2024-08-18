@@ -26,14 +26,14 @@ using PromptingTools: TestEchoOpenAISchema
         sources = ["source1", "source2"])
 
     # remember prior settings
-    current_index = MAIN_INDEX
+    current_index = AIHelpMe.MAIN_INDEX
     current_chat_model = MODEL_CHAT
     current_emb_model = MODEL_EMBEDDING
     current_dimensionality = getpropertynested(
         RAG_KWARGS, [:embedder_kwargs], :truncate_dimension, nothing)
 
     ## Change for our test
-    MAIN_INDEX = index
+    AIHelpMe.MAIN_INDEX = index
     update_pipeline!(:bronze; model_chat = "mockgen",
         model_embedding = "mockemb", embedding_dimension = 0)
 
@@ -72,5 +72,5 @@ using PromptingTools: TestEchoOpenAISchema
     ## Return previous settings
     update_pipeline!(:bronze; model_chat = current_chat_model,
         model_embedding = current_emb_model, embedding_dimension = current_dimensionality)
-    MAIN_INDEX = current_index
+    AIHelpMe.MAIN_INDEX = current_index
 end
