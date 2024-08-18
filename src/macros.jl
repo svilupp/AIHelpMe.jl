@@ -37,7 +37,7 @@ macro aihelp_str(user_question, flags...)
     model = isempty(flags) ? MODEL_CHAT : only(flags)
     prompt = Meta.parse("\"$(escape_string(user_question))\"")
     quote
-        result = aihelp($(esc(RAG_CONFIG[])), $(esc(MAIN_INDEX[])), $(esc(prompt));
+        result = aihelp($(esc(RAG_CONFIG)), $(esc(MAIN_INDEX)), $(esc(prompt));
             model = $(esc(model)),
             return_all = true)
         conv = haskey(result.conversations, :final_answer) ?

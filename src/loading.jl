@@ -74,6 +74,7 @@ function load_index!(
     indices = RT.ChunkIndex[]
     for pack in packs
         artifact_path = @artifact_str("$(pack)__$(config_key)")
+        ## Try `pack.hdf5` name, if not found, try any single hdf5 file
         path = if isfile(joinpath(artifact_path, "pack.hdf5"))
             joinpath(artifact_path, "pack.hdf5")
         else
