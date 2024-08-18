@@ -61,8 +61,9 @@ load_index!(:julia)
 
 Or multiple packs
 ```julia
-load_index!([:julia, :makie,:tidier])
+load_index!([:julia, :juliadata, :makie, :tidier, :plots, :sciml])
 ```
+But we recommend loading ONLY the packs you expect to need - unnecessary packs introduce noise.
 """
 function load_index!(
         packs::Vector{Symbol} = LOADED_PACKS[]; verbose::Bool = true, kwargs...)
@@ -73,7 +74,12 @@ function load_index!(
     indices = RT.ChunkIndex[]
     for pack in packs
         artifact_path = @artifact_str("$(pack)__$(config_key)")
-        index = load_index_hdf5(joinpath(artifact_path, "pack.hdf5"); verbose = false)
+        path = if isfile(joinpath(artifact_path, "pack.hdf5"))
+            joinpath(artifact_path, "pack.hdf5")
+        else
+            filter(x -> endswith(x, "hdf5"), readdir(artifact_path; join = true)) |> only
+        end
+        index = load_index_hdf5(path; verbose = false)
         push!(indices, index)
     end
     # TODO: dedupe the index
