@@ -202,7 +202,7 @@ We apply a Retrieval Augment Generation (RAG) pattern, ie,
 
 This ensures that the answers are not only based on general AI knowledge but are also specifically tailored to Julia's ecosystem and best practices.
 
-The "knowledge packs" are sourced from documentation sites and then processed with DocsScraper.jl.
+The "knowledge packs" are sourced from documentation sites and then processed with [DocsScraper.jl](https://github.com/JuliaGenAI/DocsScraper.jl).
 
 > [!NOTE]
 > If you would like to set up an automated process to create a new knowledge pack for some package/organization, let us know!
@@ -234,6 +234,9 @@ A: Tavily's API is used to search the best matching snippets from the documentat
 
 **Q: Can we use Ollama (locally-hosted) models?**
 A: Yes, see the Advanced section in the docs.
+
+**Q: How can I build knowledge packs for my package(s)?**
+A: Check out package [DocsScraper.jl](https://github.com/JuliaGenAI/DocsScraper.jl). It's what we use to build the knowledge packs loaded in this package!
 
 ## Future Directions
 
