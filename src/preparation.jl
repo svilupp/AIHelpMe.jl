@@ -94,20 +94,21 @@ function RT.build_index(mod::Module; verbose::Int = 1, kwargs...)
     ## Extract docstrings
     all_docs, all_sources = docextract(mod)
 
-    ## Extract current configuration
-    chunker_kwargs_ = (; sources = all_sources)
+    ## Extract current configuration 
+    # New default chunk size 384 (unless user provides different)
+    chunker_kwargs_ = (; sources = all_sources, max_length = 384)
     chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
                      merge(kwargs[:chunker_kwargs], chunker_kwargs_) : chunker_kwargs_
 
     embedder_kwargs_ = RT.getpropertynested(
-        RAG_KWARGS[], [:retriever_kwargs], :embedder_kwargs, nothing)
+        RAG_KWARGS, [:retriever_kwargs], :embedder_kwargs, nothing)
     # Note: force Matrix{Bool} structure for now, switch to Int8-based binary embeddings with the latest PT
     embedder_kwargs = haskey(kwargs, :embedder_kwargs) ?
                       merge(
         (; return_type = Matrix{Bool}), embedder_kwargs_, kwargs[:embedder_kwargs]) :
                       merge((; return_type = Matrix{Bool}), embedder_kwargs_)
 
-    new_index = RT.build_index(RAG_CONFIG[].indexer, all_docs;
+    new_index = RT.build_index(RAG_CONFIG.indexer, all_docs;
         kwargs...,
         embedder_kwargs, chunker = RT.TextChunker(), chunker_kwargs,
         verbose, index_id = nameof(mod))
@@ -126,19 +127,20 @@ function RT.build_index(modules::Vector{Module} = Base.Docs.modules; verbose::In
 
     all_docs, all_sources = docextract(modules)
     ## Extract current configuration
-    chunker_kwargs_ = (; sources = all_sources)
+    # New default chunk size 384 (unless user provides different)
+    chunker_kwargs_ = (; sources = all_sources, max_length = 384)
     chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
                      merge(kwargs[:chunker_kwargs], chunker_kwargs_) : chunker_kwargs_
 
     # Note: force Matrix{Bool} structure for now, switch to Int8-based binary embeddings with the latest PT
     embedder_kwargs_ = RT.getpropertynested(
-        RAG_KWARGS[], [:retriever_kwargs], :embedder_kwargs, nothing)
+        RAG_KWARGS, [:retriever_kwargs], :embedder_kwargs, nothing)
     embedder_kwargs = haskey(kwargs, :embedder_kwargs) ?
                       merge(
         (; return_type = Matrix{Bool}), embedder_kwargs_, kwargs[:embedder_kwargs]) :
                       merge((; return_type = Matrix{Bool}), embedder_kwargs_)
 
-    new_index = RT.build_index(RAG_CONFIG[].indexer, all_docs;
+    new_index = RT.build_index(RAG_CONFIG.indexer, all_docs;
         kwargs...,
         embedder_kwargs, chunker = RT.TextChunker(), chunker_kwargs,
         verbose, index_id = :all_modules)

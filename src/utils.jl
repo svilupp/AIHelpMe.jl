@@ -37,7 +37,7 @@ It can be useful to see the sources/references used by the AI model to generate 
 
 If you're using `aihelp()` make sure to set `return_all = true` to return the RAGResult.
 """
-last_result() = LAST_RESULT[]
+last_result() = LAST_RESULT
 
 "Hacky function to load a HDF5 file into a ChunkIndex object. Only bare-bone ChunkIndex is supported right now."
 function load_index_hdf5(path::AbstractString; verbose::Bool = true)

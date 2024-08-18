@@ -1,0 +1,194 @@
+[
+    {
+        "source": "https://docs.juliahub.com/GraphPlot/bUwXr/0.6.0/::Usage/Show plot",
+        "context": "When using an IDE such as VSCode, `Cairo.jl` is required to visualize the plot inside the IDE.\nWhen using the REPL, `gplothtml` will allow displaying the plot on a browser.",
+        "question": "What is required to visualize the plot inside the IDE when using VSCode?",
+        "answer": "When using an IDE such as VSCode, `Cairo.jl` is required to visualize the plot inside the IDE."
+    },
+    {
+        "source": "https://docs.juliahub.com/GraphPlot/bUwXr/0.6.0/autodocs",
+        "context": "Repulsive force:  f_r(d) = -k^2 / d^2",
+        "question": "What is the expression for the repulsive force and how does it relate to distance?",
+        "answer": "The expression for the repulsive force is f_r(d) = -k^2 / d^2, and it indicates that the force is inversely proportional to the square of the distance."
+    },
+    {
+        "source": "https://docs.juliahub.com/GraphPlot/bUwXr/0.6.0::Usage/Control the node color",
+        "context": "Feed the keyword argument `nodefillc` a color array, ensure each node has a color. `length(nodefillc)` must be equal `|V|` . ```julia using   Colors \n\n # Generate n maximally distinguishable colors in LCHab space. \n nodefillc   =   distinguishable_colors ( nv ( g ),   colorant\"blue\" ) \n gplot ( g ,   nodefillc = nodefillc ,   nodelabel = nodelabel ,   nodelabeldist = 1.8 ,   nodelabelangleoffset = \u03c0 / 4 )```",
+        "question": "What does the keyword argument `nodefillc` represent when plotting a graph in Julia?",
+        "answer": "The keyword argument `nodefillc` represents an array of colors assigned to each node in the graph. The length of `nodefillc` must be equal to the number of vertices `|V|` in the graph."
+    },
+    {
+        "source": "https://docs.juliahub.com/GraphPlot/bUwXr/0.6.0/::Keyword Arguments",
+        "context": "`nodesize` Relative size for the nodes, can be a Vector. Default: `1.0` `nodelabel` Labels for the vertices, a Vector or nothing. Default: `nothing` `nodelabelc` Color for the node labels, can be a Vector. Default: `colorant\"black\"` `nodelabeldist` Distances for the node labels from center of nodes. Default: `0.0` `nodelabelangleoffset` Angle offset for the node labels. Default: `\u03c0/4.0` `NODELABELSIZE` Largest fontsize for the vertice labels. Default: `4.0`",
+        "question": "What are the default values of 'nodesize' and 'nodelabel'?",
+        "answer": "The default value of 'nodesize' is `1.0`, and the default value of 'nodelabel' is `nothing`. "
+    },
+    {
+        "source": "https://docs.juliahub.com/GraphPlot/bUwXr/0.6.0/::Usage/Save to figure",
+        "context": "```julia using   Compose \n # save to pdf \n draw ( PDF ( \"karate.pdf\" ,   16 cm ,   16 cm ),   gplot ( g )) \n # save to png \n draw ( PNG ( \"karate.png\" ,   16 cm ,   16 cm ),   gplot ( g )) \n # save to svg \n draw ( SVG ( \"karate.svg\" ,   16 cm ,   16 cm ),   gplot ( g )) \n # alternate way of saving to svg without loading Compose \n saveplot ( gplot ( g ,   plot_size   =   ( 16 cm ,   16 cm )),   \"karate.svg\" )```",
+        "question": "What are the different formats in which the plot 'g' is saved and what tools/libraries are used for saving them?",
+        "answer": "The plot 'g' is saved in three different formats: PDF, PNG, and SVG. The Compose library is used to save the plot in PDF, PNG, and the first method for SVG format. For the second method of saving to SVG, the saveplot function is used without loading Compose."
+    },
+    {
+        "source": "https://docs.juliaplots.org/latest/generated/attributes_axis::Axis",
+        "context": "minorgrid_linewidth, minorgrid_lw, minorgrid_width, minorgridlinewidth, minorgridlw, minorgridwidth `0.5` Real Width of the minor grid lines (in pixels). minorgridstyle minorgrid_linestyle, minorgrid_ls, minorgrid_style, minorgridlinestyle, minorgridls, minorgridstyle `:solid` Symbol Style of the minor grid lines. Choose from [:auto, :solid, :dash, :dot, :dashdot, :dashdotdot]. minorticks `:auto` Integer Number of minor intervals between major ticks.",
+        "question": "What are the customizable properties available for minor grid lines, and what are their default values?",
+        "answer": "The customizable properties for minor grid lines include width, style, and the number of minor intervals between major ticks. The default width is 0.5 pixels, specified by minorgrid_linewidth or its variants. The default style is solid, specified by minorgridstyle or its variants. The default number of minor intervals between major ticks is auto, specified by minorticks."
+    },
+    {
+        "source": "https://docs.juliaplots.org/latest/api::References/Public Interface/Plot specification",
+        "context": "```julia-repl julia> vspan(1:6)``` ```julia vspan(x)``` Draw a rectangle between the vertical line at position `x[1]` and the vertical line at position `x[2]` . If `length(x) \u2265 4` , then further rectangles are drawn between `x[3]` and `x[4]` , `x[5]` and `x[6]` , and so on. If `length(x)` is odd, then the last entry of `x` is ignored. Example ```julia-repl julia> vspan(1:6)``` ```julia wireframe(x,y,z)\nwireframe!(x,y,z)``` Draw a 3D wireframe plot. Example",
+        "question": "How does the function `vspan` behave when given a range with an odd length?",
+        "answer": "When the length of the range `x` is odd, the last entry of `x` is ignored."
+    },
+    {
+        "source": "https://docs.juliaplots.org/stable/gallery/unicodeplots/generated/unicodeplots#unicodeplots_attributes::Supported attribute values",
+        "context": "Supported values for linetype: `:contour` , `:heatmap` , `:histogram2d` , `:image` , `:mesh3d` , `:path` , `:path3d` , `:scatter` , `:scatter3d` , `:shape` , `:spy` , `:straightline` , `:surface` , `:wireframe` Supported values for linestyle: `:auto` , `:solid`",
+        "question": "What are some of the supported values for `linetype` and `linestyle`?",
+        "answer": "Some of the supported values for `linetype` are `:contour`, `:heatmap`, `:histogram2d`, `:image`, `:mesh3d`, `:path`, `:path3d`, `:scatter`, `:scatter3d`, `:shape`, `:spy`, `:straightline`, `:surface`, and `:wireframe`. For `linestyle`, the supported values are `:auto` and `:solid`."
+    },
+    {
+        "source": "https://docs.juliaplots.org/stable/gallery/pgfplotsx/generated/pgfplotsx-ref065.jl",
+        "context": "legs = (:topleft, :top, :topright, :left, nothing, :right, :bottomleft, :bottom, :bottomright)\nleg_plots(; kw...) = begin\n        map((leg->begin\n                    plot([0:1, reverse(0:1)]; marker = :circle, ticks = :none, leg_title = leg, leg = if leg isa Symbol\n                                Symbol(:outer, leg)\n                            else\n                                :none\n                            end, kw...)\n                end), legs)\n    end\n(w, h) = Plots._plot_defaults[:size]",
+        "question": "What is the purpose of the 'leg_plots' function and how does it determine the legend position?",
+        "answer": "The 'leg_plots' function is used to generate a series of plots with circle markers and no ticks, each labeled with one of the specified legend positions. It takes keyword arguments (:kw...) which are passed to the plot functions. For each legend position in the 'legs' tuple, the function creates a plot with its legend title specified by the 'leg' variable. If 'leg' is a Symbol, it sets the legend position to Symbol(:outer, leg); otherwise, it sets it to :none."
+    },
+    {
+        "source": "https://docs.juliaplots.org/latest/backends/::At a glance/UnicodePlots/Fine tuning",
+        "context": "3D up vector (azimuth and elevation are controlled using `Plots.jl` 's `camera` ) canvas Canvas type (see  Low-level Interface ) border Border type ( `:solid` , `:bold` , `:dashed` , `:dotted` , `:ascii` , `:none` ) blend Toggle canvas color blending ( `true` / `false` ) Series Type Keyword Description `all` colormap Colormap (see  Options ) `heatmap` , `spy` fix_ar Toggle fixing terminal aspect ratio ( `true` / `false` ) `surfaceplot`",
+        "question": "What options are available for controlling the aspect ratio and color blending in 3D plots?",
+        "answer": "The aspect ratio in 3D plots can be controlled using the `fix_ar` keyword, which toggles fixing the terminal aspect ratio with `true` or `false`. Color blending on the canvas can be toggled using the `blend` keyword, which accepts `true` or `false` as values."
+    },
+    {
+        "source": "https://docs.juliaplots.org/latest/layouts::Layouts",
+        "context": "# Add a histogram inset on the heatmap.\n# We set the (optional) position relative to bottom-right of the 1st subplot.\n# The call is `bbox(x, y, width, height, origin...)`, where numbers are treated as\n# \"percent of parent\".\nhistogram!(\n    randn(1000),\n    inset = (1, bbox(0.05, 0.05, 0.5, 0.25, :bottom, :right)),\n    ticks = nothing,\n    subplot = 3,\n    bg_inside = nothing\n)",
+        "question": "What is the intended effect of the 'histogram!' call, including the details of its inset positioning?",
+        "answer": "The 'histogram!' call aims to add a histogram inset to the heatmap. The inset is positioned relative to the bottom-right corner of the first subplot, with a bounding box specified by 'bbox(0.05, 0.05, 0.5, 0.25, :bottom, :right)', meaning the inset occupies 5% from the bottom, 5% from the right, and spans 50% of the width and 25% of the height of the parent."
+    },
+    {
+        "source": "https://docs.juliaplots.org/stable/generated/attributes_subplot::Subplot",
+        "context": "cbar_lims, cbarlims, clim, climits, color_limits, colorlimits `:auto` Union{Function, Symbol, Tuple{Real, Real}} Fixes the limits of the colorbar: values, `:auto`, or a function taking series data in and returning a NTuple{2,Real}. color_palette color_palettes, colorpalettes, palette `:auto` Union{Symbol, AbstractVector{Union{Integer, Symbol, ColorSchemes.ColorScheme, Colorant}}}",
+        "question": "What are the possible types of values that can be assigned to 'color_palette' and 'cbar_lims'?",
+        "answer": "'color_palette' can be assigned values of type Union{Symbol, AbstractVector{Union{Integer, Symbol, ColorSchemes.ColorScheme, Colorant}}}. 'cbar_lims' can be assigned values of type Union{Function, Symbol, Tuple{Real, Real}}."
+    },
+    {
+        "source": "https://docs.juliaplots.org/dev/ecosystem::Community packages/Reinforce",
+        "context": "`Reinforce.jl` is an interface for Reinforcement Learning. It is intended to connect modular environments, policies, and solvers with a simple interface.",
+        "question": "What is the primary purpose of Reinforce.jl?",
+        "answer": "The primary purpose of Reinforce.jl is to serve as an interface for Reinforcement Learning, connecting modular environments, policies, and solvers with a simple interface."
+    },
+    {
+        "source": "http://juliagraphs.org/GraphPlot.jl/index.html::Usage/Color the graph",
+        "context": "```julia # nodes membership \nmembership = [ 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 2 , 1 , 1 , 1 , 1 , 1 , 2 , 2 , 1 , 1 , 2 , 1 , 2 , 1 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 , 2 ]\nnodecolor = [colorant \"lightseagreen\" , colorant \"orange\" ]\n # membership color \nnodefillc = nodecolor[membership]\ngplot(g, nodefillc=nodefillc)```",
+        "question": "What code is used to assign colors to memberships and plot the graph in Julia?",
+        "answer": "The code assigns colors to graph memberships and plots it using Julia. Memberships are assigned through 'membership = [ ... ]', and colors via 'nodecolor = [colorant \"lightseagreen\" , colorant \"orange\" ]'. The variable 'nodefillc' is generated by mapping 'membership' values to 'nodecolor'. Finally, 'gplot(g, nodefillc=nodefillc)' plots the graph."
+    },
+    {
+        "source": "http://juliagraphs.org/GraphPlot.jl::Usage/Different layout/circular layout",
+        "context": "```julia gplot(g, layout=circular_layout, nodelabel=nodelabel)``` 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34",
+        "question": "What command is used to generate a graphical plot with a circular layout and node labels in Julia?",
+        "answer": "The command used is `gplot(g, layout=circular_layout, nodelabel=nodelabel)`."
+    },
+    {
+        "source": "http://juliagraphs.org/GraphPlot.jl/index.html::Usage/Control the node label size",
+        "context": "```julia nodelabelsize = nodesize\ngplot(g, nodelabelsize=nodelabelsize, nodesize=nodesize, nodelabel=nodelabel)``` 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34",
+        "question": "What is the purpose of using the `nodelabelsize` and `nodesize` parameters in the `gplot` function?",
+        "answer": "The `nodelabelsize` parameter is used to set the size of the labels on the nodes, while the `nodesize` parameter is used to control the size of the nodes themselves in the `gplot` function."
+    },
+    {
+        "source": "http://juliagraphs.org/GraphPlot.jl/::Usage/Save to figure",
+        "context": "```julia using Compose\n # save to pdf \ndraw(PDF( \"karate.pdf\" ,  16 cm,  16 cm), gplot(g))\n # save to png \ndraw(PNG( \"karate.png\" ,  16 cm,  16 cm), gplot(g))\n # save to svg \ndraw(SVG( \"karate.svg\" ,  16 cm,  16 cm), gplot(g))```",
+        "question": "What are the different file formats in which the 'karate' plot is saved, and what are their respective dimensions?",
+        "answer": "The 'karate' plot is saved in three different file formats: PDF, PNG, and SVG. The dimensions for each file format are 16 cm by 16 cm."
+    },
+    {
+        "source": "http://juliagraphs.org/GraphPlot.jl::Usage/Save to figure",
+        "context": "```julia using Compose\n # save to pdf \ndraw(PDF( \"karate.pdf\" ,  16 cm,  16 cm), gplot(g))\n # save to png \ndraw(PNG( \"karate.png\" ,  16 cm,  16 cm), gplot(g))\n # save to svg \ndraw(SVG( \"karate.svg\" ,  16 cm,  16 cm), gplot(g))```",
+        "question": "What are the different file formats mentioned for saving the plot and what are their dimensions?",
+        "answer": "The plot is saved in three different file formats: PDF, PNG, and SVG. In each case, the dimensions specified are 16 cm by 16 cm."
+    },
+    {
+        "source": "http://juliaplots.org/PlotlyJS.jl/stable/examples/line_scatter::Line Scatter",
+        "context": "trace2 = scatter(;x=dates,\n                     y=21.0 .* rand(50),\n                     fill=\"tonexty\",\n                     fillcolor=\"rgba(68, 68, 68, 0.3)\",\n                     line_color=\"rgb(31, 119, 180)\",\n                     mode=\"lines\",\n                     name=\"Measurement\")",
+        "question": "What parameters are used in the 'scatter' function for defining 'trace2'?",
+        "answer": "The parameters used in the 'scatter' function for defining 'trace2' are: x=dates, y=21.0 .* rand(50), fill=\"tonexty\", fillcolor=\"rgba(68, 68, 68, 0.3)\", line_color=\"rgb(31, 119, 180)\", mode=\"lines\", and name=\"Measurement\"."
+    },
+    {
+        "source": "http://juliaplots.org/PlotlyJS.jl/stable/api::API Documentation",
+        "context": "```julia movetraces!(p::Plot, src::AbstractVector{Int}, dest::AbstractVector{Int})``` Move traces from indices `src` to indices `dest` . Both `src` and `dest` must be `Vector{Int}` ```julia movetraces!(p::Plot, to_end::Int...)``` Move one or more traces to the end of the data array\" Draw an arbitrary svg path ```julia prependtraces!(p::Plot, update::AbstractDict, indices::AbstractVector{Int}=[1],\n                maxpoints=-1)```",
+        "question": "What is the function `movetraces!(p::Plot, src::AbstractVector{Int}, dest::AbstractVector{Int})` used for and what are the requirements for its parameters?",
+        "answer": "The function `movetraces!(p::Plot, src::AbstractVector{Int}, dest::AbstractVector{Int})` is used to move traces from indices `src` to indices `dest`. Both `src` and `dest` must be `Vector{Int}`."
+    },
+    {
+        "source": "http://juliaplots.org/PlotlyJS.jl/stable/manipulating_plots/::Saving figures",
+        "context": "```julia savefig(\n    p::Plot, fn::AbstractString;\n    format::Union{Nothing,String}=nothing,\n    width::Union{Nothing,Int}=nothing,\n    height::Union{Nothing,Int}=nothing,\n    scale::Union{Nothing,Real}=nothing,\n)```",
+        "question": "What are the parameters and their optional types in the `savefig` function signature?",
+        "answer": "The `savefig` function signature includes the following parameters and their optional types: `p::Plot`, `fn::AbstractString`, with keyword arguments `format::Union{Nothing,String}=nothing`, `width::Union{Nothing,Int}=nothing`, `height::Union{Nothing,Int}=nothing`, and `scale::Union{Nothing,Real}=nothing`."
+    },
+    {
+        "source": "https://juliaplots.org/RecipesBase.jl/stable::RecipesBase.jl",
+        "context": "Package developers and users can define recipes to tell  Plots.jl how to plot custom types without depending on it. Furthermore, recipes can be used for complex visualizations and new series types. Plots, for example, uses recipes internally to define histograms or bar plots.  StatsPlots.jl and  GraphRecipes.jl extend Plots functionality for statistical plotting and visualization of graphs.",
+        "question": "How can package developers and users define custom plotting types in Plots.jl without depending on the package?",
+        "answer": "Package developers and users can define recipes to tell Plots.jl how to plot custom types without depending on it."
+    },
+    {
+        "source": "http://juliaplots.org/PlotlyJS.jl/stable/examples/contour::Contour",
+        "context": "16 Basic Contour Plot ```julia function contour3()\n    x = [-9, -6, -5 , -3, -1]\n    y = [0, 1, 4, 5, 7]\n    z = [10     10.625  12.5  15.625  20\n         5.625  6.25    8.125 11.25   15.625\n         2.5    3.125   5.    8.125   12.5\n         0.625  1.25    3.125 6.25    10.625\n         0      0.625   2.5   5.625   10]\n    trace = contour(x=x, y=y, z=z)\n\n    layout = Layout(title=\"Setting the X and Y Coordinates in a Contour Plot\")\n    plot(trace, layout)\nend\ncontour3()``` \u22129 \u22128 \u22127",
+        "question": "What does the function `contour3()` do and what are its key components?",
+        "answer": "The function `contour3()` generates a basic contour plot. It defines three arrays x, y, and z, which represent the coordinates and corresponding values for the contour. The x values are [-9, -6, -5, -3, -1], the y values are [0, 1, 4, 5, 7], and the z values are specified in a 5x5 matrix. It creates the contour plot using these values by calling the `contour` function with x, y, and z as parameters, and then sets the layout title to \"Setting the X and Y Coordinates in a Contour Plot\" using the `Layout` function. Finally, it generates the plot with the specified trace and layout."
+    },
+    {
+        "source": "https://juliaplots.org/RecipesBase.jl/stable/types::Recipe Types/Series Recipes",
+        "context": "seriespie! (generic function with 1 method) Here we use the already processed values `x` and `y` to calculate the shape coordinates for each pie piece, update `x` and `y` with these coordinates and set the series type to `:shape` . ```julia seriespie(rand(4))``` This automatically works together with type recipes ... ```julia seriespie(MyWrapper(rand(4)))``` ... or with layouts ```julia seriespie(rand(4, 2), layout = 2)```",
+        "question": "How does the `seriespie` function update the coordinates and work with type recipes or layouts?",
+        "answer": "The `seriespie` function uses already processed values `x` and `y` to calculate the shape coordinates for each pie piece, then updates `x` and `y` with these coordinates and sets the series type to `:shape`. It also works automatically with type recipes or layouts, as demonstrated by `seriespie(MyWrapper(rand(4)))` and `seriespie(rand(4, 2), layout = 2)`. "
+    },
+    {
+        "source": "https://kristofferc.github.io/PGFPlotsX.jl/stable/man/axislike::Axis  & friends/Axis",
+        "context": "```julia Axis([options], elements...)``` Linear axes, corresponds to `axis` in PGFPlots. source `Axis` make up the labels and titles etc in the figure and is the standard way of wrapping plots, represented in `TeX` as ```tex \\begin{axis} [...]\n    ...\n\\end{axis}``` Examples:",
+        "question": "What do the Linear axes correspond to in PGFPlots and how are they represented in TeX?",
+        "answer": "The Linear axes correspond to `axis` in PGFPlots and are represented in TeX as ```tex \begin{axis} [...] ... \n\nd{axis}```."
+    },
+    {
+        "source": "https://kristofferc.github.io/PGFPlotsX.jl/stable/man/picdoc::TikzDocument",
+        "context": "A `TikzDocument` is the highest level object and represents a whole `tex` file. It includes a list of objects between `\\begin{document}` and `\\end{document}` . ```julia TikzDocument(elements...; use_default_preamble = true, preamble = [])``` Corresponds to a LaTeX document, usually wrapping `TikzPicture` s. `use_default_preamble` determines whether a preamble is added from the global variables (see  `CUSTOM_PREAMBLE` and  `CUSTOM_PREAMBLE_PATH` ).",
+        "question": "What does a `TikzDocument` represent in the context of a `tex` file and what are some of its customizable options?",
+        "answer": "A `TikzDocument` represents a whole `tex` file at the highest level and includes a list of objects between `\\begin{document}` and `\\end{document}`. It can also wrap `TikzPicture` objects. Some of its customizable options include the `use_default_preamble` parameter, which determines whether a preamble is added from the global variables, and the `preamble` parameter for providing a custom preamble."
+    },
+    {
+        "source": "https://kristofferc.github.io/PGFPlotsX.jl/stable/man/axiselements::Axis elements/Horizontal and vertical bands",
+        "context": "`HBand` and  `VBand` have no equivalent constructs in `pgfplots` , they are provided for convenient drawing of horizontal and vertical bands. These bands are simply rectangles that span across an axis. When options are used, they are passed to the TikZ function `\\draw[...]` . ```julia HBand([options], ymin, ymax)``` A horizontal band from `ymin` to `ymax` . source ```julia VBand([options], xmin, xmax)``` A vertical band from `xmin` to `xmax` . source",
+        "question": "What are the purposes of `HBand` and `VBand` in the context of `pgfplots` and how are they used?",
+        "answer": "`HBand` and `VBand` are used for convenient drawing of horizontal and vertical bands in `pgfplots`. `HBand` creates a horizontal band spanning from `ymin` to `ymax`, specified as `HBand([options], ymin, ymax)`, while `VBand` creates a vertical band spanning from `xmin` to `xmax`, specified as `VBand([options], xmin, xmax)`. Options passed to these functions are forwarded to the TikZ `\\draw[...]` function. These bands are essentially rectangles that span across an axis."
+    },
+    {
+        "source": "https://juliastats.org/StatsBase.jl/stable/weights - Weight Vectors",
+        "context": "In statistical applications, it is not uncommon to assign weights to samples. To facilitate the use of weight vectors, we introduce the abstract type `AbstractWeights` for the purpose of representing weight vectors, which has two advantages: A different type `AbstractWeights` distinguishes the role of the weight vector from other data vectors in the input arguments.",
+        "question": "What is the purpose of introducing the abstract type `AbstractWeights` in statistical applications?",
+        "answer": "The purpose of introducing the abstract type `AbstractWeights` in statistical applications is to represent weight vectors. This has the advantage of distinguishing the role of the weight vector from other data vectors in the input arguments."
+    },
+    {
+        "source": "https://juliastats.org/StatsBase.jl/stable/transformations - Data Transformations/Standardization a.k.a Z-score Normalization",
+        "context": "The  standard score , also known as Z-score, is the signed number of standard deviations by which the value of an observation or data point is above the mean value of what is being observed or measured. Standardization can be performed using `t = fit(ZScoreTransform, ...)` followed by `StatsBase.transform(t, ...)` or `StatsBase.transform!(t, ...)` . `standardize(ZScoreTransform, ...)` is a shorthand to perform both operations in a single call.",
+        "question": "What is a Z-score and how can standardization be performed using it?",
+        "answer": "A Z-score, or standard score, is the signed number of standard deviations by which the value of an observation or data point is above the mean value of what is being observed or measured. Standardization can be performed using `t = fit(ZScoreTransform, ...)` followed by `StatsBase.transform(t, ...)` or `StatsBase.transform!(t, ...)`. The `standardize(ZScoreTransform, ...)` function is a shorthand that performs both operations in a single call."
+    },
+    {
+        "source": "https://juliastats.org/StatsBase.jl/stable/scalarstats - Scalar Statistics/Measurements of Variation",
+        "context": "If `normalize` is set to `true` , the MAD is multiplied by `1 / quantile(Normal(), 3/4) \u2248 1.4826` , in order to obtain a consistent estimator of the standard deviation under the assumption that the data is normally distributed. source",
+        "question": "What happens when `normalize` is set to `true` with regard to the MAD and standard deviation estimation?",
+        "answer": "When `normalize` is set to `true`, the MAD is multiplied by `1 / quantile(Normal(), 3/4) \u2248 1.4826`, to obtain a consistent estimator of the standard deviation assuming the data is normally distributed."
+    },
+    {
+        "source": "https://juliastats.org/StatsBase.jl/stable/transformations - Data Transformations/Standardization a.k.a Z-score Normalization",
+        "context": "The  standard score , also known as Z-score, is the signed number of standard deviations by which the value of an observation or data point is above the mean value of what is being observed or measured. Standardization can be performed using `t = fit(ZScoreTransform, ...)` followed by `StatsBase.transform(t, ...)` or `StatsBase.transform!(t, ...)` . `standardize(ZScoreTransform, ...)` is a shorthand to perform both operations in a single call.",
+        "question": "What is a Z-score and how can standardization be performed using it?",
+        "answer": "A Z-score, also known as a standard score, is the signed number of standard deviations by which the value of an observation or data point is above the mean value of what is being observed or measured. Standardization can be performed using `t = fit(ZScoreTransform, ...)` followed by `StatsBase.transform(t, ...)` or `StatsBase.transform!(t, ...)`. Additionally, the shorthand `standardize(ZScoreTransform, ...)` can be used to perform both operations in a single call."
+    },
+    {
+        "source": "https://juliastats.org/StatsBase.jl/stable/statmodels - Abstraction for Statistical Models",
+        "context": "Return a table with coefficients and related statistics of the model. `level` determines the level for confidence intervals (by default, 95%). The returned `CoefTable` object implements the  Tables.jl interface, and can be converted e.g. to a `DataFrame` via `using DataFrames; DataFrame(coeftable(model))` . ```julia confint(model::StatisticalModel; level::Real=0.95)``` Compute confidence intervals for coefficients, with confidence level `level` (by default 95%).",
+        "question": "How can one compute the confidence intervals for coefficients of a StatisticalModel and what is the default confidence level?",
+        "answer": "To compute confidence intervals for coefficients of a StatisticalModel, the function `confint(model::StatisticalModel; level::Real=0.95)` is used. The default confidence level is 95%."
+    }
+]

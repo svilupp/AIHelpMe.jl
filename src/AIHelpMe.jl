@@ -41,7 +41,7 @@ function __init__()
     ## Set the active configuration
     update_pipeline!(:bronze)
     ## Load index - auto-loads into MAIN_INDEX
-    load_index!(LOADED_PACKS[])
+    load_index!(LOADED_PACKS)
 end
 
 # Enable precompilation to reduce start time, disabled logging

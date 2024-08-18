@@ -1,4 +1,46 @@
-# Defines the preference setting mechanism, but the actual values are loaded/set in `src/pipeline_defaults.jl`
+# Defines the preference setting mechanism, some of the pipeline/config values are loaded/set in `src/pipeline_defaults.jl`
+
+### Global variables
+### Global for history, replies, etc
+const CONV_HISTORY = Vector{Vector{PT.AbstractMessage}}()
+const CONV_HISTORY_LOCK = ReentrantLock()
+const MAX_HISTORY_LENGTH = 1
+global LAST_RESULT::Union{Nothing, RT.AbstractRAGResult} = nothing
+global MAIN_INDEX::Union{Nothing, RT.AbstractChunkIndex} = nothing
+
+"""
+    ALLOWED PACKS
+
+Currently available packs are:
+- `:julia` - Julia documentation, standard library docstrings and a few extras (for Julia v1.10)
+- `:juliadata` - JuliaData.jl organization documentation, eg, DataFrames.jl and similar packages
+- `:plots` - Plots.jl organization documentation, eg, Plots.jl, StatsPlots.jl, etc
+- `:makie` - Makie.jl organization documentation
+- `:tidier` - Tidier.jl organization documentation
+- `:sciml` - SciML organization documentation
+
+These packs have been sourced and packaged with DocsScraper.jl.
+"""
+const ALLOWED_PACKS = [:julia, :juliadata, :tidier, :sciml, :plots, :makie]
+
+"""
+    LOADED_PACKS
+
+The knowledge packs that are currently loaded in the index.
+"""
+global LOADED_PACKS::Vector{Symbol} = @load_preference("LOADED_PACKS",
+    default=["julia"]) .|> Symbol
+
+### Globals for configuration
+# These serve as reference models to be injected in the absence of inputs, 
+# but the actual used for the query is primarily provided aihelpme directly or via the active RAG_KWARGS
+global MODEL_CHAT::String = @load_preference("MODEL_CHAT",
+    default="gpt4t")
+global MODEL_EMBEDDING::String = @load_preference("MODEL_EMBEDDING",
+    default="text-embedding-3-large")
+global EMBEDDING_DIMENSION::Int = @load_preference("EMBEDDING_DIMENSION",
+    default=1024)
+###
 
 """
     PREFERENCES
@@ -49,7 +91,7 @@ function set_preferences!(pairs::Pair{String, <:Any}...)
             @set_preferences!(key=>value_int)
         elseif key == "LOADED_PACKS"
             value_vecstr = value isa Symbol ? [string(value)] : string.(value)
-            LOADED_PACKS[] = Symbol.(value_vecstr)
+            LOADED_PACKS = Symbol.(value_vecstr)
             @set_preferences!(key=>value_vecstr)
         else
             setproperty!(@__MODULE__, Symbol(key), value)

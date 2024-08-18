@@ -1,11 +1,3 @@
-[juliaextra]
-git-tree-sha1 = "66e744fbf39bab71c2f63b6877a506fee8fbc9a5"
-lazy = true
-
-    [[juliaextra.download]]
-    sha256 = "61133afa7e06fda133f07164c57190a5b922f8f2a1aa17c3f8a628b5cf752512"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/juliaextra__v1.10.0__ada1.0.tar.gz"
-
 ["julia__textembedding3large-0-Float32"]
 git-tree-sha1 = "a105a2482296fa0a80ce0c76677cc9ef673be70e"
 lazy = true
@@ -22,6 +14,70 @@ lazy = true
     sha256 = "27186886d19ea4c3f1710b4bc70e8e809d906069d5de8c992c948d97d0f454da"
     url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/julia__v1.10.2__textembedding3large-1024-Bool__v1.0.tar.gz"
 
+["juliadata__textembedding3large-0-Float32"]
+git-tree-sha1 = "5ea13051e16f01627a4c81fd74e664a396785934"
+lazy = true
+
+    [["juliadata__textembedding3large-0-Float32".download]]
+    sha256 = "b166fef79e6e16cae29ed054f4a7e89e232ea1dc245caeaf0b4d664f09f37dca"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/juliadata__v20240717__textembedding3large-3072-Float32__v1.0.tar.gz"
+
+["juliadata__textembedding3large-1024-Bool"]
+git-tree-sha1 = "229675e5404d98540a65475432ffb8c82c743eb0"
+lazy = true
+
+    [["juliadata__textembedding3large-1024-Bool".download]]
+    sha256 = "577f484463faf9e5a582f222bd6d1252583f16bee8c891fa198a196553aa7eef"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/juliadata__v20240716__textembedding3large-1024-Bool__v1.0.tar.gz"
+
+["makie__textembedding3large-0-Float32"]
+git-tree-sha1 = "c1c473b76f0ed081f5585dbedf1b4bb55da6a51e"
+lazy = true
+
+    [["makie__textembedding3large-0-Float32".download]]
+    sha256 = "0019a2d374aee7080d1160a13f5a2217ea17edb4fa7957aafa858ff81cf7954d"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240717__textembedding3large-3072-Float32__v1.0.tar.gz"
+
+["makie__textembedding3large-1024-Bool"]
+git-tree-sha1 = "af5cb54623e5685b694f238d4db752200fcb8087"
+lazy = true
+
+    [["makie__textembedding3large-1024-Bool".download]]
+    sha256 = "3ec64d706b9a6f06ce69575c964cc24eb11404d38ebeafa2651112f3f28e55e5"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240716__textembedding3large-1024-Bool__v1.0.tar.gz"
+
+["plots__textembedding3large-0-Float32"]
+git-tree-sha1 = "bb8144ffd6d420cce9680151a68d39c17c95dedb"
+lazy = true
+
+    [["plots__textembedding3large-0-Float32".download]]
+    sha256 = "f8797e458bd72be6ab0e1b6af3cdfb63ba9e9df99cff26b283408c863a87de07"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/plots__v20240717__textembedding3large-3072-Float32__v1.0.tar.gz"
+
+["plots__textembedding3large-1024-Bool"]
+git-tree-sha1 = "090bb2b0c24110ed7edeb8879a93aef5d86a2a03"
+lazy = true
+
+    [["plots__textembedding3large-1024-Bool".download]]
+    sha256 = "5912bf1a24a00b6a7516a9c8bc24fe5f3bc8c8bba68d6e2abef6e7674b902f35"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/plots__v20240716__textembedding3large-1024-Bool__v1.0.tar.gz"
+
+["sciml__textembedding3large-0-Float32"]
+git-tree-sha1 = "9267b7d16b710c5c850304278796bfdae65df3c7"
+lazy = true
+
+    [["sciml__textembedding3large-0-Float32".download]]
+    sha256 = "ca604ca4ee1c1744ea98aba5d977abea01f2a2a2e5b8a320899bc4728434374e"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/sciml__v20240717__textembedding3large-3072-Float32__v1.0.tar.gz"
+
+["sciml__textembedding3large-1024-Bool"]
+git-tree-sha1 = "f412963513f46826a031a3e2b302e4b7038e0eff"
+lazy = true
+
+    [["sciml__textembedding3large-1024-Bool".download]]
+    sha256 = "a6657393b8e1b7f15ae31fb49cb6c9bf709ef1aa6003e995e951340e183f746a"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/sciml__v20240716__textembedding3large-1024-Bool__v1.0.tar.gz"
+
 ["tidier__textembedding3large-0-Float32"]
 git-tree-sha1 = "680c7035e512844fd2b9af1757b02b931dfadaa5"
 lazy = true
@@ -31,28 +87,13 @@ lazy = true
     url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240407__textembedding3large-0-Float32__v1.0.tar.gz"
 
 ["tidier__textembedding3large-1024-Bool"]
-git-tree-sha1 = "44d861977d663a9c4615023ae38828e0ef88036e"
+git-tree-sha1 = "418547afa0078f8d39beab16d2f23eddb837569f"
 lazy = true
 
     [["tidier__textembedding3large-1024-Bool".download]]
-    sha256 = "226cadd2805abb6ab6e561330aca97466e0a2cb1e1eb171be661d9dea9dcacdc"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240407__textembedding3large-1024-Bool__v1.0.tar.gz"
+    sha256 = "48b3277e012115e39530f0cf194987e90cb499c2b14a9cd7432c39e10a246b0d"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240716__textembedding3large-1024-Bool__v1.0.tar.gz"
 
-["makie__textembedding3large-0-Float32"]
-git-tree-sha1 = "30c29c10d9b2b160b43f358fad9f4f6fe83ce378"
-lazy = true
-
-    [["makie__textembedding3large-0-Float32".download]]
-    sha256 = "ee15489022df191fbede93adf1bd7cc1ceb1f84185229026a5e38ae9a3fab737"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240330__textembedding3large-0-Float32__v1.0.tar.gz"
-
-["makie__textembedding3large-1024-Bool"]
-git-tree-sha1 = "a49a86949f86f6cf4c29bdc9559c05064b49c801"
-lazy = true
-
-    [["makie__textembedding3large-1024-Bool".download]]
-    sha256 = "135f36effc0d29ed20e9bc877f727e4d9d8366bcae4bf4d13f998529d1091324"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/makie__v20240330__textembedding3large-1024-Bool__v1.0.tar.gz"
 
 ["julia__nomicembedtext-0-Float32"]
 git-tree-sha1 = "cb1fc89392710d729cb031701353fcf58c901fc4"

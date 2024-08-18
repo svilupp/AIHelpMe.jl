@@ -77,7 +77,7 @@ function aihelp(cfg_orig::RT.AbstractRAGConfig, index::RT.AbstractChunkIndex,
     global LAST_RESULT, CONV_HISTORY_LOCK, RAG_KWARGS
 
     ## Grab the active kwargs
-    kwargs = RAG_KWARGS[]
+    kwargs = RAG_KWARGS
     # Update chat model
     setpropertynested(kwargs,
         [:rephraser_kwargs, :tagger_kwargs, :answerer_kwargs, :refiner_kwargs],
@@ -99,7 +99,7 @@ function aihelp(cfg_orig::RT.AbstractRAGConfig, index::RT.AbstractChunkIndex,
     ## Run the RAG pipeline
     result = airag(cfg, index; question, verbose, return_all = true, kwargs...)
     lock(CONV_HISTORY_LOCK) do
-        LAST_RESULT[] = result
+        LAST_RESULT = result
     end
     return return_all ? result : PT.last_message(result)
 end
@@ -108,13 +108,13 @@ function aihelp(index::RT.AbstractChunkIndex, question::AbstractString;
         kwargs...)
     global RAG_CONFIG
     ## default kwargs and models are injected inside of main aihelp function
-    aihelp(RAG_CONFIG[], index, question; kwargs...)
+    aihelp(RAG_CONFIG, index, question; kwargs...)
 end
 
 function aihelp(question::AbstractString;
         kwargs...)
     global MAIN_INDEX, RAG_CONFIG
-    @assert !isnothing(MAIN_INDEX[]) "MAIN_INDEX is not loaded. Use `AIHelpMe.load_index!()` to load an index."
+    @assert !isnothing(MAIN_INDEX) "MAIN_INDEX is not loaded. Use `AIHelpMe.load_index!()` to load an index."
     ## default kwargs and models are injected inside of main aihelp function
-    aihelp(RAG_CONFIG[], MAIN_INDEX[], question; kwargs...)
+    aihelp(RAG_CONFIG, MAIN_INDEX, question; kwargs...)
 end

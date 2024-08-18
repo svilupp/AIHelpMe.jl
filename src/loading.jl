@@ -17,7 +17,7 @@ AIH.load_index!(index)
 function load_index!(index::RT.AbstractChunkIndex;
         verbose::Bool = true, kwargs...)
     global MAIN_INDEX
-    MAIN_INDEX[] = index
+    MAIN_INDEX = index
     verbose && @info "Loaded index into MAIN_INDEX"
     return index
 end
@@ -40,13 +40,13 @@ function load_index!(file_path::AbstractString;
     end
     @assert index isa RT.AbstractChunkIndex "Provided file path must point to a serialized RAG index (Deserialized type: $(typeof(index)))."
     verbose && @info "Loaded index a file $(file_path) into MAIN_INDEX"
-    MAIN_INDEX[] = index
+    MAIN_INDEX = index
 
     return index
 end
 
 """
-    load_index!(packs::Vector{Symbol}=LOADED_PACKS[]; verbose::Bool = true, kwargs...)
+    load_index!(packs::Vector{Symbol}=LOADED_PACKS; verbose::Bool = true, kwargs...)
     load_index!(pack::Symbol; verbose::Bool = true, kwargs...)
 
 Loads one or more `packs` into the main index from our pre-built artifacts.
@@ -61,24 +61,31 @@ load_index!(:julia)
 
 Or multiple packs
 ```julia
-load_index!([:julia, :makie,:tidier])
+load_index!([:julia, :juliadata, :makie, :tidier, :plots, :sciml])
 ```
+But we recommend loading ONLY the packs you expect to need - unnecessary packs introduce noise.
 """
 function load_index!(
-        packs::Vector{Symbol} = LOADED_PACKS[]; verbose::Bool = true, kwargs...)
-    global ALLOWED_PACKS, RAG_CONFIG, RAG_CONFIG
+        packs::Vector{Symbol} = LOADED_PACKS; verbose::Bool = true, kwargs...)
+    global ALLOWED_PACKS, RAG_CONFIG, RAG_KWARGS, MAIN_INDEX
     @assert all(x -> x in ALLOWED_PACKS, packs) "Invalid pack(s): $(setdiff(packs, ALLOWED_PACKS)). Allowed packs: $(ALLOWED_PACKS)"
 
-    config_key = get_config_key(RAG_CONFIG[], RAG_KWARGS[])
+    config_key = get_config_key(RAG_CONFIG, RAG_KWARGS)
     indices = RT.ChunkIndex[]
     for pack in packs
         artifact_path = @artifact_str("$(pack)__$(config_key)")
-        index = load_index_hdf5(joinpath(artifact_path, "pack.hdf5"); verbose = false)
+        ## Try `pack.hdf5` name, if not found, try any single hdf5 file
+        path = if isfile(joinpath(artifact_path, "pack.hdf5"))
+            joinpath(artifact_path, "pack.hdf5")
+        else
+            filter(x -> endswith(x, "hdf5"), readdir(artifact_path; join = true)) |> only
+        end
+        index = load_index_hdf5(path; verbose = false)
         push!(indices, index)
     end
     # TODO: dedupe the index
     joined_index = reduce(vcat, indices)
-    MAIN_INDEX[] = joined_index
+    MAIN_INDEX = joined_index
     verbose && @info "Loaded index from packs: $(join(packs,", ")) into MAIN_INDEX"
     return joined_index
 end
@@ -87,7 +94,7 @@ end
 load_index!(pack::Symbol) = load_index!([pack])
 
 """
-    update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],
+    update_index(index::RT.AbstractChunkIndex = MAIN_INDEX,
         modules::Vector{Module} = Base.Docs.modules;
         verbose::Integer = 1,
         kwargs...)
@@ -110,7 +117,7 @@ AIHelpMe.update_index() |> AHM.load_index!
 index = AIHelpMe.update_index(index)
 ```
 """
-function update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],
+function update_index(index::RT.AbstractChunkIndex = MAIN_INDEX,
         modules::Vector{Module} = Base.Docs.modules;
         verbose::Integer = 1,
         kwargs...)
@@ -123,13 +130,14 @@ function update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],
 
     ## Build the new index -- E2E process disabled as it would duplicate a lot the docs we already have
     ##
-    ##     new_index = RT.build_index(RAG_CONFIG[].indexer, all_docs, ;
+    ##     new_index = RT.build_index(RAG_CONFIG.indexer, all_docs, ;
     ##     embedder_kwargs, chunker = TextChunker(), chunker_kwargs,
     ##     verbose, kwargs...
     ## )
 
     ## Chunking
-    chunker_kwargs_ = (; sources = all_sources)
+    # New default - chunk size of 384 unless user provides different value
+    chunker_kwargs_ = (; sources = all_sources, max_length = 384)
     chunker_kwargs = haskey(kwargs, :chunker_kwargs) ?
                      merge(kwargs.chunker_kwargs, chunker_kwargs_) : chunker_kwargs_
     output_chunks, output_sources = RT.get_chunks(
@@ -140,9 +148,9 @@ function update_index(index::RT.AbstractChunkIndex = MAIN_INDEX[],
     mask = find_new_chunks(index.chunks, output_chunks)
 
     ## Embed new items
-    embedder = RAG_CONFIG[].retriever.embedder
+    embedder = RAG_CONFIG.retriever.embedder
     embedder_kwargs_ = RT.getpropertynested(
-        RAG_KWARGS[], [:retriever_kwargs], :embedder_kwargs, nothing)
+        RAG_KWARGS, [:retriever_kwargs], :embedder_kwargs, nothing)
     embedder_kwargs = haskey(kwargs, :embedder_kwargs) ?
                       merge(kwargs.embedder_kwargs, embedder_kwargs_) : embedder_kwargs_
     embeddings = RT.get_embeddings(embedder, output_chunks[mask];

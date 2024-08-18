@@ -10,10 +10,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.3.0]
+### Added (thanks to [Splendidbug](https://github.com/splendidbug)!)
+- New knowledge packs created by Splendidbug using `DocsScraper.jl` (to be registered soon, created as part of Google Summer of Code).
+- Knowledge packs for JuliaData org (DataFrames.jl), Plots org, and SciML org.
+- Refreshed knowledge packs for Makie org and Tidier org.
+- Golden Q&A sets for new packages to evaluate performance.
+
+### Changed
+- Changed default chunk size to 384 based on evaluation results.
+- Increased compatibility for PromptingTools to v0.50, enabling the use of the latest chat models.
+- Changed const-Ref variables to typed globals to prevent issues encountered in PromptingTools.
+
+### Removed
+- Legacy pack "juliaextra".
+
+### Fixed
+- Issues related to const-Ref variables by switching to typed globals.
+- Fixed `:gold` pipeline inconsistently updating the embedding dimension
+
+### Notes
+- The new knowledge packs are currently available only for the OpenAI Text embedding Large 3 model.
+- Latest chat models can now be used, but embedding models are restricted for prebuilt knowledge packs.
+
 ## [0.2.1]
 
 ### Updated
-- Increased compat for PromptingTools to v0.37.1 to include bugfixes.
+- Increased compat for PromptingTools to v0.37.1 to include bug fixes.
  
 
 ## [0.2.0]

@@ -17,7 +17,7 @@ using AIHelpMe: get_config_key, MODEL_CHAT, MODEL_EMBEDDING, update_pipeline!,
         :truncate_dimension, 100
     )
     @test get_config_key(cfg, kwargs2) == "mockemb-100-Bool"
-    @test get_config_key() == get_config_key(RAG_CONFIG[], RAG_KWARGS[])
+    @test get_config_key() == get_config_key(RAG_CONFIG, RAG_KWARGS)
 end
 
 @testset "update_pipeline!" begin
