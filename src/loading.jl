@@ -67,7 +67,7 @@ But we recommend loading ONLY the packs you expect to need - unnecessary packs i
 """
 function load_index!(
         packs::Vector{Symbol} = LOADED_PACKS; verbose::Bool = true, kwargs...)
-    global ALLOWED_PACKS, RAG_CONFIG, RAG_CONFIG
+    global ALLOWED_PACKS, RAG_CONFIG, RAG_KWARGS, MAIN_INDEX
     @assert all(x -> x in ALLOWED_PACKS, packs) "Invalid pack(s): $(setdiff(packs, ALLOWED_PACKS)). Allowed packs: $(ALLOWED_PACKS)"
 
     config_key = get_config_key(RAG_CONFIG, RAG_KWARGS)
