@@ -63,11 +63,11 @@ lazy = true
     url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/plots__v20240716__textembedding3large-1024-Bool__v1.0.tar.gz"
 
 ["sciml__textembedding3large-0-Float32"]
-git-tree-sha1 = "9267b7d16b710c5c850304278796bfdae65df3c7"
+git-tree-sha1 = "341b1a1edffe7c19c4796f538dc54d8198b1d74d"
 lazy = true
 
     [["sciml__textembedding3large-0-Float32".download]]
-    sha256 = "ca604ca4ee1c1744ea98aba5d977abea01f2a2a2e5b8a320899bc4728434374e"
+    sha256 = "d1bf82d8b53e60a938421490aeb8fb15ab5f14065bb50787ddc1f0f1d3bccc1c"
     url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/sciml__v20240717__textembedding3large-3072-Float32__v1.0.tar.gz"
 
 ["sciml__textembedding3large-1024-Bool"]
