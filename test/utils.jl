@@ -8,7 +8,7 @@ using AIHelpMe: last_result, LAST_RESULT, remove_pkgdir, load_index_hdf5, find_n
 end
 
 @testset "last_result" begin
-    @test last_result() == LAST_RESULT[]
+    @test last_result() == LAST_RESULT
 end
 
 @testset "find_new_chunks" begin

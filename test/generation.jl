@@ -26,20 +26,20 @@ using PromptingTools: TestEchoOpenAISchema
         sources = ["source1", "source2"])
 
     # remember prior settings
-    current_index = MAIN_INDEX[]
+    current_index = MAIN_INDEX
     current_chat_model = MODEL_CHAT
     current_emb_model = MODEL_EMBEDDING
     current_dimensionality = getpropertynested(
-        RAG_KWARGS[], [:embedder_kwargs], :truncate_dimension, nothing)
+        RAG_KWARGS, [:embedder_kwargs], :truncate_dimension, nothing)
 
     ## Change for our test
-    MAIN_INDEX[] = index
+    MAIN_INDEX = index
     update_pipeline!(:bronze; model_chat = "mockgen",
         model_embedding = "mockemb", embedding_dimension = 0)
 
     question = "ABC?"
-    cfg = RAG_CONFIG[]
-    kwargs = RAG_KWARGS[]
+    cfg = RAG_CONFIG
+    kwargs = RAG_KWARGS
     ## Simple RAG pre-run
     msg = airag(cfg, index; question, kwargs...)
     @test msg.content == "new answer"
@@ -47,13 +47,13 @@ using PromptingTools: TestEchoOpenAISchema
     ## run for a message
     msg = aihelp(cfg, index, question)
     @test msg.content == "new answer"
-    @test LAST_RESULT[].final_answer == "new answer"
+    @test LAST_RESULT.final_answer == "new answer"
 
     ## run for result
     result = aihelp(cfg, index, question; return_all = true)
     @test result isa RT.RAGResult
     @test result.final_answer == "new answer"
-    @test LAST_RESULT[] == result
+    @test LAST_RESULT == result
 
     # short hand
     msg = aihelp(index, question)
@@ -72,5 +72,5 @@ using PromptingTools: TestEchoOpenAISchema
     ## Return previous settings
     update_pipeline!(:bronze; model_chat = current_chat_model,
         model_embedding = current_emb_model, embedding_dimension = current_dimensionality)
-    MAIN_INDEX[] = current_index
+    MAIN_INDEX = current_index
 end

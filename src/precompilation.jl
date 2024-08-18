@@ -1,10 +1,10 @@
 ## Mock run for aihelp
 # remember prior settings
-RAG_CONFIG[] = RT.RAGConfig(;
+RAG_CONFIG = RT.RAGConfig(;
     indexer = RT.SimpleIndexer(; embedder = RT.BinaryBatchEmbedder()),
     retriever = RT.SimpleRetriever(;
         embedder = RT.BinaryBatchEmbedder(), reranker = RT.CohereReranker()))
-RAG_KWARGS[] = (
+RAG_KWARGS = (
     retriever_kwargs = (;
         top_k = 100,
         top_n = 5,
@@ -49,15 +49,15 @@ index = ChunkIndex(chunks = ["chunk1", "chunk2"],
     tags = nothing,
     tags_vocab = nothing,
     sources = ["source1", "source2"])
-MAIN_INDEX[] = index
+MAIN_INDEX = index
 
 ## Change for our test
 update_pipeline!(:bronze; model_chat = "mockgen",
     model_embedding = "mockemb", embedding_dimension = 0)
 
 question = "ABC?"
-cfg = RAG_CONFIG[]
-kwargs = RAG_KWARGS[]
+cfg = RAG_CONFIG
+kwargs = RAG_KWARGS
 ## Simple RAG pre-run
 msg = airag(cfg, index; question, kwargs...)
 

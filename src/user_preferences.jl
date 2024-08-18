@@ -49,7 +49,7 @@ function set_preferences!(pairs::Pair{String, <:Any}...)
             @set_preferences!(key=>value_int)
         elseif key == "LOADED_PACKS"
             value_vecstr = value isa Symbol ? [string(value)] : string.(value)
-            LOADED_PACKS[] = Symbol.(value_vecstr)
+            LOADED_PACKS = Symbol.(value_vecstr)
             @set_preferences!(key=>value_vecstr)
         else
             setproperty!(@__MODULE__, Symbol(key), value)

@@ -2,8 +2,8 @@
 const CONV_HISTORY = Vector{Vector{PT.AbstractMessage}}()
 const CONV_HISTORY_LOCK = ReentrantLock()
 const MAX_HISTORY_LENGTH = 1
-const LAST_RESULT = Ref{Union{Nothing, RT.AbstractRAGResult}}(nothing)
-const MAIN_INDEX = Ref{Union{Nothing, RT.AbstractChunkIndex}}(nothing)
+global LAST_RESULT::Union{Nothing, RT.AbstractRAGResult} = nothing
+global MAIN_INDEX::Union{Nothing, RT.AbstractChunkIndex} = nothing
 """
     ALLOWED PACKS
 
@@ -24,23 +24,23 @@ const ALLOWED_PACKS = [:julia, :juliadata, :tidier, :sciml, :plots, :makie]
 
 The knowledge packs that are currently loaded in the index.
 """
-const LOADED_PACKS = Ref{Vector{Symbol}}(@load_preference("LOADED_PACKS",
-    default=["julia"]) .|> Symbol)
+global LOADED_PACKS::Vector{Symbol} = @load_preference("LOADED_PACKS",
+    default=["julia"]) .|> Symbol
 
 ### Globals for configuration
 # These serve as reference models to be injected in the absence of inputs, 
 # but the actual used for the query is primarily provided aihelpme directly or via the active RAG_KWARGS
-const MODEL_CHAT = @load_preference("MODEL_CHAT",
+global MODEL_CHAT::String = @load_preference("MODEL_CHAT",
     default="gpt4t")
-const MODEL_EMBEDDING = @load_preference("MODEL_EMBEDDING",
+global MODEL_EMBEDDING::String = @load_preference("MODEL_EMBEDDING",
     default="text-embedding-3-large")
-const EMBEDDING_DIMENSION = @load_preference("EMBEDDING_DIMENSION",
+global EMBEDDING_DIMENSION::Int = @load_preference("EMBEDDING_DIMENSION",
     default=1024)
 
 # Loaded up with `update_pipeline!` later once RAG CONFIGURATIONS is populated
-const RAG_KWARGS = Ref{NamedTuple}()
-const RAG_CONFIG = Ref{RT.AbstractRAGConfig}()
-const LOADED_CONFIG_KEY = Ref{String}("")  # get the current config key
+global RAG_KWARGS::NamedTuple = NamedTuple()
+global RAG_CONFIG::RT.AbstractRAGConfig = RAGConfig() # just initialize, it will be changed
+global LOADED_CONFIG_KEY::String = "" # get the current config key
 
 """
     RAG_CONFIGURATIONS
@@ -54,8 +54,12 @@ Available Options:
 - `:silver`: A simple configuration for a bronze pipeline, using truncated binary embeddings (dimensionality: 1024) but also enables re-ranking step.
 - `:gold`: A more complex configuration, similar to `:simpler`, but using a standard embeddings (dimensionality: 3072, type: Float32). It also leverages re-ranking and refinement with a web-search.
 """
-const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_EMBEDDING
-    RAG_CONFIGURATIONS = Dict{Symbol, Dict{Symbol, Any}}()
+global RAG_CONFIGURATIONS::Dict{Symbol, Dict{Symbol, Any}} = Dict{
+    Symbol, Dict{Symbol, Any}}()
+
+## Load configurations
+let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_EMBEDDING,
+    RAG_CONFIGURATIONS = RAG_CONFIGURATIONS
     ## Bronze
     RAG_CONFIGURATIONS[:bronze] = Dict{Symbol, Any}(
         :config => RT.RAGConfig(;
@@ -129,13 +133,11 @@ const RAG_CONFIGURATIONS = let MODEL_CHAT = MODEL_CHAT, MODEL_EMBEDDING = MODEL_
                     model = MODEL_EMBEDDING),
                 refiner_kwargs = (;
                     model = MODEL_CHAT))))
-
-    RAG_CONFIGURATIONS
 end
 
 "Returns the configuration key for the given `cfg` and `kwargs` to use the relevant artifacts."
 function get_config_key(
-        cfg::AbstractRAGConfig = RAG_CONFIG[], kwargs::NamedTuple = RAG_KWARGS[])
+        cfg::AbstractRAGConfig = RAG_CONFIG, kwargs::NamedTuple = RAG_KWARGS)
     emb_model = getpropertynested(kwargs, [:embedder_kwargs], :model)
     emb_dim = getpropertynested(kwargs, [:embedder_kwargs], :truncate_dimension, 0)
     emb_eltype = RT.EmbedderEltype(cfg.retriever.embedder)
@@ -221,11 +223,11 @@ function update_pipeline!(option::Symbol = :bronze; model_chat = MODEL_CHAT,
     ## Set the options
     config_key = get_config_key(config, kwargs)
     ## detect significant changes
-    !isempty(LOADED_CONFIG_KEY[]) && LOADED_CONFIG_KEY[] != config_key &&
+    !isempty(LOADED_CONFIG_KEY) && LOADED_CONFIG_KEY != config_key &&
         @warn "Core RAG pipeline configuration has changed! You must re-build your index with `AIHelpMe.load_index!()`!"
-    LOADED_CONFIG_KEY[] = config_key
-    RAG_KWARGS[] = kwargs
-    RAG_CONFIG[] = config
+    LOADED_CONFIG_KEY = config_key
+    RAG_KWARGS = kwargs
+    RAG_CONFIG = config
 
     verbose &&
         @info "Updated RAG pipeline to `:$option` (Configuration key: \"$config_key\")."
