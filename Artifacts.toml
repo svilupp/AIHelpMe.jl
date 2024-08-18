@@ -92,7 +92,7 @@ lazy = true
 
     [["tidier__textembedding3large-1024-Bool".download]]
     sha256 = "48b3277e012115e39530f0cf194987e90cb499c2b14a9cd7432c39e10a246b0d"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240717__textembedding3large-3072-Float32__v1.0.tar.gz"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/tidier__v20240716__textembedding3large-1024-Bool__v1.0.tar.gz"
 
 
 ["julia__nomicembedtext-0-Float32"]
