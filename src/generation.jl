@@ -89,11 +89,15 @@ function aihelp(cfg_orig::RT.AbstractRAGConfig, index::RT.AbstractChunkIndex,
         ## Use Cohere reranking model
         @assert !isempty(PT.COHERE_API_KEY) "COHERE_API_KEY is not set! Cannot use the reranker functionality."
         cfg.retriever.reranker = RT.CohereReranker()
+    elseif !isnothing(rerank) && !rerank
+        cfg.retriever.reranker = RT.NoReranker()
     end
     if !isnothing(search) && search
         ##set TavilySearchRefiner - Requires TAVILY_API_KEY
         @assert !isempty(PT.TAVILY_API_KEY) "TAVILY_API_KEY is not set! Cannot use the web search refinement functionality."
         cfg.generator.refiner = RT.TavilySearchRefiner()
+    elseif !isnothing(search) && !search
+        cfg.generator.refiner = RT.NoRefiner()
     end
 
     ## Run the RAG pipeline

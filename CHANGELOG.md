@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Both were made possible by [Splendidbug](https://github.com/splendidbug)!
 
+### Fixed
+- Fixed a bug in `aihelp()` where `rerank=false` and `search=false` would not block these steps if they were previously enabled.
+
 ## [0.3.0]
 ### Added (thanks to [Splendidbug](https://github.com/splendidbug)!)
 - New knowledge packs created by Splendidbug using `DocsScraper.jl` (to be registered soon, created as part of Google Summer of Code).
