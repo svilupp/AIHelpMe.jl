@@ -14,6 +14,7 @@ global MAIN_INDEX::Union{Nothing, RT.AbstractChunkIndex} = nothing
 Currently available packs are:
 - `:julia` - Julia documentation, standard library docstrings and a few extras (for Julia v1.10)
 - `:juliadata` - JuliaData.jl organization documentation, eg, DataFrames.jl and similar packages
+- `:genie` - GenieFramework organization documentation, eg, Genie.jl, Stipple.jl, StippleUI.jl, etc
 - `:plots` - Plots.jl organization documentation, eg, Plots.jl, StatsPlots.jl, etc
 - `:makie` - Makie.jl organization documentation
 - `:tidier` - Tidier.jl organization documentation
@@ -21,7 +22,7 @@ Currently available packs are:
 
 These packs have been sourced and packaged with DocsScraper.jl.
 """
-const ALLOWED_PACKS = [:julia, :juliadata, :tidier, :sciml, :plots, :makie]
+const ALLOWED_PACKS = [:julia, :juliadata, :tidier, :sciml, :plots, :makie, :genie]
 
 """
     LOADED_PACKS

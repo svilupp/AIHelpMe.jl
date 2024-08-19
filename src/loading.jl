@@ -61,7 +61,7 @@ load_index!(:julia)
 
 Or multiple packs
 ```julia
-load_index!([:julia, :juliadata, :makie, :tidier, :plots, :sciml])
+load_index!([:julia, :juliadata, :makie, :tidier, :plots, :sciml, :genie])
 ```
 But we recommend loading ONLY the packs you expect to need - unnecessary packs introduce noise.
 """

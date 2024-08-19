@@ -1,18 +1,35 @@
+["genie__textembedding3large-0-Float32"]
+git-tree-sha1 = "453d1876a9c248dfc6a187e94ec4959199472162"
+lazy = true
+
+    [["genie__textembedding3large-0-Float32".download]]
+    sha256 = "7c50469da95c7d6387b78307ea7ac15e981c61bd4121ec9772a39f9326ef8cfc"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/genie__v20240818__textembedding3large-3072-Float32__v1.0.tar.gz"
+
+["genie__textembedding3large-1024-Bool"]
+git-tree-sha1 = "723a7d2e694c183de2e5dc38e0cc54c8d9f57b4c"
+lazy = true
+
+    [["genie__textembedding3large-1024-Bool".download]]
+    sha256 = "868fece03ec1f1a470f2f44e969b8452c3f7c83dcb6d03d7441d395cc753ab7a"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/genie__v20240818__textembedding3large-1024-Bool__v1.0.tar.gz"
+
+
 ["julia__textembedding3large-0-Float32"]
-git-tree-sha1 = "a105a2482296fa0a80ce0c76677cc9ef673be70e"
+git-tree-sha1 = "4d0b4f4627e768ab86d7b57f2968627462f5e490"
 lazy = true
 
     [["julia__textembedding3large-0-Float32".download]]
-    sha256 = "ff4e91908fb54b7919aad9d6a2ac5045124d43eb864fe9f96a7a68d304d4e0a2"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/julia__v1.10.2__textembedding3large-0-Float32__v1.0.tar.gz"
+    sha256 = "ff76b9b20b1307b5299977710f0d104f84cd4314cb30f5971ebe7d644742fc95"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/julialang__v20240819__textembedding3large-3072-Float32__v1.0.tar.gz"
 
 ["julia__textembedding3large-1024-Bool"]
-git-tree-sha1 = "7eef82f15c72712b4f5fff2449ebf3ed64b56b14"
+git-tree-sha1 = "365d9e59be009b7050db7112be0dd89b7be332bc"
 lazy = true
 
     [["julia__textembedding3large-1024-Bool".download]]
-    sha256 = "27186886d19ea4c3f1710b4bc70e8e809d906069d5de8c992c948d97d0f454da"
-    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/julia__v1.10.2__textembedding3large-1024-Bool__v1.0.tar.gz"
+    sha256 = "8a88839594479ab12bd81a9a47e3bc4e2bd8aec02ad88db1dc3369b2cdb45e61"
+    url = "https://github.com/svilupp/AIHelpMeArtifacts/raw/main/artifacts/julialang__v20240819__textembedding3large-1024-Bool__v1.0.tar.gz"
 
 ["juliadata__textembedding3large-0-Float32"]
 git-tree-sha1 = "5ea13051e16f01627a4c81fd74e664a396785934"
