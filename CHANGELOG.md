@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.4.0]
+
+### Added
+- Added the knowledge pack for GenieFramework org. (alias `:genie`).
+
+### Updated
+- Updated the knowledge pack for core Julia docs (alias `:julia`).
+
+Both were made possible by [Splendidbug](https://github.com/splendidbug)!
+
 ## [0.3.0]
 ### Added (thanks to [Splendidbug](https://github.com/splendidbug)!)
 - New knowledge packs created by Splendidbug using `DocsScraper.jl` (to be registered soon, created as part of Google Summer of Code).
